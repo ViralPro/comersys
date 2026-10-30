@@ -1,0 +1,1067 @@
+/* ==========================================================================
+   COMERSYS — COMPONENTES UI EMPRESARIALES DE ALTA PRECISIÓN
+   (Botones, Formularios, Tablas, Modales, Badges, Stepper, Controles, Toast)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. BOTONES Y MICROINTERACCIONES TÁCTILES (PROPORCIÓN 75% CON AIRE)
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: 30px;
+  padding: 0 1.15rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform 100ms ease;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-600);
+  color: #ffffff;
+  box-shadow: var(--shadow-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-700);
+  box-shadow: var(--shadow-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-subtle {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-secondary);
+}
+
+.btn-subtle:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-danger {
+  background-color: var(--danger-600);
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(220, 38, 38, 0.2);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-700);
+}
+
+.btn-danger-outline {
+  background-color: var(--bg-surface);
+  color: var(--danger-600);
+  border-color: var(--danger-border);
+}
+
+.btn-danger-outline:hover {
+  background-color: var(--danger-bg);
+  border-color: var(--danger-500);
+}
+
+.btn-success {
+  background-color: var(--success-600);
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background-color: var(--success-700);
+}
+
+.btn-sm {
+  height: 26px;
+  padding: 0 0.85rem;
+  font-size: 0.81rem;
+  border-radius: var(--radius-xs);
+  gap: 0.45rem;
+}
+
+.btn-sm svg {
+  width: 12px;
+  height: 12px;
+}
+
+.btn-lg {
+  height: 35px;
+  padding: 0 1.45rem;
+  font-size: 0.94rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Botones de acción en filas de tabla (Mayor separación para evitar que queden apretados) */
+.action-btn-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.icon-action-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.icon-action-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.icon-action-btn:hover:not(:disabled) {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.icon-action-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.icon-action-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.icon-action-btn.primary {
+  color: var(--primary-600);
+  background-color: var(--primary-50);
+  border-color: var(--primary-100);
+}
+
+.icon-action-btn.primary:hover:not(:disabled) {
+  background-color: var(--primary-600);
+  border-color: var(--primary-600);
+  color: #ffffff;
+}
+
+.icon-action-btn.success {
+  color: var(--success-600);
+  background-color: var(--success-bg);
+  border-color: var(--success-border);
+}
+
+.icon-action-btn.success:hover:not(:disabled) {
+  background-color: var(--success-600);
+  border-color: var(--success-600);
+  color: #ffffff;
+}
+
+.icon-action-btn.danger {
+  color: var(--danger-600);
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+}
+
+.icon-action-btn.danger:hover:not(:disabled) {
+  background-color: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger-600);
+}
+
+/* --------------------------------------------------------------------------
+   2. CONTROLES SEGMENTADOS (CAMBIO DE VISTA EN TABLAS Y FILTROS)
+   -------------------------------------------------------------------------- */
+.segmented-control {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 5px;
+}
+
+.segmented-btn {
+  height: 24px;
+  padding: 0 0.95rem;
+  border-radius: calc(var(--radius-sm) - 2px);
+  font-size: 0.81rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.segmented-btn:hover {
+  color: var(--text-primary);
+}
+
+.segmented-btn.active {
+  background-color: var(--bg-surface);
+  color: var(--primary-600);
+  box-shadow: var(--shadow-xs);
+}
+
+/* --------------------------------------------------------------------------
+   3. TARJETAS Y PANELES CONTENEDORES
+   -------------------------------------------------------------------------- */
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.25rem 1.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.15rem;
+  flex-wrap: wrap;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.card-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 0.18rem;
+}
+
+.card-body {
+  padding: 1.6rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. FORMULARIOS E INPUTS ELEGANTES (PROPORCIÓN 75%)
+   -------------------------------------------------------------------------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  margin-bottom: 1.15rem;
+}
+
+.form-grid .form-group,
+.form-grid-3 .form-group {
+  margin-bottom: 0;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-label .required {
+  color: var(--danger-600);
+  margin-left: 2px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+
+.input-wrapper:focus-within .input-icon-left {
+  color: var(--primary-600);
+}
+
+.input-icon-left svg {
+  width: 14px;
+  height: 14px;
+}
+
+.input-icon-right {
+  position: absolute;
+  right: 0.55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-fast);
+}
+
+.input-icon-right svg {
+  width: 14px;
+  height: 14px;
+}
+
+.input-icon-right:hover {
+  color: var(--text-primary);
+}
+
+.form-control {
+  width: 100%;
+  height: 31px;
+  padding: 0 0.9rem;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.form-control:hover:not(:disabled):not([readonly]) {
+  border-color: var(--border-strong);
+}
+
+.form-control.has-icon-left {
+  padding-left: 2.35rem;
+}
+
+.form-control.has-icon-right {
+  padding-right: 2.35rem;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
+}
+
+.form-control.is-invalid {
+  border-color: var(--danger-500);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 70px;
+  padding: 0.65rem 0.9rem;
+  resize: vertical;
+}
+
+.form-hint {
+  font-size: 0.77rem;
+  color: var(--text-muted);
+  line-height: 1.38;
+}
+
+.form-error {
+  font-size: 0.78rem;
+  color: var(--danger-600);
+  font-weight: 500;
+}
+
+/* Barra de herramientas, filtros y búsqueda local en módulos */
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.15rem 1.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+  max-width: 440px;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 13px;
+  height: 13px;
+  color: var(--text-light);
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+.search-box:focus-within svg {
+  color: var(--primary-600);
+}
+
+.search-box input {
+  width: 100%;
+  height: 30px;
+  padding: 0 0.9rem 0 2.35rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-surface-muted);
+  font-size: 0.86rem;
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.search-box input:hover {
+  border-color: var(--border-strong);
+}
+
+.search-box input:focus {
+  outline: none;
+  background-color: var(--bg-input);
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
+}
+
+.toolbar-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+/* Selector de rango de fechas en Finanzas */
+.date-range-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-surface);
+  padding: 0 0.8rem;
+  height: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  color: var(--text-secondary);
+}
+
+.date-range-picker svg {
+  width: 13px;
+  height: 13px;
+  color: var(--text-muted);
+}
+
+.date-range-picker input[type="date"] {
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. TABLAS MODERNAS EMPRESARIALES (AMPLIAS Y BIEN DISTRIBUIDAS)
+   -------------------------------------------------------------------------- */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table thead th {
+  background-color: var(--bg-surface-muted);
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+  padding: 0.9rem 1.55rem;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
+}
+
+.data-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--bg-surface-hover);
+}
+
+.data-table tbody td {
+  padding: 1.05rem 1.55rem;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.95rem 1.6rem;
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-muted);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.page-btn {
+  min-width: 26px;
+  height: 26px;
+  padding: 0 0.55rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.page-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.page-btn.active {
+  background-color: var(--primary-600);
+  border-color: var(--primary-600);
+  color: #ffffff;
+  box-shadow: var(--shadow-primary);
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   6. BADGES / ETIQUETAS DE ESTADO CON INDICADOR ÓPTICO
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.24rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.badge-success {
+  background-color: var(--success-bg);
+  color: var(--success-700);
+  border: 1px solid var(--success-border);
+}
+
+[data-theme="dark"] .badge-success {
+  color: #34d399;
+}
+
+.badge-warning {
+  background-color: var(--warning-bg);
+  color: var(--warning-700);
+  border: 1px solid var(--warning-border);
+}
+
+[data-theme="dark"] .badge-warning {
+  color: #fbbf24;
+}
+
+.badge-danger {
+  background-color: var(--danger-bg);
+  color: var(--danger-700);
+  border: 1px solid var(--danger-border);
+}
+
+[data-theme="dark"] .badge-danger {
+  color: #f87171;
+}
+
+.badge-info {
+  background-color: var(--info-bg);
+  color: var(--info-600);
+  border: 1px solid var(--info-border);
+}
+
+.badge-neutral {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   7. VENTANAS MODALES PROFESIONALES (PROPORCIÓN 75%)
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-modal-backdrop);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms var(--ease-out), visibility 200ms var(--ease-out);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 440px;
+  max-height: calc(100vh - 2.5rem);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(12px) scale(0.985);
+  transition: transform 220ms var(--ease-out);
+  overflow: hidden;
+}
+
+.modal-backdrop.open .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.modal-dialog.modal-sm { max-width: 350px; }
+.modal-dialog.modal-md { max-width: 460px; }
+.modal-dialog.modal-lg { max-width: 630px; }
+.modal-dialog.modal-xl { max-width: 750px; }
+
+.modal-header {
+  padding: 1.2rem 1.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: var(--bg-surface);
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modal-title {
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.modal-close-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+
+.modal-close-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.modal-close-btn:hover {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 1.6rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 1.05rem 1.6rem;
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-muted);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   8. ESTADOS VACÍOS CLAROS Y FUNCIONALES (EMPTY STATES)
+   -------------------------------------------------------------------------- */
+.empty-state {
+  padding: 3.4rem 1.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  color: var(--primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.05rem;
+}
+
+.empty-state-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.empty-state-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.empty-state-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  max-width: 360px;
+  margin-bottom: 1.35rem;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   9. PESTAÑAS (TABS) Y STEPPER DE PROCESOS
+   -------------------------------------------------------------------------- */
+.tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.35rem;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.1rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: var(--primary-600);
+  border-bottom-color: var(--primary-600);
+}
+
+/* Stepper Horizontal de 4 Pasos (Ventas) */
+.wizard-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.6rem;
+  background-color: var(--bg-surface-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 0.65rem;
+  overflow-x: auto;
+}
+
+.wizard-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.wizard-step:hover {
+  background-color: var(--bg-surface-subtle);
+}
+
+.wizard-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.wizard-step.active {
+  color: var(--primary-600);
+}
+
+.wizard-step.active .wizard-step-num {
+  background-color: var(--primary-600);
+  border-color: var(--primary-600);
+  color: #ffffff;
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.wizard-step.completed {
+  color: var(--success-600);
+}
+
+.wizard-step.completed .wizard-step-num {
+  background-color: var(--success-600);
+  border-color: var(--success-600);
+  color: #ffffff;
+}
+
+.wizard-step-line {
+  flex: 1;
+  height: 2px;
+  min-width: 20px;
+  background-color: var(--border-color);
+  border-radius: 2px;
+  transition: background-color var(--transition-normal);
+}
+
+.wizard-step-line.completed {
+  background-color: var(--success-500);
+}
+
+/* --------------------------------------------------------------------------
+   10. NOTIFICACIONES TOAST CON ICONO SEMÁNTICO Y SALIDA FLUIDA
+   -------------------------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-width: 310px;
+  width: calc(100% - 2rem);
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.05rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  animation: toastSlideIn 220ms var(--ease-out) both;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.toast-leaving {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+}
+
+.toast-icon-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toast-icon-badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.toast-success .toast-icon-badge {
+  background-color: var(--success-bg);
+  color: var(--success-600);
+}
+
+.toast-error .toast-icon-badge {
+  background-color: var(--danger-bg);
+  color: var(--danger-600);
+}
+
+.toast-warning .toast-icon-badge {
+  background-color: var(--warning-bg);
+  color: var(--warning-600);
+}
+
+.toast-info .toast-icon-badge {
+  background-color: var(--info-bg);
+  color: var(--info-600);
+}
+
+.toast-content {
+  flex: 1;
+  font-size: 0.86rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.42;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 540px) {
+  .form-grid, .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .modal-backdrop {
+    padding: 0.65rem;
+  }
+  .modal-header, .modal-body, .modal-footer {
+    padding: 1rem 1.1rem;
+  }
+  .toolbar-row {
+    padding: 0.9rem 1.1rem;
+  }
+}

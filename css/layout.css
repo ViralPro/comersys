@@ -1,0 +1,610 @@
+/* ==========================================================================
+   COMERSYS — ESTRUCTURA DE LAYOUT EMPRESARIAL (LOGIN + APP SHELL + RESPONSIVE)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PANTALLA DE INICIO DE SESIÓN (LOGIN SPLIT-SCREEN — PROPORCIÓN 75%)
+   -------------------------------------------------------------------------- */
+.auth-screen {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  min-height: 100vh;
+  background-color: var(--bg-surface);
+}
+
+.auth-panel-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.75rem 3.5rem;
+  background-color: var(--bg-surface);
+  max-width: 460px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.auth-form-container {
+  margin: auto 0;
+  width: 100%;
+  max-width: 320px;
+  align-self: center;
+  animation: viewFadeIn 280ms var(--ease-out) both;
+}
+
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.35rem;
+}
+
+.auth-brand-logo {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+.auth-brand-logo svg {
+  width: 27px;
+  height: 27px;
+}
+
+.auth-brand-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.auth-brand-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  font-weight: 500;
+}
+
+.auth-brand-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.05rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface-muted);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+}
+
+.auth-brand-tagline::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--primary-600);
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  padding-top: 1.5rem;
+}
+
+/* Panel derecho corporativo Azul Marino Institucional */
+.auth-panel-visual {
+  position: relative;
+  background-color: var(--navy-900);
+  background-image: radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.16) 0%, transparent 55%),
+                    linear-gradient(160deg, var(--navy-950) 0%, var(--navy-900) 60%, var(--navy-800) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  overflow: hidden;
+  color: #ffffff;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.auth-visual-waves {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.28;
+}
+
+.auth-visual-content {
+  position: relative;
+  z-index: 2;
+  max-width: 390px;
+  text-align: center;
+}
+
+.auth-visual-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.95rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  color: #bfdbfe;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.auth-visual-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.55rem;
+  letter-spacing: -0.025em;
+}
+
+.auth-visual-desc {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin-bottom: 2.35rem;
+  font-weight: 400;
+}
+
+.auth-visual-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.05rem;
+  margin-top: 1.6rem;
+  text-align: left;
+}
+
+.auth-pillar-card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.auth-pillar-card:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.auth-pillar-card strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.auth-pillar-card span {
+  font-size: 0.77rem;
+  color: #94a3b8;
+  line-height: 1.48;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   2. APP SHELL (MENÚ LATERAL FIJO + ENCABEZADO SUPERIOR + WORKSPACE 75%)
+   -------------------------------------------------------------------------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+}
+
+/* Menú Lateral Fijo (Sidebar) */
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform var(--transition-normal), background-color var(--transition-normal);
+}
+
+.sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.35rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: opacity var(--transition-fast);
+}
+
+.sidebar-brand:hover {
+  opacity: 0.88;
+}
+
+.sidebar-brand svg {
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-name {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.sidebar-close-btn {
+  display: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.sidebar-close-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1.25rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  overflow-y: auto;
+}
+
+.sidebar-nav-section {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-light);
+  padding: 0.75rem 0.75rem 0.4rem;
+  user-select: none;
+}
+
+.sidebar-nav-section:first-child {
+  padding-top: 0.15rem;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.68rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.nav-item svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.nav-item:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.nav-item:hover svg {
+  color: var(--primary-600);
+}
+
+.nav-item.active {
+  background-color: var(--primary-600);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+}
+
+.nav-item.active svg {
+  color: #ffffff;
+}
+
+.nav-item-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 0.12rem 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--danger-bg);
+  color: var(--danger-600);
+  border: 1px solid var(--danger-border);
+}
+
+.nav-item.active .nav-item-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-footer {
+  padding: 0.95rem 1.15rem;
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.sidebar-business-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-business-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Contenedor Principal (Derecha del Sidebar) */
+.app-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+/* Encabezado Superior (Top Header con efecto translúcido sutil) */
+.app-header {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background-color: var(--bg-header);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  gap: 1rem;
+  z-index: 80;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  max-width: 500px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  transition: background-color var(--transition-fast);
+}
+
+.mobile-menu-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mobile-menu-btn:hover {
+  background-color: var(--bg-surface-hover);
+}
+
+/* Acciones derechas del Header */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+/* Perfil de Usuario en Header */
+.header-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.28rem 0.75rem 0.28rem 0.32rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.header-user-profile:hover {
+  background-color: var(--bg-surface-muted);
+  border-color: var(--border-strong);
+}
+
+.user-avatar-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--navy-800);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.18;
+}
+
+.user-meta-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-meta-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* Contenido de Página (Workspace Amplio y Cómodo — Proporción 75%) */
+.app-content {
+  flex: 1;
+  padding: 2.1rem 2.6rem 3.2rem;
+  max-width: 1560px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Cabecera Unificada de Módulo / Vista */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.page-header-titles h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.page-header-titles p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.28rem;
+}
+
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+/* Overlay para menú móvil */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-modal-backdrop);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. ADAPTABILIDAD RESPONSIVA (CALIBRADA A LA PROPORCIÓN 75%)
+   -------------------------------------------------------------------------- */
+@media (max-width: 820px) {
+  .auth-screen {
+    grid-template-columns: 1fr;
+  }
+  .auth-panel-visual {
+    display: none;
+  }
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+  .app-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar-close-btn {
+    display: flex;
+  }
+  .sidebar-backdrop.active {
+    display: block;
+  }
+  .app-main {
+    margin-left: 0;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .app-header {
+    padding: 0 1.5rem;
+  }
+  .app-content {
+    padding: 1.5rem 1.5rem 2.5rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .auth-panel-form {
+    padding: 1.75rem 1.25rem;
+  }
+  .app-header {
+    padding: 0 1rem;
+  }
+  .user-meta {
+    display: none;
+  }
+  .header-user-profile {
+    padding: 0.2rem;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .page-header-actions {
+    width: 100%;
+  }
+  .page-header-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
