@@ -12,127 +12,131 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Hojas de Estilo Modulares CSS3 -->
-  <link rel="stylesheet" href="css/variables.css?v=2.0" />
-  <link rel="stylesheet" href="css/base.css?v=2.0" />
-  <link rel="stylesheet" href="css/layout.css?v=2.0" />
-  <link rel="stylesheet" href="css/components.css?v=2.0" />
-  <link rel="stylesheet" href="css/modules.css?v=2.0" />
+  <link rel="stylesheet" href="css/variables.css?v=2.1" />
+  <link rel="stylesheet" href="css/base.css?v=2.1" />
+  <link rel="stylesheet" href="css/layout.css?v=2.1" />
+  <link rel="stylesheet" href="css/components.css?v=2.1" />
+  <link rel="stylesheet" href="css/modules.css?v=2.1" />
 </head>
 <body>
 
   <!-- ========================================================================
-       1. PANTALLA DE AUTENTICACIÓN (LOGIN EMPRESARIAL)
+       1. PANTALLA DE AUTENTICACIÓN (LOGIN COMERSYS — RÉPLICA FIEL DE LA REFERENCIA)
        ======================================================================== -->
   <section id="auth-screen" class="auth-screen" aria-label="Inicio de sesión">
-    <div class="auth-panel-form">
-      <div></div>
-      <div class="auth-form-container">
-        <div class="auth-brand">
-          <div class="auth-brand-logo">
-            <svg width="27" height="27" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-              <rect x="4" y="4" width="21" height="21" rx="5.5" stroke="#1D63DC" stroke-width="3.2" fill="rgba(29, 99, 220, 0.08)"/>
-              <rect x="15" y="15" width="21" height="21" rx="5.5" stroke="#164DB2" stroke-width="3.2" fill="#1D63DC" fill-opacity="0.18"/>
-              <circle cx="14.5" cy="14.5" r="2.2" fill="#1D63DC"/>
+    <!-- LADO IZQUIERDO: Marca, Fotografía Profesional de Oficina y Eslogan -->
+    <div class="cs-auth-left">
+      <div class="cs-auth-left-bg" aria-hidden="true"></div>
+      <div class="cs-auth-left-overlay" aria-hidden="true"></div>
+
+      <!-- Divisor Curvo S en el borde derecho -->
+      <svg class="cs-auth-curve-divider" viewBox="0 0 100 1000" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 100,0 L 100,1000 L 0,1000 C 25,850 45,700 65,500 C 80,350 92,180 100,0 Z" fill="#eef2fb" />
+      </svg>
+
+      <div class="cs-auth-left-content">
+        <!-- Bloque Central: Logotipo + Nombre + Subtítulo -->
+        <div class="cs-auth-brand-block">
+          <div class="cs-auth-logo-wrap">
+            <svg class="cs-auth-logo-svg" width="86" height="70" viewBox="0 0 88 72" fill="none" aria-hidden="true">
+              <rect x="4" y="4" width="46" height="46" rx="14" stroke="#29b0fd" stroke-width="5.5" fill="rgba(41, 176, 253, 0.08)"/>
+              <rect x="36" y="20" width="46" height="46" rx="14" stroke="#1d63dc" stroke-width="5.5" fill="rgba(29, 99, 220, 0.18)"/>
+              <circle cx="37" cy="35" r="2.5" fill="#29b0fd"/>
             </svg>
           </div>
-          <h1 class="auth-brand-title">ComerSys</h1>
-          <p class="auth-brand-subtitle">Sistema de Gestión Comercial</p>
-          <span class="auth-brand-tagline">Organiza tu negocio, potencia tus resultados</span>
+          <h1 class="cs-auth-brand-title">ComerSys</h1>
+          <p class="cs-auth-brand-subtitle">Sistema de Gestión Comercial</p>
         </div>
 
-        <form id="login-form" novalidate>
-          <div id="login-error-msg" class="form-error hidden" style="margin-bottom:1rem;padding:0.65rem 0.85rem;background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:var(--radius-sm);"></div>
+        <!-- Frase Inferior y Barra Decorativa Celeste -->
+        <div class="cs-auth-slogan-block">
+          <p class="cs-auth-slogan-text">Tu negocio,<br>siempre en control</p>
+          <div class="cs-auth-slogan-bar" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
 
-          <div class="form-group">
-            <label class="form-label" for="login-username">Usuario</label>
-            <div class="input-wrapper">
-              <span class="input-icon-left">
-                <svg class="cs-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <!-- LADO DERECHO: Tarjeta de Inicio de Sesión -->
+    <div class="cs-auth-right">
+      <div class="cs-auth-card">
+        <h2 class="cs-auth-card-title">Iniciar sesión</h2>
+        <p class="cs-auth-card-subtitle">Accedé a tu cuenta para continuar</p>
+
+        <!-- Mensaje de error para JavaScript -->
+        <div id="login-error-msg" class="cs-auth-error hidden" role="alert"></div>
+
+        <form id="login-form" novalidate>
+          <!-- Campo Usuario -->
+          <div class="cs-auth-field">
+            <div class="cs-auth-input-wrap">
+              <span class="cs-auth-input-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
               </span>
               <input
                 type="text"
                 id="login-username"
-                class="form-control has-icon-left"
+                class="cs-auth-input"
                 value="administrador"
-                placeholder="Ingrese su usuario"
+                placeholder="Usuario"
                 autocomplete="username"
                 required
               />
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="login-password">Contraseña</label>
-            <div class="input-wrapper">
-              <span class="input-icon-left">
-                <svg class="cs-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <!-- Campo Contraseña -->
+          <div class="cs-auth-field">
+            <div class="cs-auth-input-wrap">
+              <span class="cs-auth-input-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
               </span>
               <input
                 type="password"
                 id="login-password"
-                class="form-control has-icon-left has-icon-right"
+                class="cs-auth-input has-toggle"
                 value="admin123"
-                placeholder="Ingrese su contraseña"
+                placeholder="Contraseña"
                 autocomplete="current-password"
                 required
               />
-              <button type="button" id="login-toggle-password" class="input-icon-right" aria-label="Mostrar u ocultar contraseña">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <button
+                type="button"
+                id="login-toggle-password"
+                class="cs-auth-toggle-pass"
+                aria-label="Mostrar u ocultar contraseña"
+                title="Mostrar u ocultar contraseña"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                  <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                  <line x1="2" x2="22" y1="2" y2="22"/>
+                </svg>
               </button>
             </div>
-            <span class="form-hint">Credenciales iniciales: <strong>administrador</strong> / <strong>admin123</strong></span>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:0.5rem;">
-            Iniciar sesión
+          <!-- Botón Ingresar -->
+          <button type="submit" id="login-submit-btn" class="cs-auth-btn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            <span>Ingresar</span>
           </button>
         </form>
-      </div>
 
-      <footer class="auth-footer">
-        &copy; 2026 ComerSys. Todos los derechos reservados.
-      </footer>
-    </div>
-
-    <!-- Panel Visual Corporativo en Azul Marino Institucional -->
-    <div class="auth-panel-visual" aria-hidden="true">
-      <svg class="auth-visual-waves" viewBox="0 0 800 800" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#2563EB" stop-opacity="0.35" />
-            <stop offset="100%" stop-color="#071120" stop-opacity="0.0" />
-          </linearGradient>
-        </defs>
-        <path d="M0,560 C220,460 360,680 800,520 L800,800 L0,800 Z" fill="url(#waveGrad1)" />
-        <path d="M0,650 C310,550 490,740 800,610 L800,800 L0,800 Z" fill="rgba(37,99,235,0.14)" />
-      </svg>
-
-      <div class="auth-visual-content">
-        <div class="auth-visual-badge">Plataforma de Gestión ERP</div>
-        <div style="margin-bottom:1.15rem;">
-          <svg width="45" height="45" viewBox="0 0 40 40" fill="none">
-            <rect x="4" y="4" width="21" height="21" rx="5.5" stroke="#60A5FA" stroke-width="3.2" fill="rgba(96, 165, 250, 0.1)"/>
-            <rect x="15" y="15" width="21" height="21" rx="5.5" stroke="#3B82F6" stroke-width="3.2" fill="#2563EB" fill-opacity="0.3"/>
-            <circle cx="14.5" cy="14.5" r="2.2" fill="#93C5FD"/>
-          </svg>
-        </div>
-        <h2 class="auth-visual-title">ComerSys</h2>
-        <p class="auth-visual-desc">Más organización. Más control. Más crecimiento.</p>
-
-        <div class="auth-visual-pillars">
-          <div class="auth-pillar-card">
-            <strong>Inventario Dinámico</strong>
-            <span>Grupos a medida, control de stock y márgenes en tiempo real.</span>
-          </div>
-          <div class="auth-pillar-card">
-            <strong>Ventas Ágiles</strong>
-            <span>Operaciones conectadas al stock con pago completo, parcial o en cuotas.</span>
-          </div>
-          <div class="auth-pillar-card">
-            <strong>Cuotas y Cuentas</strong>
-            <span>Financiación automática, vencimientos y cobros parciales.</span>
-          </div>
-        </div>
+        <!-- Pie de la tarjeta -->
+        <footer class="cs-auth-card-footer">
+          <span>&copy; 2026 ComerSys</span>
+        </footer>
       </div>
     </div>
   </section>

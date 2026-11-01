@@ -3,198 +3,366 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. PANTALLA DE INICIO DE SESIÓN (LOGIN SPLIT-SCREEN — PROPORCIÓN 75%)
+   1. PANTALLA DE INICIO DE SESIÓN — RÉPLICA FIEL DE COMERSYS (IMAGEN DE REFERENCIA)
    -------------------------------------------------------------------------- */
 .auth-screen {
-  display: grid;
-  grid-template-columns: 1fr 1.08fr;
-  min-height: 100vh;
-  background-color: var(--bg-surface);
-}
-
-.auth-panel-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2.75rem 3.5rem;
-  background-color: var(--bg-surface);
-  max-width: 460px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.auth-form-container {
-  margin: auto 0;
-  width: 100%;
-  max-width: 320px;
-  align-self: center;
-  animation: viewFadeIn 280ms var(--ease-out) both;
-}
-
-.auth-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 2.35rem;
-}
-
-.auth-brand-logo {
-  width: 46px;
-  height: 46px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--primary-50);
-  border: 1px solid var(--primary-100);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xs);
-}
-
-.auth-brand-logo svg {
-  width: 27px;
-  height: 27px;
-}
-
-.auth-brand-title {
-  font-size: 1.9rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.03em;
-}
-
-.auth-brand-subtitle {
-  font-size: 0.92rem;
-  color: var(--text-muted);
-  margin-top: 0.3rem;
-  font-weight: 500;
-}
-
-.auth-brand-tagline {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.05rem;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background: var(--bg-surface-muted);
-  border: 1px solid var(--border-color);
-  padding: 0.4rem 0.95rem;
-  border-radius: var(--radius-full);
-}
-
-.auth-brand-tagline::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background-color: var(--primary-600);
-}
-
-.auth-footer {
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-light);
-  padding-top: 1.5rem;
-}
-
-/* Panel derecho corporativo Azul Marino Institucional */
-.auth-panel-visual {
   position: relative;
-  background-color: var(--navy-900);
-  background-image: radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.16) 0%, transparent 55%),
-                    linear-gradient(160deg, var(--navy-950) 0%, var(--navy-900) 60%, var(--navy-800) 100%);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #eef2fb 0%, #e8edf8 50%, #e2e8f5 100%);
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  box-sizing: border-box;
+}
+
+/* Lado Izquierdo: Presentación Corporativa con Fotografía y Curva S */
+.cs-auth-left {
+  position: relative;
+  width: 53%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 4rem;
+  justify-content: space-between;
+  padding: 40px 30px 35px;
+  box-sizing: border-box;
   overflow: hidden;
-  color: #ffffff;
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 2;
 }
 
-.auth-visual-waves {
+.cs-auth-left-bg {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  opacity: 0.28;
+  background-image: url('../assets/office-blue-hd.jpg');
+  background-size: cover;
+  background-position: center left;
+  background-repeat: no-repeat;
+  z-index: 1;
 }
 
-.auth-visual-content {
-  position: relative;
+.cs-auth-left-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 48, 142, 0.88) 0%,
+    rgba(13, 85, 215, 0.84) 48%,
+    rgba(20, 110, 240, 0.80) 100%
+  );
   z-index: 2;
-  max-width: 390px;
-  text-align: center;
 }
 
-.auth-visual-badge {
-  display: inline-flex;
+/* Divisor Curvo S en el borde derecho del panel azul */
+.cs-auth-curve-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -1px;
+  width: 140px;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Contenido del Lado Izquierdo */
+.cs-auth-left-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.95rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-full);
-  color: #bfdbfe;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
-.auth-visual-title {
-  font-size: 2.25rem;
-  font-weight: 800;
+/* Bloque Central de Marca: Logotipo + ComerSys + Subtítulo */
+.cs-auth-brand-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 40px;
+}
+
+.cs-auth-logo-wrap {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-auth-logo-svg {
+  width: 86px;
+  height: 70px;
+  display: block;
+  filter: drop-shadow(0 4px 14px rgba(41, 176, 253, 0.35));
+}
+
+.cs-auth-brand-title {
+  font-size: 42px;
+  font-weight: 700;
   color: #ffffff;
-  margin-bottom: 0.55rem;
   letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 20, 70, 0.35);
 }
 
-.auth-visual-desc {
-  font-size: 1rem;
+.cs-auth-brand-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 400;
+  margin-top: 8px;
+  margin-bottom: 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 4px rgba(0, 20, 70, 0.25);
+}
+
+/* Frase inferior y barra decorativa */
+.cs-auth-slogan-block {
+  text-align: center;
+  margin-top: auto;
+  padding-bottom: 12px;
+}
+
+.cs-auth-slogan-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.4;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0, 20, 70, 0.3);
+}
+
+.cs-auth-slogan-bar {
+  width: 38px;
+  height: 3.5px;
+  background-color: #0084ff;
+  border-radius: 999px;
+  margin: 12px auto 0;
+  box-shadow: 0 0 10px rgba(0, 132, 255, 0.55);
+}
+
+/* --------------------------------------------------------------------------
+   Lado Derecho: Tarjeta de Inicio de Sesión
+   -------------------------------------------------------------------------- */
+.cs-auth-right {
+  position: relative;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+/* Tarjeta Flotante Blanca */
+.cs-auth-card {
+  width: 100%;
+  max-width: 380px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 38px 34px 26px;
+  border: 1px solid rgba(220, 228, 245, 0.85);
+  box-shadow: 0 18px 45px -8px rgba(24, 48, 100, 0.09), 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  animation: authCardFade 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cs-auth-card-title {
+  font-size: 27px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.cs-auth-card-subtitle {
+  font-size: 13.5px;
+  color: #475569;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 24px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Mensaje de error dinámico */
+.cs-auth-error {
+  margin-bottom: 16px;
+  padding: 9px 12px;
+  background-color: var(--danger-bg, #fef2f2);
+  border: 1px solid var(--danger-border, #fecaca);
+  border-radius: 8px;
+  color: var(--danger-700, #b91c1c);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.35;
+}
+
+/* Campos de Formulario */
+.cs-auth-field {
+  margin-bottom: 13px;
+}
+
+.cs-auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.cs-auth-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  pointer-events: none;
+  transition: color 150ms ease;
+}
+
+.cs-auth-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 42px;
+  background-color: #ffffff;
+  border: 1.5px solid #d8e1eb;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 500;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.cs-auth-input::placeholder {
   color: #94a3b8;
-  margin-bottom: 2.35rem;
   font-weight: 400;
 }
 
-.auth-visual-pillars {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.05rem;
-  margin-top: 1.6rem;
-  text-align: left;
+.cs-auth-input.has-toggle {
+  padding-right: 42px;
 }
 
-.auth-pillar-card {
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-md);
-  padding: 1.15rem;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+.cs-auth-input:hover:not(:disabled) {
+  border-color: #b0bfd3;
 }
 
-.auth-pillar-card:hover {
-  background: rgba(255, 255, 255, 0.055);
-  border-color: rgba(255, 255, 255, 0.16);
+.cs-auth-input:focus {
+  outline: none;
+  border-color: #0052e4;
+  box-shadow: 0 0 0 3.5px rgba(0, 82, 228, 0.12);
 }
 
-.auth-pillar-card strong {
+.cs-auth-input-wrap:focus-within .cs-auth-input-icon {
+  color: #0052e4;
+}
+
+/* Botón de visibilidad de contraseña */
+.cs-auth-toggle-pass {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.cs-auth-toggle-pass:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+.cs-auth-toggle-pass svg,
+.cs-auth-toggle-pass .cs-icon {
+  width: 17px;
+  height: 17px;
   display: block;
-  color: #f8fafc;
-  font-size: 0.85rem;
+}
+
+/* Botón Ingresar */
+.cs-auth-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #0052e4;
+  color: #ffffff;
+  border: none;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 18px;
+  margin-bottom: 26px;
+  box-shadow: 0 4px 12px rgba(0, 82, 228, 0.28);
+  transition: background-color 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+  user-select: none;
 }
 
-.auth-pillar-card span {
-  font-size: 0.77rem;
+.cs-auth-btn:hover {
+  background-color: #0047c7;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 82, 228, 0.36);
+}
+
+.cs-auth-btn:active {
+  transform: translateY(0);
+}
+
+.cs-auth-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Pie de la tarjeta */
+.cs-auth-card-footer {
+  text-align: center;
+  font-size: 12px;
   color: #94a3b8;
-  line-height: 1.48;
-  display: block;
+  font-weight: 400;
+  user-select: none;
+}
+
+/* Animación de entrada suave de la tarjeta */
+@keyframes authCardFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -549,13 +717,45 @@
 /* --------------------------------------------------------------------------
    3. ADAPTABILIDAD RESPONSIVA (CALIBRADA A LA PROPORCIÓN 75%)
    -------------------------------------------------------------------------- */
-@media (max-width: 820px) {
+@media (max-width: 960px) {
   .auth-screen {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    min-height: 100vh;
   }
-  .auth-panel-visual {
+  .cs-auth-left {
+    width: 100%;
+    min-height: 250px;
+    padding: 30px 20px 24px;
+  }
+  .cs-auth-curve-divider {
     display: none;
   }
+  .cs-auth-left-content {
+    min-height: auto;
+  }
+  .cs-auth-slogan-block {
+    display: none;
+  }
+  .cs-auth-brand-block {
+    padding-top: 0;
+  }
+  .cs-auth-brand-title {
+    font-size: 32px;
+  }
+  .cs-auth-brand-subtitle {
+    font-size: 14px;
+  }
+  .cs-auth-right {
+    padding: 28px 18px 36px;
+    min-height: auto;
+  }
+  .cs-auth-card {
+    max-width: 360px;
+    padding: 30px 24px 22px;
+  }
+}
+
+@media (max-width: 820px) {
   .app-sidebar {
     transform: translateX(-100%);
   }
@@ -583,10 +783,44 @@
   }
 }
 
-@media (max-width: 540px) {
-  .auth-panel-form {
-    padding: 1.75rem 1.25rem;
+@media (max-width: 480px) {
+  .cs-auth-left {
+    min-height: 210px;
+    padding: 24px 16px 20px;
   }
+  .cs-auth-logo-svg {
+    width: 68px;
+    height: 56px;
+  }
+  .cs-auth-brand-title {
+    font-size: 28px;
+  }
+  .cs-auth-brand-subtitle {
+    font-size: 13px;
+  }
+  .cs-auth-right {
+    padding: 20px 14px 28px;
+  }
+  .cs-auth-card {
+    padding: 26px 18px 20px;
+    border-radius: 20px;
+  }
+  .cs-auth-card-title {
+    font-size: 23px;
+  }
+  .cs-auth-card-subtitle {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .cs-auth-input {
+    height: 44px;
+  }
+  .cs-auth-btn {
+    height: 44px;
+  }
+}
+
+@media (max-width: 540px) {
   .app-header {
     padding: 0 1rem;
   }
