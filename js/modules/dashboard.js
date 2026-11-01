@@ -7,15 +7,12 @@
   'use strict';
 
   const { Validators, Formatters } = global.ComerSys.Core;
-  const { FinanceService, InventoryService, ClientsService, SalesService, AuthService } =
+  const { FinanceService, InventoryService, ClientsService, SalesService } =
     global.ComerSys.Services;
   const { Icons, Charts } = global.ComerSys.UI;
 
   const DashboardModule = {
     render(container) {
-      const session = AuthService.getSession();
-      const adminName = session ? session.displayName : 'Administrador';
-
       const summary = FinanceService.getFinancialSummary();
       const groups = InventoryService.getGroups();
       const products = InventoryService.getProducts();
@@ -30,22 +27,6 @@
           : 0;
 
       container.innerHTML = `
-        <div class="page-header">
-          <div class="page-header-titles">
-            <h1>Bienvenido, ${Validators.escapeHtml(adminName)}</h1>
-            <p>Aquí tienes un resumen en tiempo real de tu negocio.</p>
-          </div>
-          <div class="page-header-actions">
-            <span class="dashboard-date-pill">
-              ${Icons.get('calendar')}
-              <span>${Validators.escapeHtml(Formatters.longDate())}</span>
-            </span>
-            <button type="button" class="btn btn-primary" id="dash-new-sale-btn">
-              ${Icons.get('plus')} Nueva Venta
-            </button>
-          </div>
-        </div>
-
         <!-- Fila 1: Indicadores Financieros Principales -->
         <div class="kpi-grid-4">
           <div class="kpi-card">
@@ -241,13 +222,6 @@
           global.ComerSys.App.navigate(target);
         });
       });
-
-      const newSaleBtn = container.querySelector('#dash-new-sale-btn');
-      if (newSaleBtn) {
-        newSaleBtn.addEventListener('click', () => {
-          global.ComerSys.Modules.Sales.openSaleWizard();
-        });
-      }
 
       const emptySaleBtn = container.querySelector('#dash-empty-sale-btn');
       if (emptySaleBtn) {
