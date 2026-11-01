@@ -22,9 +22,66 @@
       this._setupAuthEvents();
       this._setupShellEvents();
 
+      // Soporte para deep-linking y modo demo (?route=...&action=...&demo=1)
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDemo = urlParams.get('demo') === '1';
+      const actionParam = urlParams.get('action');
+      const routeParam = urlParams.get('route');
+
+      if (isDemo && global.ComerSys.DemoData) {
+        global.ComerSys.DemoData.seed();
+        if (actionParam !== 'login' && !AuthService.getSession()) {
+          localStorage.setItem(global.ComerSys.Config.SESSION_KEY, JSON.stringify({
+            userId: 1,
+            username: 'administrador',
+            displayName: 'Administrador',
+            role: 'admin',
+            loggedInAt: new Date().toISOString()
+          }));
+        }
+      }
+
+      if (actionParam === 'login') {
+        AuthService.logout();
+      }
+
       const session = AuthService.getSession();
-      if (session) {
+      if (session && actionParam !== 'login') {
         this._showAppShell(session);
+        if (routeParam) {
+          this.navigate(routeParam);
+        }
+        if (actionParam) {
+          setTimeout(() => {
+            if (actionParam === 'modal_product') {
+              const grp = global.ComerSys.Services.InventoryService.getGroups()[0];
+              global.ComerSys.Modules.Inventory.openProductModal({ groupId: grp ? grp.id : null });
+            } else if (actionParam === 'modal_group') {
+              global.ComerSys.Modules.Inventory.openGroupModal();
+            } else if (actionParam === 'group_detail') {
+              const gid = Number(urlParams.get('groupId')) || 1;
+              global.ComerSys.Modules.Inventory.openGroup(gid);
+            } else if (actionParam === 'modal_client') {
+              global.ComerSys.Modules.Clients.openClientFormModal();
+            } else if (actionParam === 'modal_detail') {
+              const cid = Number(urlParams.get('clientId')) || 1;
+              global.ComerSys.Modules.Clients.openClientDetailModal(cid);
+            } else if (actionParam === 'wizard') {
+              const prod = global.ComerSys.Services.InventoryService.getProducts()[0];
+              global.ComerSys.Modules.Sales.openSaleWizard({
+                initialItems: prod ? [{ productId: prod.id, quantity: 1 }] : []
+              });
+            } else if (actionParam === 'sale_detail') {
+              const sid = Number(urlParams.get('saleId')) || 1;
+              global.ComerSys.Modules.Sales.openSaleDetailModal(sid);
+            } else if (actionParam === 'modal_payment') {
+              global.ComerSys.Modules.Debts.openRegisterPaymentModal();
+            } else if (actionParam === 'modal_schedule') {
+              const did = Number(urlParams.get('debtId')) || 1;
+              global.ComerSys.Modules.Debts.openDebtScheduleModal(did);
+            }
+          }, 150);
+        }
       } else {
         this._showLoginScreen();
       }

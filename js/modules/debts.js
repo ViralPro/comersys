@@ -608,7 +608,7 @@
                       .map(
                         (inst) => `
                       <tr>
-                        <td class="font-semibold">Cuota #${inst.number} de ${inst.totalInstallments}</td>
+                        <td class="font-semibold">Cuota #${inst.number} de ${inst.totalInstallments || debt.installmentsCount || (debt.installments ? debt.installments.length : 1)}</td>
                         <td>${Formatters.date(inst.dueDate)}</td>
                         <td class="text-right">${Formatters.currency(inst.amount)}</td>
                         <td class="text-right text-success font-semibold">${Formatters.currency(inst.paidAmount)}</td>
