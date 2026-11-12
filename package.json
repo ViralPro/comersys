@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node --test --test-concurrency=1 test/**/*.test.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
     "check": "node scripts/engineering-check.js",
     "checkpoint": "node scripts/git-checkpoint.js"
   },
