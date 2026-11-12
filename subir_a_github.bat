@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Publicar ComerSys en GitHub (Damian82uj)
+title Publicar ComerSys en GitHub (ViralPro)
 cls
 echo ========================================================
 echo       COMERSYS — ASISTENTE DE PUBLICACION EN GITHUB
@@ -8,7 +8,7 @@ echo ========================================================
 echo.
 set "PATH=C:\Users\damian\AppData\Local\Programs\Git\cmd;C:\Users\damian\AppData\Local\Programs\Git\ucrt64\bin;%PATH%"
 
-echo Cuenta de GitHub objetivo: https://github.com/Damian82uj
+echo Cuenta de GitHub objetivo: https://github.com/ViralPro/comersys
 echo.
 echo [1/3] Verificando autenticacion en GitHub CLI...
 echo.
@@ -28,15 +28,8 @@ echo [2/3] Configurando credenciales seguras de Git...
 gh auth setup-git
 
 echo.
-echo [3/3] Publicando rama main en GitHub (Damian82uj/comersys)...
-gh repo view Damian82uj/comersys >nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    echo Creando repositorio publico 'comersys' en tu cuenta...
-    gh repo create comersys --public --source=. --remote=origin --push
-) else (
-    echo El repositorio ya existe en GitHub. Subiendo cambios a 'main'...
-    git push -u origin main
-)
+echo [3/3] Publicando rama main en GitHub (ViralPro/comersys)...
+git push -u origin main --force
 
 if %ERRORLEVEL% EQU 0 (
     echo.

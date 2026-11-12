@@ -4,13 +4,13 @@ Este documento contiene las instrucciones exactas para publicar **ComerSys** en 
 
 ---
 
-## FASE 1: Publicación en GitHub (Cuenta: Damian82uj)
+## FASE 1: Publicación en GitHub (Cuenta: ViralPro)
 
 El proyecto local ya se encuentra completamente auditado, limpio de secretos y preparado:
 - Historial Git saneado: únicamente contiene el commit limpio de lanzamiento.
 - Bases de datos reales y copias de seguridad (`data/comersys_platform.json`, `.bak`, `.png`) excluidas mediante `.gitignore`.
 - Plantilla inicial limpia configurada (`data/comersys_platform.template.json`).
-- Remoto oficial preconfigurado hacia: `https://github.com/Damian82uj/comersys.git`.
+- Remoto oficial preconfigurado hacia: `https://github.com/ViralPro/comersys.git`.
 
 ### Opción A — Asistente Automático (Recomendado con 1 Clic)
 Hemos preparado el script `subir_a_github.bat` en la raíz del proyecto. Solo haz doble clic en él o ejecútalo en PowerShell:
