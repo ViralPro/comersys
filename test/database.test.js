@@ -5,7 +5,8 @@ const path = require('path');
 const { getDatabase, DATA_PATH } = require('../server.js');
 
 describe('Integridad de Base de Datos Multi-Tenant', () => {
-  it('el archivo de base de datos debe existir en la ruta configurada', () => {
+  it('el archivo de base de datos debe existir o autoinicializarse desde la plantilla', () => {
+    const db = getDatabase();
     assert.strictEqual(fs.existsSync(DATA_PATH), true, `El archivo ${DATA_PATH} debe existir`);
   });
 

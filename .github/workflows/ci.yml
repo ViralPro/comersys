@@ -25,17 +25,25 @@ jobs:
           node -c server.js
           echo "Sintaxis de server.js verificada exitosamente."
 
-      - name: Verificar Criptografía PBKDF2 y Base de Datos
+      - name: Inicializar y Verificar Base de Datos (Template)
         run: |
           node -e "
             const fs = require('fs');
-            const crypto = require('crypto');
-            let raw = fs.readFileSync('./data/comersys_platform.json', 'utf8');
+            const path = require('path');
+            const templatePath = './data/comersys_platform.template.json';
+            const dataPath = './data/comersys_platform.json';
+            if (!fs.existsSync(dataPath) && fs.existsSync(templatePath)) {
+              fs.copyFileSync(templatePath, dataPath);
+            }
+            let raw = fs.readFileSync(dataPath, 'utf8');
             if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1);
             const db = JSON.parse(raw);
             if (!db.superadmin || !db.superadmin.passwordHash) throw new Error('Cuenta SuperAdmin no encontrada');
-            console.log('Base de datos multi-tenant íntegra y verificada.');
+            console.log('Base de datos multi-tenant inicializada e íntegra.');
           "
+
+      - name: Ejecutar Suite Completa de Pruebas (38 Tests)
+        run: npm test
 
       - name: Prueba de Arranque del Servidor en Producción
         run: |
