@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-12T00:00:00.000Z"
+  },
+  "superadmin": {
+    "username": "administrador",
+    "passwordHash": "A8F0D3D4FE3A3AF453C04FB22E4408F0:D676E1C48594E8B798792BA9DB3CEEBEA4502D331A309DA9950E49FF5F57B669",
+    "mustChangePassword": true,
+    "displayName": "Administrador General",
+    "lastLoginAt": null,
+    "email": "admin@comersys.local",
+    "role": "SUPERADMINISTRADOR",
+    "isOwner": true
+  },
+  "tenants": [
+    {
+      "id": "tenant_demo",
+      "businessName": "Comercio Demostración",
+      "ownerName": "Usuario Demostración",
+      "taxId": "30-00000000-0",
+      "email": "demo@comersys.local",
+      "phone": "+54 9 11 0000-0000",
+      "status": "active",
+      "createdAt": "2026-11-12T00:00:00.000Z",
+      "updatedAt": "2026-11-12T00:00:00.000Z",
+      "notes": "Comercio inicial de demostración",
+      "suspensionReason": "",
+      "subscription": {
+        "plan": "Profesional",
+        "price": 35000,
+        "paymentStatus": "paid",
+        "renewalDate": "2027-12-31",
+        "notes": ""
+      }
+    },
+    {
+      "id": "tenant_ff1f6cbd",
+      "businessName": "Boutique Bella",
+      "ownerName": "Comercio Demo",
+      "taxId": "27-00000000-4",
+      "phone": "+54 9 11 5555-0000",
+      "email": "demo@boutique.local",
+      "status": "active",
+      "createdAt": "2026-11-12T00:00:00.000Z",
+      "updatedAt": "2026-11-12T00:00:00.000Z",
+      "notes": "Comercio de prueba para verificación del sistema",
+      "suspensionReason": "",
+      "subscription": {
+        "plan": "Profesional",
+        "price": 35000,
+        "paymentStatus": "paid",
+        "renewalDate": "2027-12-31",
+        "notes": ""
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "tenantId": "tenant_demo",
+      "username": "demo",
+      "passwordHash": "20E1A4D1630D499A508A40A508AFB2F7:72E62DC57442C6A688B31A3081E56BCD70BC49154ADD6C833A25C19F9D74F545",
+      "displayName": "Usuario Demo",
+      "role": "admin",
+      "createdAt": "2026-11-12T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "tenantId": "tenant_ff1f6cbd",
+      "username": "boutiquebella",
+      "passwordHash": "20E1A4D1630D499A508A40A508AFB2F7:72E62DC57442C6A688B31A3081E56BCD70BC49154ADD6C833A25C19F9D74F545",
+      "displayName": "Boutique Bella",
+      "role": "admin",
+      "createdAt": "2026-11-12T00:00:00.000Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "init-launch",
+      "timestamp": "2026-11-12T00:00:00.000Z",
+      "actor": "SISTEMA",
+      "action": "PLATFORM_INITIALIZED",
+      "targetTenantId": "SYSTEM",
+      "details": "Plataforma multi-tenant inicializada con plantilla limpia para producción."
+    }
+  ],
+  "sessions": {},
+  "tenantData": {
+    "tenant_demo": {
+      "meta": {
+        "version": "1.0.0",
+        "createdAt": "2026-11-12T00:00:00.000Z",
+        "updatedAt": "2026-11-12T00:00:00.000Z",
+        "sequences": {
+          "groups": 0,
+          "products": 0,
+          "clients": 0,
+          "sales": 0,
+          "debts": 0,
+          "installments": 0,
+          "payments": 0,
+          "movements": 0
+        }
+      },
+      "settings": {
+        "businessName": "Comercio Demostración",
+        "taxId": "30-00000000-0",
+        "phone": "+54 9 11 0000-0000",
+        "address": "",
+        "currencySymbol": "$",
+        "currencyCode": "ARS",
+        "dateFormat": "DD/MM/YYYY",
+        "lowStockThreshold": 5,
+        "darkMode": false
+      },
+      "groups": [],
+      "products": [],
+      "clients": [],
+      "sales": [],
+      "debts": [],
+      "installments": [],
+      "payments": [],
+      "movements": []
+    },
+    "tenant_ff1f6cbd": {
+      "meta": {
+        "version": "1.0.0",
+        "createdAt": "2026-11-12T00:00:00.000Z",
+        "updatedAt": "2026-11-12T00:00:00.000Z",
+        "sequences": {
+          "groups": 0,
+          "products": 0,
+          "clients": 0,
+          "sales": 0,
+          "debts": 0,
+          "installments": 0,
+          "payments": 0,
+          "movements": 0
+        }
+      },
+      "settings": {
+        "businessName": "Boutique Bella",
+        "taxId": "27-00000000-4",
+        "phone": "+54 9 11 5555-0000",
+        "address": "",
+        "currencySymbol": "$",
+        "currencyCode": "ARS",
+        "dateFormat": "DD/MM/YYYY",
+        "lowStockThreshold": 5,
+        "darkMode": false
+      },
+      "groups": [],
+      "products": [],
+      "clients": [],
+      "sales": [],
+      "debts": [],
+      "installments": [],
+      "payments": [],
+      "movements": []
+    }
+  }
+}

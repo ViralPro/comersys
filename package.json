@@ -1,0 +1,27 @@
+{
+  "name": "comersys-platform",
+  "version": "2.0.0",
+  "description": "ComerSys — Plataforma Comercial Multi-Tenant y Administración Central",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test --test-concurrency=1 test/**/*.test.js",
+    "check": "node scripts/engineering-check.js",
+    "checkpoint": "node scripts/git-checkpoint.js"
+  },
+  "keywords": [
+    "comersys",
+    "pos",
+    "punto-de-venta",
+    "ecommerce",
+    "multi-tenant",
+    "gestion-comercial"
+  ],
+  "author": "ComerSys Team",
+  "license": "Proprietary",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

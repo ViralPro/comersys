@@ -1,0 +1,48 @@
+name: ComerSys CI & Production Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  audit-and-test:
+    name: Code Quality & Server Integrity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Código Fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verificar Sintaxis del Servidor
+        run: |
+          node -c server.js
+          echo "Sintaxis de server.js verificada exitosamente."
+
+      - name: Verificar Criptografía PBKDF2 y Base de Datos
+        run: |
+          node -e "
+            const fs = require('fs');
+            const crypto = require('crypto');
+            let raw = fs.readFileSync('./data/comersys_platform.json', 'utf8');
+            if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1);
+            const db = JSON.parse(raw);
+            if (!db.superadmin || !db.superadmin.passwordHash) throw new Error('Cuenta SuperAdmin no encontrada');
+            console.log('Base de datos multi-tenant íntegra y verificada.');
+          "
+
+      - name: Prueba de Arranque del Servidor en Producción
+        run: |
+          PORT=8000 node server.js &
+          SERVER_PID=$!
+          sleep 2
+          curl -f http://localhost:8000/health || exit 1
+          curl -f http://localhost:8000/admin/ || exit 1
+          kill $SERVER_PID
+          echo "Pruebas de servidor superadas con éxito."

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ComerSys — Panel Central de Administración y Control Multi-Tenant." />
+  <title>ComerSys — Administración Central (SuperAdmin)</title>
+
+  <!-- Tipografía Profesional Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Favicon Oficial ComerSys -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" href="/favicon.ico" />
+
+  <!-- Estilos Corporativos ComerSys -->
+  <link rel="stylesheet" href="css/admin.css?v=2.0" />
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. PANTALLA DE ACCESO CENTRAL (IDENTIDAD VISUAL CORPORATIVA COMERSYS)
+       ======================================================================== -->
+  <section id="adm-login-view" class="adm-auth-screen" aria-label="Acceso a Administración Central">
+    <!-- LADO IZQUIERDO: Marca ComerSys en Azul Institucional + Fotografía de Oficina -->
+    <div class="adm-auth-left">
+      <div class="adm-auth-left-bg" aria-hidden="true"></div>
+      <div class="adm-auth-left-overlay" aria-hidden="true"></div>
+
+      <!-- Divisor Curvo S en el borde derecho -->
+      <svg class="adm-auth-curve-divider" viewBox="0 0 100 1000" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 100,0 L 100,1000 L 0,1000 C 25,850 45,700 65,500 C 80,350 92,180 100,0 Z" fill="#eef2fb" />
+      </svg>
+
+      <div class="adm-auth-left-content">
+        <!-- Bloque Central: Logotipo + Nombre + Subtítulo -->
+        <div class="adm-auth-brand-block">
+          <div class="adm-auth-logo-wrap">
+            <svg class="adm-auth-logo-svg" width="86" height="70" viewBox="0 0 88 72" fill="none" aria-hidden="true">
+              <rect x="4" y="4" width="46" height="46" rx="14" stroke="#29b0fd" stroke-width="5.5" fill="rgba(41, 176, 253, 0.08)"/>
+              <rect x="36" y="20" width="46" height="46" rx="14" stroke="#1d63dc" stroke-width="5.5" fill="rgba(29, 99, 220, 0.18)"/>
+              <circle cx="37" cy="35" r="2.5" fill="#29b0fd"/>
+            </svg>
+          </div>
+          <h1 class="adm-auth-brand-title">ComerSys</h1>
+          <p class="adm-auth-brand-subtitle">Administración Central Multi-Tenant</p>
+        </div>
+
+        <!-- Frase Inferior y Barra Decorativa Celeste -->
+        <div class="adm-auth-slogan-block">
+          <p class="adm-auth-slogan-text">Plataforma comercial y supervisión global</p>
+          <div class="adm-auth-slogan-bar" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LADO DERECHO: Tarjeta Flotante Blanca de Inicio de Sesión -->
+    <div class="adm-auth-right">
+      <div class="adm-auth-card">
+        <div class="adm-auth-card-brand">
+          <svg class="adm-auth-card-logo" width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x="5" y="5" width="20" height="20" rx="6" stroke="#0284c7" stroke-width="3.2" fill="rgba(2, 132, 199, 0.1)"/>
+            <rect x="15" y="15" width="20" height="20" rx="6" stroke="#1d63dc" stroke-width="3.2" fill="rgba(29, 99, 220, 0.2)"/>
+            <circle cx="15" cy="15" r="2.2" fill="#0284c7"/>
+            <circle cx="25" cy="25" r="2.2" fill="#1d63dc"/>
+          </svg>
+          <span class="adm-auth-card-brand-name">ComerSys</span>
+          <span class="adm-auth-card-brand-badge">Central</span>
+        </div>
+        <h2 class="adm-auth-card-title">Administración Central</h2>
+        <p class="adm-auth-card-subtitle">Iniciá sesión como SuperAdmin general</p>
+
+        <!-- Mensaje de error -->
+        <div id="adm-login-error" class="adm-auth-error hidden" role="alert"></div>
+
+        <form id="adm-login-form" novalidate>
+          <!-- Campo Usuario o Correo Oficial -->
+          <div class="adm-auth-field">
+            <label class="adm-auth-label" for="adm-input-user">Usuario o Correo Oficial</label>
+            <div class="adm-auth-input-wrap">
+              <span class="adm-auth-input-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input
+                type="text"
+                id="adm-input-user"
+                class="adm-auth-input"
+                value="administrador"
+                placeholder="administrador o correo institucional"
+                autocomplete="username"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Campo Contraseña -->
+          <div class="adm-auth-field">
+            <label class="adm-auth-label" for="adm-input-pass">Contraseña</label>
+            <div class="adm-auth-input-wrap">
+              <span class="adm-auth-input-icon" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input
+                type="password"
+                id="adm-input-pass"
+                class="adm-auth-input has-toggle"
+                placeholder="Contraseña de administrador"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                id="adm-toggle-pass-btn"
+                class="adm-auth-toggle-pass"
+                aria-label="Mostrar u ocultar contraseña"
+                title="Mostrar u ocultar contraseña"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                  <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                  <line x1="2" x2="22" y1="2" y2="22"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Botón Ingresar -->
+          <button type="submit" id="adm-login-btn" class="adm-auth-btn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            <span>Ingresar a Administración</span>
+          </button>
+        </form>
+
+        <!-- Pie de la tarjeta -->
+        <footer class="adm-auth-footer">
+          <span>&copy; 2026 ComerSys &bull; Panel Central</span>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       2. APLICACIÓN PRINCIPAL (APP SHELL: SIDEBAR + HEADER + DASHBOARD)
+       ======================================================================== -->
+  <div id="adm-app-shell" class="adm-app-shell hidden">
+    <!-- Backdrop móvil -->
+    <div id="adm-sidebar-backdrop" class="adm-sidebar-backdrop"></div>
+
+    <!-- Menú Lateral Blanco y Azul Corporativo -->
+    <aside id="adm-sidebar" class="adm-sidebar" aria-label="Navegación del panel central">
+      <div class="adm-sidebar-header">
+        <div class="adm-sidebar-brand">
+          <svg width="28" height="28" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <rect x="4" y="4" width="21" height="21" rx="5.5" stroke="#1D63DC" stroke-width="3.2" fill="rgba(29, 99, 220, 0.1)"/>
+            <rect x="15" y="15" width="21" height="21" rx="5.5" stroke="#164DB2" stroke-width="3.2" fill="#1D63DC" fill-opacity="0.18"/>
+            <circle cx="14.5" cy="14.5" r="2.2" fill="#1D63DC"/>
+          </svg>
+          <div class="adm-sidebar-brand-name">
+            <span>ComerSys</span>
+            <span class="adm-sidebar-badge">Central</span>
+          </div>
+        </div>
+        <button type="button" id="adm-sidebar-close-btn" class="adm-sidebar-close-btn" aria-label="Cerrar menú">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <nav class="adm-sidebar-nav">
+        <div class="adm-sidebar-section-title">Supervisión General</div>
+        
+        <button type="button" class="adm-nav-item active" data-view="tenants" id="adm-nav-tenants-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+          <span>Negocios y Comercios</span>
+          <span id="adm-nav-count-badge" class="adm-nav-badge">0</span>
+        </button>
+
+        <button type="button" class="adm-nav-item" data-view="audit" id="adm-nav-audit-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          <span>Auditoría & Seguridad</span>
+        </button>
+
+        <button type="button" class="adm-nav-item" data-view="system" id="adm-nav-system-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+          </svg>
+          <span>Salud del Sistema & Respaldo</span>
+        </button>
+      </nav>
+
+      <div class="adm-sidebar-footer">
+        <div class="adm-sidebar-user-block">
+          <div class="adm-sidebar-avatar" id="adm-nav-avatar">AG</div>
+          <div class="adm-sidebar-user-info">
+            <div id="adm-nav-display-name" class="adm-sidebar-user-name">Administrador General</div>
+            <div id="adm-nav-email" class="adm-sidebar-user-email">admin@comersys.local</div>
+            <div id="adm-nav-role" class="adm-sidebar-user-role">SUPERADMINISTRADOR &bull; Propietario</div>
+          </div>
+        </div>
+        <button type="button" id="adm-logout-btn" class="adm-btn-icon-logout" title="Cerrar sesión de administrador" aria-label="Cerrar sesión">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Área Principal de Trabajo -->
+    <div class="adm-app-main">
+      <!-- Header Superior Corporativo -->
+      <header class="adm-header">
+        <div class="adm-header-left">
+          <button type="button" id="adm-mobile-menu-btn" class="adm-mobile-toggle-btn" aria-label="Abrir menú lateral">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          <div class="adm-header-brand-wrap">
+            <svg class="adm-header-brand-logo" width="22" height="22" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <rect x="5" y="5" width="20" height="20" rx="6" stroke="#0284c7" stroke-width="3.2" fill="rgba(2, 132, 199, 0.1)"/>
+              <rect x="15" y="15" width="20" height="20" rx="6" stroke="#1d63dc" stroke-width="3.2" fill="rgba(29, 99, 220, 0.2)"/>
+              <circle cx="15" cy="15" r="2.2" fill="#0284c7"/>
+              <circle cx="25" cy="25" r="2.2" fill="#1d63dc"/>
+            </svg>
+            <span class="adm-header-brand-title">ComerSys</span>
+            <span class="adm-header-brand-badge">Central</span>
+          </div>
+          <div class="adm-breadcrumb">
+            <span class="adm-breadcrumb-separator">/</span>
+            <span class="adm-breadcrumb-current">Directorio de Comercios</span>
+          </div>
+        </div>
+
+        <div class="adm-header-right">
+          <div class="adm-status-indicator" title="Servidor ComerSys Operativo">
+            <span class="adm-status-dot"></span>
+            <span>Sistema Operativo</span>
+          </div>
+          <div class="adm-role-badge" title="Cuenta Maestra del Propietario">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>SuperAdministrador</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Espacio de Contenido Principal (3 Vistas Integradas) -->
+      <main class="adm-workspace">
+        <!-- ====================================================================
+             VISTA 1: DIRECTORIO Y SUPERVISIÓN DE COMERCIOS
+             ==================================================================== -->
+        <div id="adm-view-tenants" class="adm-tab-view">
+          <!-- Hero Section -->
+          <div class="adm-hero-section">
+            <div class="adm-hero-text-block">
+              <div class="adm-hero-pill">Plataforma Empresarial Multi-Tenant</div>
+              <h1 class="adm-hero-title">Directorio de Comercios y Clientes</h1>
+              <p class="adm-hero-subtitle">
+                Supervisión en tiempo real de cuentas comerciales, planes de suscripción, recaudación consolidada y aislamiento total de datos.
+              </p>
+            </div>
+            <div class="adm-hero-actions">
+              <button type="button" id="adm-open-create-hero-btn" class="btn-adm btn-adm-primary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Registrar Nuevo Comercio</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tarjetas KPI Estadísticas -->
+          <section class="adm-kpi-grid">
+            <div class="adm-kpi-card">
+              <div class="adm-kpi-header">
+                <span class="adm-kpi-label">Comercios Registrados</span>
+                <div class="adm-kpi-icon-wrap blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+              </div>
+              <div id="kpi-total-tenants" class="adm-kpi-value">0</div>
+              <div class="adm-kpi-desc">Total de espacios comerciales activos en la red</div>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="adm-kpi-header">
+                <span class="adm-kpi-label">Cuentas Operativas</span>
+                <div class="adm-kpi-icon-wrap green">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+              </div>
+              <div id="kpi-active-tenants" class="adm-kpi-value">0</div>
+              <div class="adm-kpi-desc">Acceso comercial habilitado sin restricciones</div>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="adm-kpi-header">
+                <span class="adm-kpi-label">Cuentas Suspendidas</span>
+                <div class="adm-kpi-icon-wrap amber">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+              </div>
+              <div id="kpi-suspended-tenants" class="adm-kpi-value">0</div>
+              <div class="adm-kpi-desc">Acceso bloqueado por mora o decisión manual</div>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="adm-kpi-header">
+                <span class="adm-kpi-label">Volumen Comercial Red</span>
+                <div class="adm-kpi-icon-wrap purple">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+              </div>
+              <div id="kpi-global-revenue" class="adm-kpi-value">$0</div>
+              <div class="adm-kpi-desc">Facturación global acumulada de los comercios</div>
+            </div>
+          </section>
+
+          <!-- Toolbar: Búsqueda, Filtros y Acciones -->
+          <section class="adm-toolbar">
+            <div class="adm-search-box">
+              <svg class="adm-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="adm-search-input" class="adm-search-input" placeholder="Buscar por negocio, titular, usuario o CUIT..." />
+            </div>
+
+            <div class="adm-filter-group">
+              <button type="button" class="adm-pill active" data-filter="all">Todos</button>
+              <button type="button" class="adm-pill" data-filter="active">Activos</button>
+              <button type="button" class="adm-pill" data-filter="suspended">Suspendidos</button>
+              <button type="button" class="adm-pill" data-filter="closed">Cerrados</button>
+            </div>
+
+            <div class="adm-action-buttons">
+              <button type="button" id="adm-open-create-btn" class="btn-adm btn-adm-primary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Crear Comercio</span>
+              </button>
+              <button type="button" id="adm-refresh-tenants-btn" class="btn-adm" title="Recargar lista de comercios">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                <span>Actualizar</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Tabla Empresarial de Negocios Clientes -->
+          <section class="adm-table-container">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th style="min-width: 150px;">Comercio & Titular</th>
+                  <th style="min-width: 120px;">Acceso & Contacto</th>
+                  <th style="min-width: 70px;">Alta</th>
+                  <th style="min-width: 130px;">Estado & Plan</th>
+                  <th style="min-width: 100px; text-align: right;">Actividad</th>
+                  <th style="min-width: 240px; text-align: right;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="adm-tenants-tbody">
+                <!-- Filas dinámicas inyectadas por admin.js -->
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- ====================================================================
+             VISTA 2: AUDITORÍA Y SEGURIDAD GLOBAL
+             ==================================================================== -->
+        <div id="adm-view-audit" class="adm-tab-view hidden">
+          <div class="adm-hero-section">
+            <div class="adm-hero-text-block">
+              <div class="adm-hero-pill">Trazabilidad & Seguridad Inmutable</div>
+              <h1 class="adm-hero-title">Registro de Auditoría de la Plataforma</h1>
+              <p class="adm-hero-subtitle">
+                Historial cronológico de accesos maestros, cambios de suscripción, creación de comercios y acciones administrativas en tiempo real.
+              </p>
+            </div>
+            <div class="adm-hero-actions">
+              <button type="button" id="adm-refresh-audit-btn" class="btn-adm btn-adm-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                <span>Actualizar Registros</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Toolbar Auditoría -->
+          <section class="adm-toolbar">
+            <div class="adm-search-box">
+              <svg class="adm-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="adm-audit-search-input" class="adm-search-input" placeholder="Buscar por responsable, acción, comercio o detalle..." />
+            </div>
+
+            <div class="adm-filter-group" id="adm-audit-filters">
+              <button type="button" class="adm-pill active" data-audit-filter="all">Todos</button>
+              <button type="button" class="adm-pill" data-audit-filter="LOGIN">Inicios de Sesión</button>
+              <button type="button" class="adm-pill" data-audit-filter="TENANT">Comercios</button>
+              <button type="button" class="adm-pill" data-audit-filter="STATUS">Estados</button>
+              <button type="button" class="adm-pill" data-audit-filter="PASSWORD">Claves</button>
+            </div>
+          </section>
+
+          <!-- Tabla de Auditoría Amplia -->
+          <section class="adm-table-container">
+            <table class="adm-table" style="font-size: 11.5px;">
+              <thead>
+                <tr>
+                  <th style="width: 130px;">Fecha y Hora</th>
+                  <th style="width: 130px;">Responsable</th>
+                  <th style="width: 140px;">Acción Registrada</th>
+                  <th style="width: 130px;">Comercio Objetivo</th>
+                  <th>Detalle de la Operación</th>
+                </tr>
+              </thead>
+              <tbody id="adm-audit-full-tbody">
+                <!-- Registros inyectados por admin.js -->
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- ====================================================================
+             VISTA 3: SALUD DEL SISTEMA Y RESPALDO
+             ==================================================================== -->
+        <div id="adm-view-system" class="adm-tab-view hidden">
+          <div class="adm-hero-section">
+            <div class="adm-hero-text-block">
+              <div class="adm-hero-pill">Infraestructura & Protección de Datos</div>
+              <h1 class="adm-hero-title">Salud del Sistema y Respaldos</h1>
+              <p class="adm-hero-subtitle">
+                Diagnóstico de seguridad, motor transaccional multi-tenant, persistencia y exportación integral de la plataforma.
+              </p>
+            </div>
+          </div>
+
+          <!-- Grilla de Diagnóstico de Infraestructura -->
+          <div class="adm-system-grid">
+            <div class="adm-system-card">
+              <div class="adm-system-card-header">
+                <div class="adm-system-icon-box green">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div>
+                  <h3 class="adm-system-card-title">Seguridad y Criptografía</h3>
+                  <span class="adm-system-badge active">Activo y Verificado</span>
+                </div>
+              </div>
+              <p class="adm-system-card-desc">
+                Cifrado maestro con PBKDF2 (SHA-256 + Salt 128-bit + 10.000 rondas). Sesiones maestras con tokens criptográficos verificados en backend.
+              </p>
+              <div class="adm-system-meta-row">
+                <span>Cuenta Maestra:</span>
+                <strong id="adm-sys-master-email">admin@comersys.local</strong>
+              </div>
+              <div class="adm-system-meta-row">
+                <span>Rol de Propietario:</span>
+                <strong>SUPERADMINISTRADOR (Único)</strong>
+              </div>
+            </div>
+
+            <div class="adm-system-card">
+              <div class="adm-system-card-header">
+                <div class="adm-system-icon-box blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </div>
+                <div>
+                  <h3 class="adm-system-card-title">Arquitectura Multi-Tenant</h3>
+                  <span class="adm-system-badge active">Aislamiento Total</span>
+                </div>
+              </div>
+              <p class="adm-system-card-desc">
+                Cada comercio opera con su propio espacio aislado de base de datos. Ningún comercio puede leer ni escribir datos de otros clientes.
+              </p>
+              <div class="adm-system-meta-row">
+                <span>Comercios Aislados:</span>
+                <strong id="sys-total-tenants">0 comercios</strong>
+              </div>
+              <div class="adm-system-meta-row">
+                <span>Control de Acceso:</span>
+                <strong>Bloqueo estricto 403 en endpoints ajenos</strong>
+              </div>
+            </div>
+
+            <div class="adm-system-card">
+              <div class="adm-system-card-header">
+                <div class="adm-system-icon-box purple">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+                </div>
+                <div>
+                  <h3 class="adm-system-card-title">Persistencia Transaccional</h3>
+                  <span class="adm-system-badge active">Motor ACID Seguro</span>
+                </div>
+              </div>
+              <p class="adm-system-card-desc">
+                Motor de persistencia seguro en disco con control de concurrencia y transacciones atómicas.
+              </p>
+              <div class="adm-system-meta-row">
+                <span>Base de Datos:</span>
+                <strong>comersys_platform.json</strong>
+              </div>
+              <div class="adm-system-meta-row">
+                <span>Última Sincronización:</span>
+                <strong id="sys-last-sync">-</strong>
+              </div>
+            </div>
+
+            <div class="adm-system-card highlight">
+              <div class="adm-system-card-header">
+                <div class="adm-system-icon-box darkblue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </div>
+                <div>
+                  <h3 class="adm-system-card-title">Respaldo Global de Plataforma</h3>
+                  <span class="adm-system-badge">Descarga Directa</span>
+                </div>
+              </div>
+              <p class="adm-system-card-desc">
+                Exporte una copia completa e instantánea de toda la información (cuentas maestras, comercios, catálogos, auditoría y suscripciones).
+              </p>
+              <div style="margin-top: 16px;">
+                <button type="button" id="adm-sys-export-btn" class="btn-adm btn-adm-primary" style="width: 100%;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Descargar Respaldo JSON Completo</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       3. MODAL: REGISTRAR NUEVO NEGOCIO COMERCIAL
+       ======================================================================== -->
+  <div id="adm-create-modal" class="adm-modal-backdrop hidden">
+    <div class="adm-modal-dialog">
+      <div class="adm-modal-header">
+        <div class="adm-modal-header-left">
+          <div class="adm-modal-icon-wrap blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          </div>
+          <div>
+            <h3 class="adm-modal-title">Registrar Nuevo Comercio</h3>
+            <p class="adm-modal-subtitle">Configure la cuenta comercial, suscripción y credenciales de acceso iniciales.</p>
+          </div>
+        </div>
+        <button type="button" class="adm-modal-close-btn" data-close-modal aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <form id="adm-create-form">
+        <div class="adm-modal-body">
+          <div id="adm-create-error" class="adm-error-alert hidden"></div>
+
+          <div class="adm-form-grid-2">
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-name">Nombre del Negocio *</label>
+              <input type="text" id="new-biz-name" class="adm-form-input" placeholder="Ej. Distribuidora Sur" required />
+            </div>
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-owner">Nombre del Titular *</label>
+              <input type="text" id="new-biz-owner" class="adm-form-input" placeholder="Ej. Roberto Martínez" required />
+            </div>
+          </div>
+
+          <div class="adm-form-grid-2">
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-taxid">CUIT / Identificador Fiscal</label>
+              <input type="text" id="new-biz-taxid" class="adm-form-input" placeholder="Ej. 20-30495812-4" />
+            </div>
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-phone">Teléfono / WhatsApp</label>
+              <input type="text" id="new-biz-phone" class="adm-form-input" placeholder="Ej. +54 9 11 5555-1234" />
+            </div>
+          </div>
+
+          <div class="adm-form-field">
+            <label class="adm-label" for="new-biz-email">Correo Electrónico</label>
+            <input type="email" id="new-biz-email" class="adm-form-input" placeholder="contacto@negocio.com" />
+          </div>
+
+          <div class="adm-form-grid-2">
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-plan">Plan de Suscripción *</label>
+              <select id="new-biz-plan" class="adm-form-input">
+                <option value="Profesional" selected>Profesional</option>
+                <option value="Básico">Básico</option>
+                <option value="Empresarial">Empresarial</option>
+              </select>
+            </div>
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-price">Cuota Mensual ($)</label>
+              <input type="number" id="new-biz-price" class="adm-form-input" value="35000" min="0" step="500" />
+            </div>
+          </div>
+
+          <hr class="adm-form-divider" />
+
+          <h4 class="adm-form-subheading">Credenciales de Acceso al Sistema Comercial</h4>
+
+          <div class="adm-form-grid-2">
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-user">Nombre de Usuario *</label>
+              <input type="text" id="new-biz-user" class="adm-form-input" placeholder="Ej. distribuidorasur" required />
+            </div>
+            <div class="adm-form-field">
+              <label class="adm-label" for="new-biz-pass">Contraseña Inicial *</label>
+              <input type="text" id="new-biz-pass" class="adm-form-input" value="clave123" required />
+            </div>
+          </div>
+
+          <div class="adm-form-field" style="margin-bottom: 0;">
+            <label class="adm-label" for="new-biz-notes">Notas / Observaciones del Cliente</label>
+            <textarea id="new-biz-notes" class="adm-form-textarea" placeholder="Plan contratado, dirección comercial, etc."></textarea>
+          </div>
+        </div>
+
+        <div class="adm-modal-footer">
+          <button type="button" class="btn-adm" data-close-modal>Cancelar</button>
+          <button type="submit" class="btn-adm btn-adm-primary">Guardar y Crear Negocio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       4. MODAL: CAMBIO OBLIGATORIO DE CONTRASEÑA SUPERADMIN (INICIAL 811)
+       ======================================================================== -->
+  <div id="adm-force-pass-modal" class="adm-modal-backdrop hidden">
+    <div class="adm-modal-dialog" style="max-width: 440px;">
+      <div class="adm-modal-header">
+        <h3 class="adm-modal-title">Cambio Obligatorio de Contraseña</h3>
+      </div>
+      <form id="adm-force-pass-form">
+        <div class="adm-modal-body">
+          <p style="font-size: 13.5px; color: var(--cs-text-secondary); margin-bottom: 18px; line-height: 1.5;">
+            Por motivos de seguridad, debe actualizar su contraseña inicial (<strong>811</strong>) antes de comenzar a administrar el sistema.
+          </p>
+          <div id="adm-force-pass-error" class="adm-error-alert hidden"></div>
+
+          <div class="adm-form-field">
+            <label class="adm-label" for="force-curr-pass">Contraseña Actual *</label>
+            <input type="password" id="force-curr-pass" class="adm-form-input" placeholder="811" required />
+          </div>
+
+          <div class="adm-form-field">
+            <label class="adm-label" for="force-new-pass">Nueva Contraseña Segura *</label>
+            <input type="password" id="force-new-pass" class="adm-form-input" placeholder="Mínimo 6 caracteres" required />
+          </div>
+
+          <div class="adm-form-field" style="margin-bottom: 0;">
+            <label class="adm-label" for="force-conf-pass">Confirmar Nueva Contraseña *</label>
+            <input type="password" id="force-conf-pass" class="adm-form-input" placeholder="Repita la nueva contraseña" required />
+          </div>
+        </div>
+
+        <div class="adm-modal-footer">
+          <button type="submit" class="btn-adm btn-adm-primary" style="width: 100%;">Actualizar Contraseña y Acceder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       5. MODAL: CONTROL DE SUSCRIPCIÓN COMERCIAL
+       ======================================================================== -->
+  <div id="adm-sub-modal" class="adm-modal-backdrop hidden">
+    <div class="adm-modal-dialog" style="max-width: 520px;">
+      <div class="adm-modal-header">
+        <div class="adm-modal-header-left">
+          <div class="adm-modal-icon-wrap purple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          </div>
+          <div>
+            <h3 class="adm-modal-title" id="sub-modal-title">Control de Suscripción</h3>
+            <p class="adm-modal-subtitle" id="sub-modal-subtitle">Gestión de plan comercial, vigencia y estado de facturación.</p>
+          </div>
+        </div>
+        <button type="button" class="adm-modal-close-btn" data-close-modal aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <form id="adm-sub-form">
+        <div class="adm-modal-body">
+          <input type="hidden" id="sub-tenant-id" />
+          <p id="sub-biz-desc" style="font-size: 13.5px; color: var(--cs-text-secondary); margin-bottom: 16px;">
+            Configuración de plan y estado de suscripción comercial.
+          </p>
+          <div id="adm-sub-error" class="adm-error-alert hidden"></div>
+
+          <div class="adm-form-grid-2">
+            <div class="adm-form-field">
+              <label class="adm-label" for="sub-plan-select">Plan de Suscripción</label>
+              <select id="sub-plan-select" class="adm-form-input">
+                <option value="Básico">Básico</option>
+                <option value="Profesional">Profesional</option>
+                <option value="Empresarial">Empresarial</option>
+              </select>
+            </div>
+            <div class="adm-form-field">
+              <label class="adm-label" for="sub-price-input">Cuota Mensual ($)</label>
+              <input type="number" id="sub-price-input" class="adm-form-input" min="0" step="500" />
+            </div>
+          </div>
+
+          <div class="adm-form-grid-2">
+            <div class="adm-form-field">
+              <label class="adm-label" for="sub-status-select">Estado de Suscripción</label>
+              <select id="sub-status-select" class="adm-form-input">
+                <option value="paid">Al día (Habilitado)</option>
+                <option value="pending">Pago pendiente</option>
+                <option value="overdue">Vencido (Impago)</option>
+              </select>
+            </div>
+            <div class="adm-form-field">
+              <label class="adm-label" for="sub-renewal-input">Próximo Vencimiento</label>
+              <input type="date" id="sub-renewal-input" class="adm-form-input" />
+            </div>
+          </div>
+
+          <div class="adm-form-field" style="margin-bottom: 0;">
+            <label class="adm-label" for="sub-notes-input">Observaciones de Cobranza / Notas</label>
+            <textarea id="sub-notes-input" class="adm-form-textarea" placeholder="Notas de facturación o acuerdos comerciales..."></textarea>
+          </div>
+        </div>
+
+        <div class="adm-modal-footer" style="display: flex; justify-content: space-between; gap: 8px;">
+          <button type="button" class="btn-adm btn-adm-danger" id="sub-btn-suspend-unpaid" title="Suspender acceso inmediato por falta de pago">
+            Suspender por Falta de Pago
+          </button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-adm" data-close-modal>Cancelar</button>
+            <button type="submit" class="btn-adm btn-adm-primary">Guardar Cambios</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       6. MODAL: SUPERVISIÓN Y ESTADÍSTICAS DEL COMERCIO
+       ======================================================================== -->
+  <div id="adm-inspect-modal" class="adm-modal-backdrop hidden">
+    <div class="adm-modal-dialog" style="max-width: 760px;">
+      <div class="adm-modal-header">
+        <div class="adm-modal-header-left">
+          <div class="adm-modal-icon-wrap blue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12h5l3 7 4-14 3 7h5"/></svg>
+          </div>
+          <div>
+            <h3 class="adm-modal-title" id="inspect-modal-title">Supervisión del Comercio</h3>
+            <p class="adm-modal-subtitle">Inspección de catálogo, clientes y transacciones comerciales en tiempo real.</p>
+          </div>
+        </div>
+        <button type="button" class="adm-modal-close-btn" data-close-modal aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <div class="adm-modal-body" id="inspect-modal-body">
+        <!-- Contenido dinámico cargado por admin.js -->
+      </div>
+      <div class="adm-modal-footer">
+        <button type="button" class="btn-adm" data-close-modal>Cerrar Supervisión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       7. MODAL: AUDITORÍA DE ACCIONES CENTRALES
+       ======================================================================== -->
+  <div id="adm-audit-modal" class="adm-modal-backdrop hidden">
+    <div class="adm-modal-dialog" style="max-width: 780px;">
+      <div class="adm-modal-header">
+        <div class="adm-modal-header-left">
+          <div class="adm-modal-icon-wrap darkblue">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div>
+            <h3 class="adm-modal-title">Registro de Auditoría de la Plataforma</h3>
+            <p class="adm-modal-subtitle">Trazabilidad inmutable de eventos administrativos y de seguridad.</p>
+          </div>
+        </div>
+        <button type="button" class="adm-modal-close-btn" data-close-modal aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <div class="adm-modal-body" style="padding: 0;">
+        <table class="adm-table" style="font-size: 12.5px;">
+          <thead>
+            <tr>
+              <th>Fecha y Hora</th>
+              <th>Responsable</th>
+              <th>Acción</th>
+              <th>Negocio</th>
+              <th>Detalles</th>
+            </tr>
+          </thead>
+          <tbody id="adm-audit-tbody">
+            <!-- Filas dinámicas -->
+          </tbody>
+        </table>
+      </div>
+      <div class="adm-modal-footer">
+        <button type="button" class="btn-adm" data-close-modal>Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controlador Vanilla JS -->
+  <script src="js/admin.js?v=2.0"></script>
+</body>
+</html>

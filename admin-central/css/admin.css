@@ -1,0 +1,2479 @@
+/* ==========================================================================
+   COMERSYS CENTRAL ADMIN — SISTEMA DE DISEÑO EMPRESARIAL (PUERTO 8001)
+   Identidad visual corporativa idéntica al Puerto 8000:
+   - Azul institucional (#1d63dc / #2563eb)
+   - Superficies blancas puras (#ffffff) y fondos suaves (#f6f8fb)
+   - Bordes finos y elegantes (#e5eaf2)
+   - Tipografía Inter de alta legibilidad con números tabulares
+   - Libre de elementos futuristas, neones, brillos o fondos oscuros
+   ========================================================================== */
+
+:root {
+  /* Paleta Corporativa ComerSys */
+  --cs-primary: #1d63dc;
+  --cs-primary-hover: #164db2;
+  --cs-primary-subtle: #f0f6ff;
+  --cs-primary-border: #bfdbfe;
+  
+  --cs-dark: #0f172a;
+  --cs-text-primary: #0f172a;
+  --cs-text-secondary: #334155;
+  --cs-text-muted: #64748b;
+  --cs-text-light: #94a3b8;
+  
+  --cs-bg-app: #f6f8fb;
+  --cs-bg-surface: #ffffff;
+  --cs-bg-surface-hover: #f8fafd;
+  --cs-bg-surface-subtle: #f8fafc;
+  
+  --cs-border: #e5eaf2;
+  --cs-border-subtle: #eef2f7;
+  --cs-border-strong: #cbd5e1;
+  --cs-focus-ring: 0 0 0 3.5px rgba(29, 99, 220, 0.12);
+  
+  /* Estados Semánticos */
+  --cs-success: #059669;
+  --cs-success-bg: #ecfdf5;
+  --cs-success-border: #bbf7d0;
+  
+  --cs-warning: #d97706;
+  --cs-warning-bg: #fffbeb;
+  --cs-warning-border: #fde68a;
+  
+  --cs-danger: #dc2626;
+  --cs-danger-bg: #fef2f2;
+  --cs-danger-border: #fecaca;
+  
+  --cs-info: #1d63dc;
+  --cs-info-bg: #eff6ff;
+  --cs-info-border: #bfdbfe;
+
+  --cs-purple: #7c3aed;
+  --cs-purple-bg: #f5f3ff;
+  --cs-purple-border: #ddd6fe;
+
+  /* Sombras Suaves */
+  --cs-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --cs-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+  --cs-shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.07), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --cs-shadow-lg: 0 18px 40px -10px rgba(15, 23, 42, 0.14), 0 8px 18px -4px rgba(15, 23, 42, 0.06);
+
+  --cs-radius-sm: 6px;
+  --cs-radius-md: 9px;
+  --cs-radius-lg: 12px;
+  --cs-radius-full: 9999px;
+
+  --cs-sidebar-width: 216px;
+  --cs-header-height: 52px;
+  --cs-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  font-family: var(--cs-font);
+  background-color: var(--cs-bg-app);
+  color: var(--cs-text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   1. PANTALLA DE ACCESO CENTRAL (RÉPLICA FIEL A IDENTIDAD PUERTO 8000)
+   ========================================================================== */
+.adm-auth-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  overflow: hidden;
+  background-color: var(--cs-bg-app);
+  z-index: 1000;
+}
+
+/* LADO IZQUIERDO: Marca ComerSys + Eslogan en Azul Institucional */
+.adm-auth-left {
+  position: relative;
+  width: 53%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: #08308e;
+  overflow: hidden;
+  flex-shrink: 0;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    98.5% 15%,
+    96% 30%,
+    93% 45%,
+    89.5% 60%,
+    85.5% 75%,
+    81% 90%,
+    78% 100%,
+    0 100%
+  );
+}
+
+.adm-auth-left-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/office-blue-hd.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.16;
+  z-index: 1;
+}
+
+.adm-auth-left-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 48, 142, 0.94) 0%,
+    rgba(13, 85, 215, 0.90) 50%,
+    rgba(20, 110, 240, 0.86) 100%
+  );
+  z-index: 2;
+}
+
+.adm-auth-curve-divider {
+  display: none !important;
+}
+
+.adm-auth-left-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.adm-auth-brand-block {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.adm-auth-logo-wrap {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-auth-logo-svg {
+  width: 86px;
+  height: 70px;
+  display: block;
+  filter: drop-shadow(0 4px 14px rgba(41, 176, 253, 0.35));
+}
+
+.adm-auth-brand-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 20, 70, 0.35);
+}
+
+.adm-auth-brand-subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+  margin-top: 8px;
+  margin-bottom: 0;
+  letter-spacing: 0.01em;
+}
+
+.adm-auth-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 5px 14px;
+  border-radius: var(--cs-radius-full);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(8px);
+}
+
+.adm-auth-slogan-block {
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.adm-auth-slogan-text {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+}
+
+.adm-auth-slogan-bar {
+  width: 38px;
+  height: 3px;
+  background-color: #29b0fd;
+  border-radius: var(--cs-radius-full);
+}
+
+/* LADO DERECHO: Tarjeta Flotante Blanca */
+.adm-auth-right {
+  flex: 1;
+  width: 47%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  box-sizing: border-box;
+}
+
+.adm-auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 38px 36px 32px;
+  box-shadow: 0 18px 45px -8px rgba(24, 48, 100, 0.10), 0 4px 14px rgba(24, 48, 100, 0.05);
+  border: 1px solid rgba(220, 230, 242, 0.8);
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-auth-card-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.adm-auth-card-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.adm-auth-card-brand-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--cs-text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.adm-auth-card-brand-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--cs-primary-subtle);
+  color: var(--cs-primary);
+  border: 1px solid var(--cs-primary-border);
+  padding: 1px 5px;
+  border-radius: var(--cs-radius-sm);
+  letter-spacing: 0.04em;
+}
+
+.adm-auth-card-title {
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--cs-text-primary);
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.adm-auth-card-subtitle {
+  font-size: 13.5px;
+  color: var(--cs-text-muted);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.adm-auth-error {
+  background-color: var(--cs-danger-bg);
+  border: 1px solid var(--cs-danger-border);
+  color: var(--cs-danger);
+  padding: 10px 14px;
+  border-radius: var(--cs-radius-sm);
+  font-size: 13px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.adm-auth-field {
+  margin-bottom: 16px;
+}
+
+.adm-auth-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cs-text-secondary);
+  margin-bottom: 6px;
+}
+
+.adm-auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.adm-auth-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cs-text-muted);
+  pointer-events: none;
+  transition: color 150ms ease;
+}
+
+.adm-auth-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 42px;
+  background-color: #ffffff;
+  border: 1.5px solid #d8e1eb;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 500;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.adm-auth-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.adm-auth-input.has-toggle {
+  padding-right: 42px;
+}
+
+.adm-auth-input:hover:not(:disabled) {
+  border-color: #b0bfd3;
+}
+
+.adm-auth-input:focus {
+  outline: none;
+  border-color: var(--cs-primary);
+  box-shadow: var(--cs-focus-ring);
+}
+
+.adm-auth-input-wrap:focus-within .adm-auth-input-icon {
+  color: var(--cs-primary);
+}
+
+.adm-auth-toggle-pass {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.adm-auth-toggle-pass:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+.adm-auth-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 10px;
+  background-color: var(--cs-primary);
+  color: #ffffff;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 12px rgba(29, 99, 220, 0.28);
+  transition: background-color 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+  user-select: none;
+}
+
+.adm-auth-btn:hover {
+  background-color: var(--cs-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(29, 99, 220, 0.36);
+}
+
+.adm-auth-btn:active {
+  transform: translateY(0);
+}
+
+.adm-auth-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 400;
+  user-select: none;
+}
+
+/* ==========================================================================
+   2. APP SHELL CORPORATIVO (SIDEBAR FIJO + HEADER + WORKSPACE)
+   ========================================================================== */
+.adm-app-shell {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--cs-bg-app);
+}
+
+.adm-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.adm-sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* SIDEBAR BLANCO Y AZUL CORPORATIVO */
+.adm-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--cs-sidebar-width);
+  background-color: var(--cs-bg-surface);
+  border-right: 1px solid var(--cs-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.adm-sidebar-header {
+  height: var(--cs-header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--cs-border-subtle);
+}
+
+.adm-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.adm-sidebar-brand svg {
+  width: 24px;
+  height: 24px;
+}
+
+.adm-sidebar-brand-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--cs-text-primary);
+  letter-spacing: -0.025em;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.adm-sidebar-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--cs-primary-subtle);
+  color: var(--cs-primary);
+  border: 1px solid var(--cs-primary-border);
+  padding: 1px 5px;
+  border-radius: var(--cs-radius-sm);
+  letter-spacing: 0.04em;
+}
+
+.adm-sidebar-close-btn {
+  display: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--cs-radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--cs-text-secondary);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-sidebar-close-btn:hover {
+  background-color: var(--cs-bg-surface-subtle);
+  color: var(--cs-text-primary);
+}
+
+.adm-sidebar-nav {
+  flex: 1;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+}
+
+.adm-sidebar-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cs-text-light);
+  padding: 8px 8px 4px;
+  user-select: none;
+}
+
+.adm-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: var(--cs-radius-sm);
+  color: var(--cs-text-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 150ms ease;
+  text-decoration: none;
+}
+
+.adm-nav-item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--cs-text-muted);
+  transition: color 150ms ease;
+}
+
+.adm-nav-item:hover {
+  background-color: var(--cs-bg-surface-hover);
+  color: var(--cs-text-primary);
+}
+
+.adm-nav-item:hover svg {
+  color: var(--cs-primary);
+}
+
+.adm-nav-item.active {
+  background-color: var(--cs-primary);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(29, 99, 220, 0.22);
+}
+
+.adm-nav-item.active svg {
+  color: #ffffff;
+}
+
+.adm-nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 1px 6px;
+  border-radius: var(--cs-radius-full);
+  background-color: var(--cs-primary-subtle);
+  color: var(--cs-primary);
+}
+
+.adm-nav-item.active .adm-nav-badge {
+  background-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+.adm-sidebar-footer {
+  padding: 10px 12px;
+  border-top: 1px solid var(--cs-border-subtle);
+  background-color: var(--cs-bg-surface-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.adm-sidebar-user-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.adm-sidebar-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--cs-radius-sm);
+  background: linear-gradient(135deg, var(--cs-primary), var(--cs-primary-hover));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.adm-sidebar-user-info {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.adm-sidebar-user-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--cs-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-sidebar-user-role {
+  font-size: 10px;
+  color: var(--cs-text-muted);
+}
+
+.adm-btn-icon-logout {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--cs-radius-sm);
+  border: 1px solid var(--cs-border);
+  background: #ffffff;
+  color: var(--cs-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease;
+  flex-shrink: 0;
+}
+
+.adm-btn-icon-logout svg {
+  width: 14px;
+  height: 14px;
+}
+
+.adm-btn-icon-logout:hover {
+  background: var(--cs-danger-bg);
+  border-color: var(--cs-danger-border);
+  color: var(--cs-danger);
+}
+
+/* ÁREA PRINCIPAL: HEADER Y CONTENEDOR */
+.adm-app-main {
+  flex: 1;
+  min-width: 0;
+  margin-left: var(--cs-sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.adm-header {
+  height: var(--cs-header-height);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--cs-border);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.adm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-mobile-toggle-btn {
+  display: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--cs-radius-sm);
+  border: 1px solid var(--cs-border);
+  background: #ffffff;
+  color: var(--cs-text-primary);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Identidad de Marca en Header Superior Admin */
+.adm-header-brand-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  user-select: none;
+}
+
+.adm-header-brand-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.adm-header-brand-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--cs-text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.adm-header-brand-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--cs-primary-subtle);
+  color: var(--cs-primary);
+  border: 1px solid var(--cs-primary-border);
+  padding: 1px 5px;
+  border-radius: var(--cs-radius-sm);
+  letter-spacing: 0.04em;
+}
+
+.adm-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.adm-breadcrumb-item {
+  color: var(--cs-text-muted);
+  font-weight: 500;
+}
+
+.adm-breadcrumb-separator {
+  color: var(--cs-text-light);
+}
+
+.adm-breadcrumb-current {
+  color: var(--cs-text-primary);
+  font-weight: 600;
+}
+
+.adm-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--cs-radius-full);
+  background: var(--cs-success-bg);
+  border: 1px solid var(--cs-success-border);
+  color: var(--cs-success);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.adm-status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--cs-success);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.adm-port-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--cs-radius-full);
+  background: var(--cs-bg-surface-subtle);
+  border: 1px solid var(--cs-border);
+  color: var(--cs-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* WORKSPACE DE CONTENIDO — COMPACTO, ELEGANTE Y PROPORCIONADO */
+.adm-workspace {
+  flex: 1;
+  padding: 20px 24px 44px;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ENCABEZADO HERO DEL DASHBOARD */
+.adm-hero-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.adm-hero-title {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--cs-text-primary);
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+
+.adm-hero-subtitle {
+  font-size: 12.5px;
+  color: var(--cs-text-muted);
+  max-width: 780px;
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   3. TARJETAS KPI (ESTADÍSTICAS COMPACTAS Y ELEGANTES)
+   ========================================================================== */
+.adm-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.adm-kpi-card {
+  background-color: var(--cs-bg-surface);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--cs-shadow-sm);
+  transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+.adm-kpi-card:hover {
+  box-shadow: var(--cs-shadow-md);
+  transform: translateY(-1px);
+}
+
+.adm-kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.adm-kpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cs-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.adm-kpi-icon-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-kpi-icon-wrap svg {
+  width: 15px;
+  height: 15px;
+}
+
+.adm-kpi-icon-wrap.blue {
+  background-color: var(--cs-info-bg);
+  color: var(--cs-info);
+  border: 1px solid var(--cs-info-border);
+}
+
+.adm-kpi-icon-wrap.green {
+  background-color: var(--cs-success-bg);
+  color: var(--cs-success);
+  border: 1px solid var(--cs-success-border);
+}
+
+.adm-kpi-icon-wrap.amber {
+  background-color: var(--cs-warning-bg);
+  color: var(--cs-warning);
+  border: 1px solid var(--cs-warning-border);
+}
+
+.adm-kpi-icon-wrap.purple {
+  background-color: var(--cs-purple-bg);
+  color: var(--cs-purple);
+  border: 1px solid var(--cs-purple-border);
+}
+
+.adm-kpi-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--cs-text-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.adm-kpi-desc {
+  font-size: 11px;
+  color: var(--cs-text-muted);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   4. TOOLBAR (BÚSQUEDA, FILTROS Y BOTONES DE ACCIÓN)
+   ========================================================================== */
+.adm-toolbar {
+  background-color: var(--cs-bg-surface);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-md);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  box-shadow: var(--cs-shadow-xs);
+  flex-wrap: wrap;
+}
+
+.adm-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+.adm-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cs-text-muted);
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+}
+
+.adm-search-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 12px 0 32px;
+  background-color: #ffffff;
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-sm);
+  font-size: 12.5px;
+  color: var(--cs-text-primary);
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.adm-search-input:focus {
+  border-color: var(--cs-primary);
+  box-shadow: var(--cs-focus-ring);
+}
+
+.adm-search-input::placeholder {
+  color: var(--cs-text-light);
+}
+
+.adm-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.adm-pill {
+  padding: 4px 10px;
+  border-radius: var(--cs-radius-full);
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--cs-bg-surface-subtle);
+  color: var(--cs-text-secondary);
+  border: 1px solid var(--cs-border);
+  cursor: pointer;
+  transition: all 150ms ease;
+  user-select: none;
+}
+
+.adm-pill:hover {
+  background-color: var(--cs-border-subtle);
+  color: var(--cs-text-primary);
+}
+
+.adm-pill.active {
+  background: var(--cs-primary);
+  color: #ffffff;
+  border-color: var(--cs-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(29, 99, 220, 0.2);
+}
+
+.adm-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-adm {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--cs-radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 1px solid var(--cs-border);
+  background-color: #ffffff;
+  color: var(--cs-text-primary);
+  transition: all 150ms ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn-adm svg {
+  width: 14px;
+  height: 14px;
+}
+
+.btn-adm:hover {
+  background-color: var(--cs-bg-surface-hover);
+  border-color: var(--cs-border-strong);
+}
+
+.btn-adm-primary {
+  background-color: var(--cs-primary);
+  color: #ffffff;
+  border-color: var(--cs-primary);
+  box-shadow: 0 2px 6px rgba(29, 99, 220, 0.22);
+}
+
+.btn-adm-primary:hover {
+  background-color: var(--cs-primary-hover);
+  border-color: var(--cs-primary-hover);
+  box-shadow: 0 4px 10px rgba(29, 99, 220, 0.32);
+}
+
+/* ==========================================================================
+   5. TABLA EMPRESARIAL DE NEGOCIOS CLIENTES (ALTA DENSIDAD)
+   ========================================================================== */
+.adm-table-container {
+  background-color: var(--cs-bg-surface);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-md);
+  box-shadow: var(--cs-shadow-sm);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.adm-table th {
+  padding: 7px 8px;
+  background-color: var(--cs-bg-surface-subtle);
+  color: var(--cs-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--cs-border);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.adm-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--cs-border-subtle);
+  color: var(--cs-text-primary);
+  vertical-align: middle;
+}
+
+.adm-table tbody tr {
+  transition: background-color 150ms ease;
+}
+
+.adm-table tbody tr:hover {
+  background-color: var(--cs-bg-surface-hover);
+}
+
+.adm-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.adm-biz-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-biz-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--cs-text-primary);
+}
+
+.adm-biz-owner {
+  font-size: 11px;
+  color: var(--cs-text-muted);
+  margin-top: 1px;
+}
+
+.adm-user-contact {
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-user-handle {
+  font-weight: 600;
+  color: var(--cs-primary);
+  font-size: 12px;
+}
+
+.adm-user-detail {
+  font-size: 11px;
+  color: var(--cs-text-muted);
+  margin-top: 1px;
+}
+
+/* BADGES DE ESTADO EMPRESARIALES */
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--cs-radius-full);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.adm-badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.adm-badge.active {
+  background-color: var(--cs-success-bg);
+  color: var(--cs-success);
+  border: 1px solid var(--cs-success-border);
+}
+
+.adm-badge.suspended {
+  background-color: var(--cs-warning-bg);
+  color: var(--cs-warning);
+  border: 1px solid var(--cs-warning-border);
+}
+
+.adm-badge.closed {
+  background-color: var(--cs-danger-bg);
+  color: var(--cs-danger);
+  border: 1px solid var(--cs-danger-border);
+}
+
+/* BOTONES DE FILA DE TABLA — COMPACTOS, ALINEADOS Y ACCESIBLES */
+.adm-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.btn-row-action {
+  height: 25px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  border: 1px solid var(--cs-border);
+  background-color: #ffffff;
+  color: var(--cs-text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 150ms ease;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.btn-row-action svg {
+  width: 11px;
+  height: 11px;
+}
+
+.btn-row-action:hover {
+  background-color: var(--cs-bg-surface-subtle);
+  border-color: var(--cs-border-strong);
+  color: var(--cs-text-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+}
+
+.btn-row-action:active {
+  transform: translateY(0);
+}
+
+.btn-row-action.warning:hover {
+  background-color: var(--cs-warning-bg);
+  border-color: var(--cs-warning-border);
+  color: var(--cs-warning);
+}
+
+.btn-row-action.success:hover {
+  background-color: var(--cs-success-bg);
+  border-color: var(--cs-success-border);
+  color: var(--cs-success);
+}
+
+.btn-row-action.danger:hover {
+  background-color: var(--cs-danger-bg);
+  border-color: var(--cs-danger-border);
+  color: var(--cs-danger);
+}
+
+/* ==========================================================================
+   6. MODALES Y FORMULARIOS (DISEÑO LIMPIO EN BLANCO)
+   ========================================================================== */
+.adm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 2000;
+  animation: fadeIn 180ms ease both;
+}
+
+.adm-modal-dialog {
+  background-color: #ffffff;
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--cs-shadow-lg);
+  animation: scaleIn 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.adm-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--cs-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adm-modal-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--cs-text-primary);
+}
+
+.adm-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--cs-text-muted);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 150ms ease;
+}
+
+.adm-modal-close-btn:hover {
+  background-color: var(--cs-bg-surface-subtle);
+  color: var(--cs-text-primary);
+}
+
+.adm-modal-body {
+  padding: 16px 18px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.adm-modal-footer {
+  padding: 11px 18px;
+  border-top: 1px solid var(--cs-border);
+  background-color: var(--cs-bg-surface-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  border-bottom-left-radius: var(--cs-radius-lg);
+  border-bottom-right-radius: var(--cs-radius-lg);
+}
+
+/* FORMULARIOS DE MODALES */
+.adm-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.adm-form-field {
+  margin-bottom: 11px;
+}
+
+.adm-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--cs-text-secondary);
+  margin-bottom: 4px;
+}
+
+.adm-form-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: var(--cs-radius-sm);
+  font-size: 12px;
+  color: var(--cs-text-primary);
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.adm-form-input:focus {
+  border-color: var(--cs-primary);
+  box-shadow: var(--cs-focus-ring);
+}
+
+.adm-form-textarea {
+  width: 100%;
+  min-height: 52px;
+  padding: 6px 10px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: var(--cs-radius-sm);
+  font-size: 12px;
+  color: var(--cs-text-primary);
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.adm-form-textarea:focus {
+  border-color: var(--cs-primary);
+  box-shadow: var(--cs-focus-ring);
+}
+
+.adm-form-divider {
+  border: 0;
+  border-top: 1px solid var(--cs-border);
+  margin: 12px 0;
+}
+
+.adm-form-subheading {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--cs-primary);
+  margin-bottom: 12px;
+}
+
+.adm-error-alert {
+  background-color: var(--cs-danger-bg);
+  border: 1px solid var(--cs-danger-border);
+  color: var(--cs-danger);
+  padding: 10px 14px;
+  border-radius: var(--cs-radius-sm);
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   7. RESPONSIVIDAD TOTAL E INTELIGENTE (DESKTOP, TABLETS, CELULARES)
+   ========================================================================== */
+
+/* TABLETS Y PANTALLAS MEDIANAS (1024px) */
+@media (max-width: 1024px) {
+  .adm-workspace {
+    padding: 18px 20px 36px;
+  }
+
+  .adm-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .adm-toolbar {
+    padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .adm-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .adm-table th,
+  .adm-table td {
+    padding: 8px 10px;
+  }
+
+  .adm-system-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* TABLETS VERTICALES Y TRANSICIÓN A MÓVILES (860px) */
+@media (max-width: 860px) {
+  .adm-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    max-width: 85vw;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: none;
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms ease;
+  }
+
+  .adm-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 0 0 40px rgba(15, 23, 42, 0.25);
+  }
+
+  .adm-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+  }
+
+  .adm-sidebar-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .adm-sidebar-close-btn {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: var(--cs-bg-surface-subtle);
+  }
+
+  .adm-app-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .adm-mobile-toggle-btn {
+    display: flex;
+    width: 40px;
+    height: 40px;
+  }
+
+  .adm-form-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* CELULARES Y PANTALLAS PEQUEÑAS (768px y menos) */
+@media (max-width: 768px) {
+  /* Header y Navegación Móvil */
+  .adm-header {
+    height: 52px;
+    padding: 0 14px;
+    gap: 10px;
+  }
+
+  .adm-breadcrumb-item {
+    display: none;
+  }
+
+  .adm-breadcrumb-separator {
+    display: inline-block;
+  }
+
+  .adm-breadcrumb-current {
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .adm-role-badge span {
+    display: inline;
+  }
+
+  /* Workspace Cómodo y Fluido */
+  .adm-workspace {
+    padding: 18px 14px 44px;
+  }
+
+  .adm-hero-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .adm-hero-title {
+    font-size: 23px;
+    line-height: 1.25;
+  }
+
+  .adm-hero-subtitle {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .adm-hero-actions {
+    width: 100%;
+  }
+
+  .adm-hero-actions .btn-adm {
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+    justify-content: center;
+  }
+
+  /* KPIs en Móvil */
+  .adm-kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .adm-kpi-card {
+    padding: 18px 20px;
+    border-radius: 12px;
+  }
+
+  .adm-kpi-value {
+    font-size: 30px;
+  }
+
+  /* Toolbar: Búsqueda, Filtros y Acciones con Espaciado Táctil */
+  .adm-toolbar {
+    padding: 16px;
+    border-radius: 12px;
+    gap: 14px;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 20px;
+  }
+
+  .adm-search-box {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .adm-search-input {
+    height: 44px;
+    font-size: 14px;
+    border-radius: 8px;
+    padding-left: 42px;
+  }
+
+  .adm-filter-group {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .adm-filter-group::-webkit-scrollbar {
+    display: none;
+  }
+
+  .adm-pill {
+    min-height: 38px;
+    padding: 0 16px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-radius: var(--cs-radius-full);
+  }
+
+  .adm-action-buttons {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .adm-action-buttons .btn-adm {
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+    border-radius: 8px;
+    justify-content: center;
+  }
+
+  /* ========================================================================
+     TRANSFORMACIÓN INTELIGENTE DE TABLA A TARJETAS MÓVILES (CARDS)
+     ======================================================================== */
+  .adm-table-container {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .adm-table thead {
+    display: none;
+  }
+
+  .adm-table,
+  .adm-table tbody,
+  .adm-table tr,
+  .adm-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .adm-table tr {
+    background: #ffffff;
+    border: 1px solid var(--cs-border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  .adm-table tr:hover {
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  }
+
+  .adm-table td {
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid var(--cs-border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .adm-table td::before {
+    content: attr(data-label);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--cs-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  /* Encabezado de la Tarjeta Móvil (Comercio & Titular) */
+  .adm-table td[data-label="Comercio & Titular"] {
+    padding: 0 0 14px 0;
+    margin-bottom: 4px;
+    border-bottom: 1.5px solid var(--cs-border);
+    display: block;
+  }
+
+  .adm-table td[data-label="Comercio & Titular"]::before {
+    display: none;
+  }
+
+  .adm-table td[data-label="Comercio & Titular"] .adm-biz-row-cell {
+    width: 100%;
+    gap: 14px;
+  }
+
+  .adm-avatar-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+
+  .adm-biz-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cs-text-primary);
+  }
+
+  .adm-biz-owner {
+    font-size: 13px;
+    color: var(--cs-text-muted);
+    margin-top: 2px;
+  }
+
+  .adm-table td[data-label="Acceso & Contacto"] .adm-user-contact {
+    text-align: right;
+  }
+
+  .adm-table td[data-label="Actividad Comercial"] {
+    text-align: right;
+  }
+
+  .adm-table td[data-label="Estado & Suscripción"] {
+    text-align: right;
+  }
+
+  .adm-table td[data-label="Fecha de Alta"] {
+    text-align: right;
+  }
+
+  .adm-table td[data-label="Detalle Operación"] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    border-bottom: none;
+    text-align: left;
+  }
+
+  .adm-table td[data-label="Detalle Operación"]::before {
+    margin-bottom: 2px;
+  }
+
+  /* ========================================================================
+     BOTONES DE ACCIÓN MÓVILES — CÓMODOS, AMPLIOS Y SIN AMONTONAMIENTO
+     ======================================================================== */
+  .adm-table td[data-label="Acciones de Control"] {
+    border-bottom: none;
+    padding: 16px 0 0;
+    margin-top: 8px;
+    border-top: 1px dashed var(--cs-border);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .adm-table td[data-label="Acciones de Control"]::before {
+    content: "Acciones Administrativas";
+    margin-bottom: 10px;
+    align-self: flex-start;
+  }
+
+  .adm-row-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .adm-row-actions .btn-row-action {
+    height: 42px;
+    min-height: 42px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  }
+
+  .adm-row-actions .btn-row-action svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Botón 1: Supervisar (Destacado Azul Suave) */
+  .adm-row-actions .btn-row-action:nth-child(1) {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+  }
+
+  /* Botón 2: Suscripción */
+  .adm-row-actions .btn-row-action:nth-child(2) {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+  }
+
+  /* Botón 5: Cerrar Cuenta (Fila completa inferior con estilo de peligro sobrio) */
+  .adm-row-actions .btn-row-action:nth-child(5) {
+    grid-column: span 2;
+    height: 40px;
+    min-height: 40px;
+    background: #fef2f2;
+    border-color: #fca5a5;
+    color: #dc2626;
+  }
+
+  /* ========================================================================
+     MODALES Y FORMULARIOS ADAPTATIVOS PARA CELULARES
+     ======================================================================== */
+  .adm-modal-backdrop {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .adm-modal-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+    border-radius: 18px 18px 14px 14px;
+    max-height: calc(100vh - 20px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .adm-modal-header {
+    padding: 16px 18px;
+  }
+
+  .adm-modal-title {
+    font-size: 16px;
+  }
+
+  .adm-modal-body {
+    padding: 18px 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .adm-modal-footer {
+    padding: 14px 16px;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .adm-modal-footer .btn-adm {
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+    justify-content: center;
+  }
+
+  .adm-form-input,
+  .adm-form-select {
+    height: 44px;
+    font-size: 14.5px;
+    border-radius: 8px;
+  }
+}
+
+/* AJUSTES FINOS PARA DISPOSITIVOS MUY PEQUEÑOS (480px y menos) */
+@media (max-width: 480px) {
+  .adm-workspace {
+    padding: 16px 12px 36px;
+  }
+
+  .adm-row-actions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .adm-row-actions .btn-row-action {
+    grid-column: span 1 !important;
+    height: 44px;
+    font-size: 13.5px;
+  }
+
+  .adm-table tr {
+    padding: 16px 14px;
+  }
+
+  .adm-table td {
+    padding: 9px 0;
+  }
+}
+
+/* LOGIN SCREEN RESPONSIVE */
+@media (max-width: 640px) {
+  .adm-auth-screen {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .adm-auth-left {
+    width: 100%;
+    padding: 32px 20px 24px;
+    flex: none;
+    min-height: auto;
+    clip-path: none;
+  }
+
+  .adm-auth-curve-divider {
+    display: none;
+  }
+
+  .adm-auth-brand-block {
+    padding-top: 0;
+  }
+
+  .adm-auth-brand-title {
+    font-size: 32px;
+  }
+
+  .adm-auth-brand-subtitle {
+    font-size: 14px;
+  }
+
+  .adm-auth-slogan-block {
+    display: none;
+  }
+
+  .adm-auth-right {
+    padding: 24px 16px 36px;
+    flex: 1;
+  }
+
+  .adm-auth-card {
+    padding: 28px 20px 24px;
+    box-shadow: none;
+    border: 1px solid var(--cs-border);
+  }
+
+  .adm-auth-card-title {
+    font-size: 22px;
+  }
+
+  .adm-port-badge {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   ELEMENTOS DE CONTROL DE SUSCRIPCIÓN Y SUPERVISIÓN (ADMINISTRADOR GENERAL)
+   ========================================================================== */
+.adm-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--cs-radius-full);
+  background: rgba(29, 99, 220, 0.08);
+  border: 1px solid rgba(29, 99, 220, 0.2);
+  color: var(--cs-primary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.adm-sidebar-user-email {
+  font-size: 11px;
+  color: var(--cs-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+  display: block;
+}
+
+.btn-adm-danger {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1px solid #fca5a5 !important;
+}
+
+.btn-adm-danger:hover {
+  background-color: #fecaca !important;
+  color: #991b1b !important;
+}
+
+.adm-sub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.adm-sub-paid {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.adm-sub-pending {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.adm-sub-overdue {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.adm-plan-pill {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(29, 99, 220, 0.09);
+  color: var(--cs-primary);
+  border: 1px solid rgba(29, 99, 220, 0.2);
+}
+
+.adm-inspect-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .adm-inspect-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.adm-inspect-stat-card {
+  padding: 8px 10px;
+  background: var(--cs-bg-main);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-sm);
+  text-align: center;
+}
+
+.adm-inspect-stat-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cs-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-inspect-stat-lbl {
+  font-size: 10px;
+  color: var(--cs-text-muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   ELEMENTOS DE DISEÑO PROFESIONAL ENTERPRISE (VISTAS, AVATARES, MODALES)
+   ========================================================================== */
+.adm-tab-view {
+  animation: fadeIn 220ms ease both;
+}
+
+.adm-hero-text-block {
+  flex: 1;
+  min-width: 240px;
+}
+
+.adm-hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--cs-radius-full);
+  background: rgba(29, 99, 220, 0.08);
+  border: 1px solid rgba(29, 99, 220, 0.18);
+  color: var(--cs-primary);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.adm-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* AVATAR COMERCIAL DE INICIALES */
+.adm-biz-row-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-avatar-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1d63dc 0%, #3b82f6 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(29, 99, 220, 0.2);
+}
+
+.adm-avatar-circle.alt-1 {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+}
+
+.adm-avatar-circle.alt-2 {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+/* MODAL HEADERS MEJORADOS */
+.adm-modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-modal-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-modal-icon-wrap svg {
+  width: 16px;
+  height: 16px;
+}
+
+.adm-modal-icon-wrap.blue {
+  background: rgba(29, 99, 220, 0.1);
+  color: var(--cs-primary);
+  border: 1px solid rgba(29, 99, 220, 0.2);
+}
+
+.adm-modal-icon-wrap.purple {
+  background: rgba(147, 51, 234, 0.1);
+  color: #9333ea;
+  border: 1px solid rgba(147, 51, 234, 0.2);
+}
+
+.adm-modal-icon-wrap.green {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.adm-modal-icon-wrap.darkblue {
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+}
+
+.adm-modal-subtitle {
+  font-size: 11.5px;
+  color: var(--cs-text-muted);
+  margin-top: 2px;
+}
+
+/* VISTA DE SISTEMA Y DIAGNÓSTICO */
+.adm-system-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 860px) {
+  .adm-system-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adm-system-card {
+  background: var(--cs-bg-surface);
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--cs-shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-system-card.highlight {
+  border-color: rgba(29, 99, 220, 0.35);
+  background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+  box-shadow: 0 3px 12px rgba(29, 99, 220, 0.08);
+}
+
+.adm-system-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.adm-system-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-system-icon-box svg {
+  width: 16px;
+  height: 16px;
+}
+
+.adm-system-icon-box.green {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.adm-system-icon-box.blue {
+  background: #eff6ff;
+  color: var(--cs-primary);
+  border: 1px solid #bfdbfe;
+}
+
+.adm-system-icon-box.purple {
+  background: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+}
+
+.adm-system-icon-box.darkblue {
+  background: #eef2ff;
+  color: #1e40af;
+  border: 1px solid #c7d2fe;
+}
+
+.adm-system-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--cs-text-primary);
+}
+
+.adm-system-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 2px;
+  background: var(--cs-bg-main);
+  color: var(--cs-text-secondary);
+}
+
+.adm-system-badge.active {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.adm-system-card-desc {
+  font-size: 11.5px;
+  color: var(--cs-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  flex: 1;
+}
+
+.adm-system-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-top: 1px solid var(--cs-border-subtle);
+  font-size: 11.5px;
+  color: var(--cs-text-secondary);
+}
+
+.adm-system-meta-row strong {
+  color: var(--cs-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* BADGES DE AUDITORÍA SEMÁNTICOS */
+.adm-audit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.adm-audit-login {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.adm-audit-tenant {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.adm-audit-status {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.adm-audit-password {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #fbcfe8;
+}
+
+.adm-audit-security {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

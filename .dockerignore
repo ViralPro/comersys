@@ -1,0 +1,11 @@
+.git
+.github
+.gitignore
+.dockerignore
+.playwright-mcp
+node_modules
+*.log
+*.tmp
+*.bak
+server.ps1
+documentacion/

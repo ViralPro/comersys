@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  comersys:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: comersys-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - ADMIN_PORT=8001
+      - DATA_PATH=/app/data/comersys_platform.json
+      - ALLOWED_ORIGINS=*
+    volumes:
+      # Persistencia de datos en disco del host
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

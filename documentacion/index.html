@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>ComerSys — Documentación y Manual Visual del Sistema</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1d63dc;
+      --primary-hover: #164db2;
+      --primary-subtle: #eff6ff;
+      --primary-border: #bfdbfe;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-soft: #94a3b8;
+      --success: #16a34a;
+      --success-subtle: #f0fdf4;
+      --warning: #d97706;
+      --warning-subtle: #fffbeb;
+      --danger: #dc2626;
+      --danger-subtle: #fef2f2;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 14px 32px rgba(15, 23, 42, 0.12);
+      --header-height-mobile: 58px;
+      --pills-height-mobile: 48px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* BARRA SUPERIOR MÓVIL (VISIBLE SOLO EN TELÉFONO / TABLET) */
+    .mobile-topbar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height-mobile);
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+      padding: 0 1rem;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mobile-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .mobile-brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .mobile-brand-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .mobile-menu-btn {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border-color);
+      background: #f8fafc;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #334155;
+      transition: background 0.15s ease;
+    }
+
+    .mobile-menu-btn:active {
+      background: #e2e8f0;
+    }
+
+    /* BARRA HORIZONTAL DE ACCESO RÁPIDO CON DESPLAZAMIENTO TÁCTIL */
+    .mobile-quick-pills {
+      display: none;
+      position: fixed;
+      top: var(--header-height-mobile);
+      left: 0;
+      right: 0;
+      height: var(--pills-height-mobile);
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 99;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 0.75rem;
+      align-items: center;
+      gap: 0.5rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-quick-pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.85rem;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .pill-link:hover, .pill-link:active {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border-color: var(--primary-border);
+    }
+
+    .pill-link.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* MENÚ LATERAL (DESKTOP FIJO / MÓVIL EN CAJÓN SLIDE-OVER) */
+    .docs-sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 150;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .docs-sidebar-backdrop.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .docs-sidebar {
+      width: 290px;
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+      z-index: 160;
+      transition: transform 0.25s ease;
+    }
+
+    .docs-brand {
+      padding: 1.4rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .docs-brand-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .docs-sidebar-close {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: #f1f5f9;
+      border-radius: var(--radius-sm);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #475569;
+    }
+
+    .docs-brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    .docs-brand-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-top: 2px;
+    }
+
+    .docs-nav {
+      padding: 1.15rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1;
+    }
+
+    .docs-nav-heading {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 0.6rem 0.75rem 0.25rem;
+    }
+
+    .docs-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0.85rem;
+      min-height: 44px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+    }
+
+    .docs-nav-link:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .docs-nav-link.active {
+      background: var(--primary-subtle);
+      color: var(--primary);
+    }
+
+    .docs-nav-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .docs-main {
+      flex: 1;
+      padding: 2.5rem 3rem;
+      max-width: 1160px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .docs-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .docs-header-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.65rem;
+      line-height: 1.2;
+    }
+
+    .docs-header-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    .docs-meta-banner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* SECCIONES Y TARJETAS */
+    .doc-section {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      margin-bottom: 3rem;
+      box-shadow: var(--shadow-sm);
+      scroll-margin-top: 2rem;
+    }
+
+    .doc-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+    }
+
+    .doc-section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    /* ITEMS DENTRO DE CADA SECCIÓN */
+    .doc-item {
+      margin-top: 2.25rem;
+      padding-top: 2rem;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .doc-item:first-of-type {
+      margin-top: 0.75rem;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .doc-item-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .doc-item-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    /* CONTENEDOR DE CAPTURA CON TOUCH PREVIEW */
+    .img-preview-box {
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #f8fafc;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .img-preview-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+
+    .img-caption-bar {
+      padding: 0.65rem 1rem;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .img-zoom-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.78rem;
+      background: var(--primary-subtle);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    /* GRILLA INFORMATIVA DE 3 COLUMNAS RESPONSIVA */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .info-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-card-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 0.55rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .info-card-title.green { color: var(--success); }
+    .info-card-title.amber { color: var(--warning); }
+
+    .info-card p, .info-card ul {
+      font-size: 0.92rem;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .info-card ul {
+      padding-left: 1.2rem;
+      margin-top: 0.4rem;
+    }
+
+    .info-card li {
+      margin-bottom: 0.4rem;
+    }
+
+    .info-card code {
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: #1e293b;
+      font-family: monospace;
+    }
+
+    /* BADGES DE ESTADO COMERCIAL */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .status-badge.al-dia { background: #dcfce7; color: #15803d; }
+    .status-badge.pendiente { background: #fef3c7; color: #b45309; }
+    .status-badge.atrasado { background: #fee2e2; color: #b91c1c; }
+
+    /* BOTÓN FLOTANTE VOLVER ARRIBA */
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: 50%;
+      border: none;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 90;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .back-to-top.visible {
+      display: flex;
+    }
+
+    .back-to-top:active {
+      transform: scale(0.92);
+    }
+
+    /* LIGHTBOX FLUIDO PARA MÓVILES Y COMPUTADORAS */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      cursor: zoom-out;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-dialog {
+      position: relative;
+      max-width: 96%;
+      max-height: 94vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .lightbox-close-btn {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 46px;
+      height: 46px;
+      background: #ffffff;
+      color: #0f172a;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+      z-index: 1010;
+    }
+
+    /* ==========================================================================
+       MEDIA QUERIES PARA ADAPTACIÓN MÓVIL TOTAL (< 1024px y < 640px)
+       ========================================================================== */
+    @media (max-width: 1023px) {
+      body {
+        display: block;
+        padding-top: calc(var(--header-height-mobile) + var(--pills-height-mobile));
+      }
+
+      .mobile-topbar {
+        display: flex;
+      }
+
+      .mobile-quick-pills {
+        display: flex;
+      }
+
+      .docs-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 300px;
+        max-width: 85vw;
+        height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .docs-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .docs-sidebar-close {
+        display: flex;
+      }
+
+      .docs-main {
+        padding: 1.5rem 1.25rem;
+        max-width: 100%;
+      }
+
+      .doc-section {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        scroll-margin-top: calc(var(--header-height-mobile) + var(--pills-height-mobile) + 1rem);
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 639px) {
+      .docs-main {
+        padding: 1rem 0.75rem;
+      }
+
+      .docs-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+      }
+
+      .docs-header-title {
+        font-size: 1.55rem;
+      }
+
+      .docs-header-desc {
+        font-size: 0.95rem;
+      }
+
+      .doc-section {
+        padding: 1.15rem 0.9rem;
+        border-radius: var(--radius-md);
+        margin-bottom: 1.75rem;
+      }
+
+      .doc-section-title {
+        font-size: 1.22rem;
+      }
+
+      .section-badge {
+        width: 34px;
+        height: 34px;
+        font-size: 0.92rem;
+      }
+
+      .doc-item-title {
+        font-size: 1.05rem;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+
+      .info-card {
+        padding: 1rem;
+      }
+
+      .info-card p, .info-card ul {
+        font-size: 0.88rem;
+      }
+
+      .img-caption-bar {
+        font-size: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .lightbox-close-btn {
+        top: -12px;
+        right: -12px;
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. BARRA SUPERIOR FIJA PARA TELÉFONO -->
+  <header class="mobile-topbar" aria-label="Cabecera móvil">
+    <a href="#mod-01" class="mobile-brand">
+      <svg width="26" height="26" viewBox="0 0 88 72" fill="none" aria-hidden="true">
+        <rect x="4" y="4" width="46" height="46" rx="14" stroke="#29b0fd" stroke-width="6" fill="rgba(41, 176, 253, 0.08)"/>
+        <rect x="36" y="20" width="46" height="46" rx="14" stroke="#1d63dc" stroke-width="6" fill="rgba(29, 99, 220, 0.18)"/>
+        <circle cx="37" cy="35" r="3" fill="#29b0fd"/>
+      </svg>
+      <span class="mobile-brand-title">ComerSys</span>
+      <span class="mobile-brand-badge">Manual</span>
+    </a>
+
+    <button type="button" id="mobile-toggle-btn" class="mobile-menu-btn" aria-label="Abrir menú de navegación">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <!-- 2. BARRA DE ACCESOS RÁPIDOS DESLIZABLE TÁCTIL (PILLS) -->
+  <nav class="mobile-quick-pills" aria-label="Acceso rápido móvil a secciones">
+    <a href="#mod-01" class="pill-link active">1. Login</a>
+    <a href="#mod-02" class="pill-link">2. Inicio</a>
+    <a href="#mod-03" class="pill-link">3. Inventario</a>
+    <a href="#mod-04" class="pill-link">4. Clientes</a>
+    <a href="#mod-05" class="pill-link">5. Ventas</a>
+    <a href="#mod-06" class="pill-link">6. Cuotas y Deudas</a>
+  </nav>
+
+  <!-- BACKDROP PARA EL MENÚ EN CELULARES -->
+  <div id="sidebar-backdrop" class="docs-sidebar-backdrop"></div>
+
+  <!-- 3. MENÚ LATERAL (SIDEBAR DE ESCRITORIO Y CAJÓN MÓVIL) -->
+  <aside id="docs-sidebar" class="docs-sidebar">
+    <div class="docs-brand">
+      <div class="docs-brand-left">
+        <svg width="32" height="32" viewBox="0 0 88 72" fill="none" aria-hidden="true">
+          <rect x="4" y="4" width="46" height="46" rx="14" stroke="#29b0fd" stroke-width="5.5" fill="rgba(41, 176, 253, 0.08)"/>
+          <rect x="36" y="20" width="46" height="46" rx="14" stroke="#1d63dc" stroke-width="5.5" fill="rgba(29, 99, 220, 0.18)"/>
+          <circle cx="37" cy="35" r="2.5" fill="#29b0fd"/>
+        </svg>
+        <div>
+          <div class="docs-brand-title">ComerSys</div>
+          <span class="docs-brand-badge">Manual de Operación</span>
+        </div>
+      </div>
+      <button type="button" id="sidebar-close-btn" class="docs-sidebar-close" aria-label="Cerrar menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <nav class="docs-nav">
+      <div class="docs-nav-heading">Apartados del Sistema</div>
+      <a href="#mod-01" class="docs-nav-link active">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span>1. Inicio de Sesión</span>
+      </a>
+      <a href="#mod-02" class="docs-nav-link">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg>
+        <span>2. Panel de Inicio</span>
+      </a>
+      <a href="#mod-03" class="docs-nav-link">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
+        <span>3. Inventario</span>
+      </a>
+      <a href="#mod-04" class="docs-nav-link">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        <span>4. Clientes</span>
+      </a>
+      <a href="#mod-05" class="docs-nav-link">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <span>5. Ventas</span>
+      </a>
+      <a href="#mod-06" class="docs-nav-link">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/><line x1="6" x2="10" y1="15" y2="15"/></svg>
+        <span>6. Cuotas y Deudas</span>
+      </a>
+
+      <div class="docs-nav-heading" style="margin-top: 1rem;">Documento Original</div>
+      <a href="MANUAL_DE_USUARIO.md" class="docs-nav-link" target="_blank" rel="noopener">
+        <svg class="docs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Descargar Manual (.MD)</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- 4. CONTENIDO PRINCIPAL -->
+  <main class="docs-main">
+    <header class="docs-header">
+      <h1 class="docs-header-title">Manual Visual de Operaciones ComerSys</h1>
+      <p class="docs-header-desc">
+        Guía integral ilustrada con capturas de alta definición de cada módulo, flujo comercial y ventana emergente. Diseñada para consulta ágil en computadoras, tablets y teléfonos celulares.
+      </p>
+      <div class="docs-meta-banner">
+        <span class="meta-tag">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Versión Comercial 2.0
+        </span>
+        <span class="meta-tag">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Transaccional Local ACID
+        </span>
+        <span class="meta-tag">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+          100% Adaptado a Móvil
+        </span>
+      </div>
+    </header>
+
+    <!-- MÓDULO 01: INICIO DE SESIÓN -->
+    <section id="mod-01" class="doc-section">
+      <div class="doc-section-header">
+        <span class="section-badge">01</span>
+        <h2 class="doc-section-title">Módulo 01: Inicio de Sesión (Login)</h2>
+      </div>
+
+      <div class="doc-item">
+        <h3 class="doc-item-title">1.1 Pantalla Principal de Autenticación</h3>
+        <div class="img-preview-box">
+          <img src="01_inicio_sesion/01_login_pantalla_principal.png" alt="Pantalla de Inicio de Sesión ComerSys" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>01_inicio_sesion/01_login_pantalla_principal.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Es la puerta de entrada segura y control de autenticación de ComerSys, dividida en sección institucional de alto impacto a la izquierda y tarjeta de acceso a la derecha.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Protege la confidencialidad de la facturación, los saldos adeudados por clientes y los costos de mercadería, asegurando que solo operadores autorizados accedan.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Ingrese su usuario asignado (ej. <code>administrador</code>).</li>
+              <li>Ingrese su contraseña con opción de alternar visibilidad (icono del ojo).</li>
+              <li>Presione el botón azul <strong>«Ingresar»</strong> para acceder directamente al sistema.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÓDULO 02: PANEL DE INICIO -->
+    <section id="mod-02" class="doc-section">
+      <div class="doc-section-header">
+        <span class="section-badge">02</span>
+        <h2 class="doc-section-title">Módulo 02: Panel de Inicio (Dashboard Ejecutivo)</h2>
+      </div>
+
+      <div class="doc-item">
+        <h3 class="doc-item-title">2.1 Dashboard General y Métricas en Tiempo Real</h3>
+        <div class="img-preview-box">
+          <img src="02_panel_inicio/01_dashboard_principal.png" alt="Dashboard Ejecutivo ComerSys" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>02_panel_inicio/01_dashboard_principal.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Es el centro de control y comando ejecutivo en tiempo real con resumen financiero consolidado, conteos de catálogo y gráficos de evolución.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Permite diagnosticar al instante la salud del negocio: Total Vendido, Dinero Cobrado en caja, Saldo Pendiente en la calle y Ganancia Neta Estimada.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li><strong>Tarjetas KPIs:</strong> Calculan en vivo ingresos y efectividad de cobranza.</li>
+              <li><strong>Gráfico 7 días:</strong> Curva de ventas interactiva para comparar días de mayor facturación.</li>
+              <li><strong>Últimas Ventas:</strong> Lista las operaciones recientes con estado de pago.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÓDULO 03: INVENTARIO -->
+    <section id="mod-03" class="doc-section">
+      <div class="doc-section-header">
+        <span class="section-badge">03</span>
+        <h2 class="doc-section-title">Módulo 03: Inventario y Gestión de Productos</h2>
+      </div>
+
+      <!-- 3.1 Grupos -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          3.1 Grupos y Categorías de Inventario
+          <span class="doc-item-pill">Catálogo</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="03_inventario/01_inventario_grupos.png" alt="Grupos de Inventario" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>03_inventario/01_inventario_grupos.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Vista general que clasifica los artículos en familias dinámicas (Telefonía, Informática, Indumentaria, etc.).</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Permite mantener el stock organizado y acceder rápidamente con un clic al botón <strong>«Ver productos»</strong> de cada rubro.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Muestra la cantidad de productos por categoría.</li>
+              <li>Permite buscar grupos por nombre en la barra superior.</li>
+              <li>Botón superior para crear nuevas categorías al instante.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.2 Productos por grupo -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          3.2 Tabla Detallada de Productos por Grupo
+          <span class="doc-item-pill">Existencias</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="03_inventario/02_inventario_productos_grupo.png" alt="Productos dentro de un Grupo" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>03_inventario/02_inventario_productos_grupo.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Es la planilla de existencias de una categoría específica con costos, precios y márgenes de ganancia.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Controla las cantidades disponibles y advierte automáticamente cuando un artículo alcanza stock bajo o crítico.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Detalla: Código SKU, Nombre, Stock, Costo y Precio de Venta.</li>
+              <li>Calcula la ganancia unitaria neta en pesos y porcentaje.</li>
+              <li>Permite editar datos o registrar salidas rápidas de stock.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.3 Modal Producto -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          3.3 Modal: Carga de Nuevo Producto
+          <span class="doc-item-pill">Formulario</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="03_inventario/03_modal_nuevo_producto.png" alt="Modal de Nuevo Producto" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>03_inventario/03_modal_nuevo_producto.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Formulario interactivo para registrar mercadería en el inventario con cálculo de margen en tiempo real.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Garantiza que ningún artículo se dé de alta sin categoría, precio de costo ni precio de venta estipulados.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Seleccione el grupo y defina el código interno o de barras.</li>
+              <li>Ingrese el stock inicial disponible físicamente.</li>
+              <li>Al tipear costo y venta, el sistema calcula en vivo la rentabilidad esperada.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.4 Modal Grupo -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          3.4 Modal: Creación de Nuevo Grupo
+          <span class="doc-item-pill">Categorización</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="03_inventario/04_modal_nuevo_grupo.png" alt="Modal de Nuevo Grupo" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>03_inventario/04_modal_nuevo_grupo.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Ventana ágil para añadir una nueva categoría comercial al catálogo del negocio.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Permite expandir o reestructurar rubros comerciales según la temporada o nuevos lanzamientos.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Ingrese el nombre representativo del rubro (ej. Herramientas, Calzado).</li>
+              <li>Opcionalmente escriba una breve descripción.</li>
+              <li>Al hacer clic en «Crear Grupo», queda disponible en todo el sistema.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÓDULO 04: CLIENTES -->
+    <section id="mod-04" class="doc-section">
+      <div class="doc-section-header">
+        <span class="section-badge">04</span>
+        <h2 class="doc-section-title">Módulo 04: Clientes y Cuentas Corrientes</h2>
+      </div>
+
+      <!-- 4.1 Listado -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          4.1 Padrón Consolidado de Clientes
+          <span class="doc-item-pill">Directorio</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="04_clientes/01_listado_clientes.png" alt="Listado de Clientes" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>04_clientes/01_listado_clientes.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>El directorio maestro de compradores con datos de contacto, saldos deudores e historial comercial.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Identificar rápidamente si un cliente tiene deuda pendiente (destacada en rojo) o si su cuenta está al día.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Busque por nombre, teléfono o documento fiscal.</li>
+              <li>Filtre por estado: <em>Todos</em>, <em>Al día</em> o <em>Con deuda</em>.</li>
+              <li>Acceda directamente a la ficha o al cobro de cuotas con un toque.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.2 Modal Nuevo Cliente -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          4.2 Modal: Registro de Nuevo Cliente
+          <span class="doc-item-pill">Alta</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="04_clientes/02_modal_nuevo_cliente.png" alt="Modal Alta de Cliente" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>04_clientes/02_modal_nuevo_cliente.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>Formulario para incorporar nuevos compradores al padrón del negocio con validación anti-duplicados.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Registrar nombre, teléfono, documento (DNI/CUIT), domicilio y observaciones de crédito.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Complete el Nombre y Teléfono (campos obligatorios).</li>
+              <li>Agregue datos opcionales de facturación y dirección.</li>
+              <li>Presione «Registrar Cliente» para dejarlo habilitado para ventas a crédito.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.3 Ficha 360 -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          4.3 Modal: Ficha Histórica 360° del Cliente
+          <span class="doc-item-pill">Expediente</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="04_clientes/03_modal_detalle_cliente.png" alt="Ficha del Cliente" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>04_clientes/03_modal_detalle_cliente.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>El expediente comercial y crediticio completo del cliente con balance monetario y navegación por pestañas.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Auditar en una sola ventana: Total Comprado históricamente, Total Abonado y Saldo Pendiente actual.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li><strong>Pestaña Compras:</strong> Lista las ventas facturadas al cliente.</li>
+              <li><strong>Pestaña Cuotas:</strong> Muestra planes y cuotas adeudadas.</li>
+              <li><strong>Pestaña Pagos:</strong> Recibos y entregas asentadas en caja.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÓDULO 05: VENTAS -->
+    <section id="mod-05" class="doc-section">
+      <div class="doc-section-header">
+        <span class="section-badge">05</span>
+        <h2 class="doc-section-title">Módulo 05: Ventas y Punto de Venta (POS)</h2>
+      </div>
+
+      <!-- 5.1 Historial -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          5.1 Historial General de Operaciones Comerciales
+          <span class="doc-item-pill">Facturación</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="05_ventas/01_historial_ventas.png" alt="Historial de Ventas" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>05_ventas/01_historial_ventas.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>El libro maestro de tickets y ventas efectuadas, ordenadas de forma cronológica.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Auditar comprobantes, consultar la modalidad de pago y supervisar los saldos adeudados de cada operación.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Muestra: Código (ej. <code>V-0002</code>), Cliente, Modalidad, Total y Cobrado.</li>
+              <li>Botón azul superior <strong>«+ Nueva Venta»</strong> para despachar mercadería.</li>
+              <li>Icono de ojo para abrir el recibo oficial de la operación.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.2 Wizard -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          5.2 Asistente Guiado de Nueva Venta en 4 Pasos
+          <span class="doc-item-pill">Wizard POS</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="05_ventas/02_asistente_nueva_venta.png" alt="Asistente de Venta en 4 Pasos" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>05_ventas/02_asistente_nueva_venta.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>El punto de venta inteligente asistido paso a paso para armar pedidos sin equivocaciones operativas.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Garantiza que una venta verifique el stock real, calcule descuentos y arme el plan de cuotas antes de confirmar.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li><strong>Paso 1:</strong> Seleccione productos y aplique descuentos opcionales.</li>
+              <li><strong>Paso 2:</strong> Elija el cliente o Consumidor Final.</li>
+              <li><strong>Paso 3:</strong> Defina pago de contado, entrega inicial o cuotas mensuales.</li>
+              <li><strong>Paso 4:</strong> Confirmación atómica que descuenta stock y registra la venta.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.3 Comprobante -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          5.3 Modal: Comprobante y Desglose de Venta
+          <span class="doc-item-pill">Recibo</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="05_ventas/03_modal_detalle_venta.png" alt="Comprobante de Venta" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>05_ventas/03_modal_detalle_venta.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>El comprobante digital detallado emitido por el sistema tras cada venta formalizada.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Permite corroborar cantidades vendidas, precios unitarios, modalidad aplicada y saldo pendiente por abonar.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Muestra cliente, fecha, estado de cancelación e ítems comprados.</li>
+              <li>Resume el balance de la operación: Total, Cobrado y Pendiente.</li>
+              <li>Incluye botón directo «Registrar Pago» si aún resta dinero por saldar.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÓDULO 06: CUOTAS Y DEUDAS -->
+    <section id="mod-06" class="doc-section">
+      <div class="doc-section-header">
+        <span class="section-badge">06</span>
+        <h2 class="doc-section-title">Módulo 06: Cuotas y Deudas (Financiación y Cobranzas)</h2>
+      </div>
+
+      <!-- 6.1 Control Deudas -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          6.1 Tablero de Control de Cuentas Financiadas y Cuotas
+          <span class="doc-item-pill">Cartera Activa</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="06_cuotas_y_deudas/01_control_deudas.png" alt="Control de Cuentas y Deudas" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>06_cuotas_y_deudas/01_control_deudas.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>El centro de gestión y seguimiento de toda la cartera de créditos, planes de cuotas y cuentas corrientes comerciales.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Supervisa con precisión qué clientes tienen vencimientos próximos o cuotas atrasadas, el saldo exigible y los cobros ingresados.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Presenta: Cliente, Concepto / Venta vinculada, Total Financiado, Total Cobrado y Saldo Pendiente (en rojo).</li>
+              <li>Indica la fecha exacta del próximo vencimiento con estado dinámico (<span class="status-badge al-dia">● Al día</span> o <span class="status-badge atrasado">● Atrasado</span>).</li>
+              <li>Botón directo <strong>«Cobrar»</strong> para ingresar dinero en mostrador con un solo clic.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.2 Modal Pago -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          6.2 Modal: Registrar Pago y Cobro de Cuotas
+          <span class="doc-item-pill">Caja y Cobranzas</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="06_cuotas_y_deudas/02_modal_registrar_pago.png" alt="Registrar Pago de Cuota" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>06_cuotas_y_deudas/02_modal_registrar_pago.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>La herramienta rápida de caja para imputar cobros en efectivo, transferencia o tarjeta sobre cuentas financiadas.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Permite recibir pagos exactos de cuotas, cobros parciales o cancelación anticipada de la deuda total con recálculo automático.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Seleccione el cliente (el sistema muestra su saldo deudor acumulado).</li>
+              <li>Elija la cuota específica a cancelar con su número y fecha límite.</li>
+              <li>Ingrese el importe y el medio de cobro (Efectivo, Transferencia, etc.).</li>
+              <li>Al confirmar, el dinero impacta inmediatamente en la caja contable y descuenta la deuda.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6.3 Cronograma -->
+      <div class="doc-item">
+        <h3 class="doc-item-title">
+          6.3 Modal: Cronograma Detallado y Amortización de Cuotas
+          <span class="doc-item-pill">Plan de Cuotas</span>
+        </h3>
+        <div class="img-preview-box">
+          <img src="06_cuotas_y_deudas/03_modal_cronograma_cuotas.png" alt="Cronograma de Cuotas" loading="lazy" />
+          <div class="img-caption-bar">
+            <span>Archivo: <code>06_cuotas_y_deudas/03_modal_cronograma_cuotas.png</code></span>
+            <span class="img-zoom-hint">🔍 Toca para ampliar</span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-title">¿Qué es?</div>
+            <p>La planilla de liquidación y cuadro de amortización cuota a cuota de una venta financiada (ej. Cuota 1 de 4, 2 de 4, etc.).</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title">¿Para qué sirve?</div>
+            <p>Consultar con total transparencia las fechas de vencimiento de cada cuota individual, los montos abonados y los saldos pendientes.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-title green">¿Cómo funciona?</div>
+            <ul>
+              <li>Cabecera con Total Financiado, Pagado en Cuotas y Saldo Pendiente.</li>
+              <li>Tabla con: N° de Cuota, Fecha de Vencimiento, Valor pactado, Abonado y Saldo.</li>
+              <li>Insignias de estado: <strong>Cancelado</strong> (gris), <strong>Pendiente</strong> (naranja) o <strong>Atrasado</strong> (rojo).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BOTÓN FLOTANTE VOLVER ARRIBA -->
+  <button type="button" id="back-to-top" class="back-to-top" aria-label="Volver arriba">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <!-- LIGHTBOX PARA VER IMÁGENES AMPLIADAS EN TELÉFONO O ESCRITORIO -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visualizador de imagen ampliada">
+    <div class="lightbox-dialog">
+      <button type="button" id="lightbox-close" class="lightbox-close-btn" aria-label="Cerrar imagen">&times;</button>
+      <img id="lightbox-img" src="" alt="Captura ampliada del sistema" />
+    </div>
+  </div>
+
+  <script>
+    // 1. Manejo del menú lateral en móviles (Drawer)
+    const mobileBtn = document.getElementById('mobile-toggle-btn');
+    const sidebar = document.getElementById('docs-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    const closeBtn = document.getElementById('sidebar-close-btn');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      backdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileBtn) mobileBtn.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+    // Cerrar el menú al tocar cualquier link del sidebar
+    document.querySelectorAll('.docs-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) closeSidebar();
+      });
+    });
+
+    // 2. Lightbox táctil y con botón de cierre
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    document.querySelectorAll('.img-preview-box img').forEach((img) => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+        closeSidebar();
+      }
+    });
+
+    // 3. Botón flotante Volver Arriba
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 4. Sincronización del menú y las pills con el scroll
+    const sections = document.querySelectorAll('section.doc-section');
+    const navLinks = document.querySelectorAll('.docs-nav-link');
+    const pillLinks = document.querySelectorAll('.pill-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      const offsetMargin = window.innerWidth < 1024 ? 130 : 80;
+
+      sections.forEach((sec) => {
+        const top = sec.offsetTop;
+        if (window.pageYOffset >= top - offsetMargin) {
+          current = sec.getAttribute('id');
+        }
+      });
+
+      if (!current && sections.length > 0) {
+        current = sections[0].getAttribute('id');
+      }
+
+      navLinks.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      });
+
+      pillLinks.forEach((pill) => {
+        const isActive = pill.getAttribute('href') === `#${current}`;
+        pill.classList.toggle('active', isActive);
+        if (isActive) {
+          // Desplazar la barra táctil para mantener la píldora visible
+          pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+    });
+    // Auto-scroll si hay parámetro target o hash
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const target = urlParams.get('target') || (window.location.hash ? window.location.hash.substring(1) : null);
+      if (target) {
+        const el = document.getElementById(target);
+        if (el) {
+          const offsetMargin = window.innerWidth < 1024 ? 116 : 40;
+          window.scrollTo({ top: el.offsetTop - offsetMargin, behavior: 'instant' });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

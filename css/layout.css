@@ -1,0 +1,1000 @@
+/* ==========================================================================
+   COMERSYS — ESTRUCTURA DE LAYOUT EMPRESARIAL (LOGIN + APP SHELL + RESPONSIVE)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PANTALLA DE INICIO DE SESIÓN — IDENTIDAD VISUAL CORPORATIVA COMERSYS
+      (RÉPLICA EXACTA DEL SISTEMA 8001 / ADMIN CENTRAL)
+   -------------------------------------------------------------------------- */
+.auth-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  overflow: hidden;
+  background-color: var(--cs-bg-app, #f6f8fb);
+  z-index: 1000;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* LADO IZQUIERDO: Marca ComerSys + Eslogan en Azul Institucional */
+.cs-auth-left {
+  position: relative;
+  width: 53%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: #08308e;
+  overflow: hidden;
+  flex-shrink: 0;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    98.5% 15%,
+    96% 30%,
+    93% 45%,
+    89.5% 60%,
+    85.5% 75%,
+    81% 90%,
+    78% 100%,
+    0 100%
+  );
+}
+
+.cs-auth-left-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/office-blue-hd.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.16;
+  z-index: 1;
+}
+
+.cs-auth-left-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 48, 142, 0.94) 0%,
+    rgba(13, 85, 215, 0.90) 50%,
+    rgba(20, 110, 240, 0.86) 100%
+  );
+  z-index: 2;
+}
+
+.cs-auth-curve-divider {
+  display: none !important;
+}
+
+.cs-auth-left-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.cs-auth-brand-block {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cs-auth-logo-wrap {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-auth-logo-svg {
+  width: 86px;
+  height: 70px;
+  display: block;
+  filter: drop-shadow(0 4px 14px rgba(41, 176, 253, 0.35));
+}
+
+.cs-auth-brand-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 20, 70, 0.35);
+}
+
+.cs-auth-brand-subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+  margin-top: 8px;
+  margin-bottom: 0;
+  letter-spacing: 0.01em;
+}
+
+.cs-auth-slogan-block {
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cs-auth-slogan-text {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+}
+
+.cs-auth-slogan-bar {
+  width: 38px;
+  height: 3px;
+  background-color: #29b0fd;
+  border-radius: 9999px;
+}
+
+/* LADO DERECHO: Tarjeta Flotante Blanca */
+.cs-auth-right {
+  flex: 1;
+  width: 47%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  box-sizing: border-box;
+}
+
+.cs-auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 38px 36px 32px;
+  box-shadow: 0 18px 45px -8px rgba(24, 48, 100, 0.10), 0 4px 14px rgba(24, 48, 100, 0.05);
+  border: 1px solid rgba(220, 230, 242, 0.8);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  animation: authCardFade 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cs-auth-card-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cs-auth-card-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.cs-auth-card-brand-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.cs-auth-card-title {
+  font-size: 25px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.cs-auth-card-subtitle {
+  font-size: 13.5px;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.cs-auth-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Campos de Formulario */
+.cs-auth-field {
+  margin-bottom: 16px;
+}
+
+.cs-auth-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.cs-auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.cs-auth-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  pointer-events: none;
+  transition: color 150ms ease;
+}
+
+.cs-auth-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 42px;
+  background-color: #ffffff;
+  border: 1.5px solid #d8e1eb;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  font-weight: 500;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.cs-auth-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.cs-auth-input.has-toggle {
+  padding-right: 42px;
+}
+
+.cs-auth-input:hover:not(:disabled) {
+  border-color: #b0bfd3;
+}
+
+.cs-auth-input:focus {
+  outline: none;
+  border-color: #1d63dc;
+  box-shadow: 0 0 0 3.5px rgba(29, 99, 220, 0.12);
+}
+
+.cs-auth-input-wrap:focus-within .cs-auth-input-icon {
+  color: #1d63dc;
+}
+
+/* Botón de visibilidad de contraseña */
+.cs-auth-toggle-pass {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.cs-auth-toggle-pass:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+.cs-auth-toggle-pass svg,
+.cs-auth-toggle-pass .cs-icon {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+/* Botón Ingresar */
+.cs-auth-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 10px;
+  background-color: #1d63dc;
+  color: #ffffff;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 12px rgba(29, 99, 220, 0.28);
+  transition: background-color 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+  user-select: none;
+}
+
+.cs-auth-btn:hover {
+  background-color: #164db2;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(29, 99, 220, 0.36);
+}
+
+.cs-auth-btn:active {
+  transform: translateY(0);
+}
+
+.cs-auth-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Pie de la tarjeta */
+.cs-auth-card-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 400;
+  user-select: none;
+}
+
+/* Animación de entrada suave de la tarjeta */
+@keyframes authCardFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. APP SHELL (MENÚ LATERAL FIJO + ENCABEZADO SUPERIOR + WORKSPACE 75%)
+   -------------------------------------------------------------------------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+}
+
+/* Menú Lateral Fijo (Sidebar) */
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform var(--transition-normal), background-color var(--transition-normal);
+}
+
+.sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.35rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: opacity var(--transition-fast);
+}
+
+.sidebar-brand:hover {
+  opacity: 0.88;
+}
+
+.sidebar-brand svg {
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-name {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.sidebar-close-btn {
+  display: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.sidebar-close-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1.25rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  overflow-y: auto;
+}
+
+.sidebar-nav-section {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-light);
+  padding: 0.75rem 0.75rem 0.4rem;
+  user-select: none;
+}
+
+.sidebar-nav-section:first-child {
+  padding-top: 0.15rem;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.68rem 0.9rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.nav-item svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.nav-item:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.nav-item:hover svg {
+  color: var(--primary-600);
+}
+
+.nav-item.active {
+  background-color: var(--primary-600);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+}
+
+.nav-item.active svg {
+  color: #ffffff;
+}
+
+.nav-item-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 0.12rem 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--danger-bg);
+  color: var(--danger-600);
+  border: 1px solid var(--danger-border);
+}
+
+.nav-item.active .nav-item-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-footer {
+  padding: 0.95rem 1.15rem;
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.sidebar-business-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-business-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Contenedor Principal (Derecha del Sidebar) */
+.app-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+/* Encabezado Superior (Top Header con efecto translúcido sutil) */
+.app-header {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background-color: var(--bg-header);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  gap: 1rem;
+  z-index: 80;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  max-width: 600px;
+}
+
+/* Identidad de Marca en Header Superior */
+.header-brand-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.header-brand-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.header-brand-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.header-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-breadcrumb-separator {
+  color: var(--text-light, #94a3b8);
+  font-size: 12px;
+  user-select: none;
+}
+
+.header-breadcrumb-current {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary, #475569);
+  white-space: nowrap;
+}
+
+.mobile-menu-btn {
+  display: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  transition: background-color var(--transition-fast);
+}
+
+.mobile-menu-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mobile-menu-btn:hover {
+  background-color: var(--bg-surface-hover);
+}
+
+/* Acciones derechas del Header */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+/* Perfil de Usuario en Header */
+.header-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.28rem 0.75rem 0.28rem 0.32rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.header-user-profile:hover {
+  background-color: var(--bg-surface-muted);
+  border-color: var(--border-strong);
+}
+
+.user-avatar-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--navy-800);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.18;
+}
+
+.user-meta-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-meta-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* Contenido de Página (Workspace Amplio y Cómodo — Proporción 75%) */
+.app-content {
+  flex: 1;
+  padding: 2.1rem 2.6rem 3.2rem;
+  max-width: 1560px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Cabecera Unificada de Módulo / Vista */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.page-header-titles h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.page-header-titles p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.28rem;
+}
+
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+/* Overlay para menú móvil */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-modal-backdrop);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. ADAPTABILIDAD RESPONSIVA (CALIBRADA A LA PROPORCIÓN 75%)
+   -------------------------------------------------------------------------- */
+/* LOGIN SCREEN RESPONSIVE — IDÉNTICO AL SISTEMA 8001 */
+@media (max-width: 640px) {
+  .auth-screen {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .cs-auth-left {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    padding: 32px 20px 24px;
+    flex: none;
+    clip-path: none;
+  }
+
+  .cs-auth-left-content {
+    height: auto;
+    min-height: auto;
+  }
+
+  .cs-auth-curve-divider {
+    display: none;
+  }
+
+  .cs-auth-brand-block {
+    padding-top: 0;
+  }
+
+  .cs-auth-brand-title {
+    font-size: 32px;
+  }
+
+  .cs-auth-brand-subtitle {
+    font-size: 14px;
+  }
+
+  .cs-auth-slogan-block {
+    display: none;
+  }
+
+  .cs-auth-right {
+    padding: 24px 16px 36px;
+    flex: 1;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+  }
+
+  .cs-auth-card {
+    padding: 28px 20px 24px;
+    box-shadow: none;
+    border: 1px solid var(--border, #e5eaf2);
+  }
+
+  .cs-auth-card-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 820px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+  .app-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar-close-btn {
+    display: flex;
+  }
+  .sidebar-backdrop.active {
+    display: block;
+  }
+  .app-main {
+    margin-left: 0;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .app-header {
+    padding: 0 1.5rem;
+  }
+  .app-content {
+    padding: 1.5rem 1.5rem 2.5rem;
+  }
+}
+
+
+@media (max-width: 540px) {
+  .app-header {
+    padding: 0 1rem;
+  }
+  .user-meta {
+    display: none;
+  }
+  .header-breadcrumb {
+    max-width: 150px;
+    overflow: hidden;
+  }
+  .header-breadcrumb-current {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .header-user-profile {
+    padding: 0.2rem;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .page-header-actions {
+    width: 100%;
+  }
+  .page-header-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. ADAPTABILIDAD PROFESIONAL PARA TELÉFONOS (ANDROID / IPHONE / TABLETS)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* Contenedores de tablas con scroll táctil acelerado por GPU */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.85rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  /* Modales en teléfonos: ocupan el ancho con aire adecuado y botones táctiles */
+  .modal-dialog {
+    width: 95% !important;
+    max-width: 95vw !important;
+    max-height: 92vh !important;
+    max-height: 92dvh !important;
+    margin: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-header {
+    padding: 1rem 1.2rem;
+  }
+
+  .modal-body {
+    padding: 1rem 1.2rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-footer {
+    padding: 1rem 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .modal-footer .btn {
+    flex: 1;
+    min-height: 42px;
+  }
+
+  /* Botones cómodos en pantallas táctiles (WCAG 2.5.5) */
+  .btn {
+    min-height: 38px;
+    padding: 0 1rem;
+  }
+
+  .form-control,
+  .form-select {
+    min-height: 42px;
+    font-size: 14px;
+  }
+
+  /* Grillas de formularios en una sola columna en pantallas angostas */
+  .form-grid-2,
+  .form-grid-3,
+  .form-grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Toolbar de filtros y búsquedas */
+  .toolbar-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .toolbar-search {
+    width: 100% !important;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .toolbar-actions .btn {
+    flex: 1;
+  }
+}
