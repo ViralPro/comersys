@@ -114,28 +114,34 @@ function saveDatabase(db) {
     }
   }
 
-  // Guardado atómico con reintentos para mitigar bloqueos efímeros de SO (Windows/AV)
-  const tempPath = `${DATA_PATH}.tmp`;
-  fs.writeFileSync(tempPath, json, 'utf8');
+  // Guardado atómico con reintentos para mitigar bloqueos efímeros de SO (Windows/Linux/AV)
+  const tempPath = `${DATA_PATH}.${process.pid}.${Date.now()}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+  try {
+    fs.writeFileSync(tempPath, json, 'utf8');
 
-  let retries = 5;
-  while (retries > 0) {
-    try {
-      fs.renameSync(tempPath, DATA_PATH);
-      break;
-    } catch (err) {
-      retries--;
-      if (retries === 0) {
-        try {
-          fs.copyFileSync(tempPath, DATA_PATH);
-          try { fs.unlinkSync(tempPath); } catch {}
-          break;
-        } catch (fallbackErr) {
-          throw err;
+    let retries = 5;
+    while (retries > 0) {
+      try {
+        fs.renameSync(tempPath, DATA_PATH);
+        break;
+      } catch (err) {
+        retries--;
+        if (retries === 0) {
+          try {
+            fs.copyFileSync(tempPath, DATA_PATH);
+            try { fs.unlinkSync(tempPath); } catch {}
+            break;
+          } catch (fallbackErr) {
+            throw err;
+          }
         }
+        const pause = Date.now();
+        while (Date.now() - pause < 10) {}
       }
-      const pause = Date.now();
-      while (Date.now() - pause < 10) {}
+    }
+  } finally {
+    if (fs.existsSync(tempPath)) {
+      try { fs.unlinkSync(tempPath); } catch {}
     }
   }
 }

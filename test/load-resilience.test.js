@@ -70,6 +70,7 @@ describe('Suite de Resistencia, Carga y Estabilidad ComerSys', () => {
       const startTime = performance.now();
       const payload = body ? JSON.stringify(body) : null;
       const reqHeaders = {
+        'Connection': 'close',
         ...headers
       };
       if (payload) {
@@ -82,7 +83,8 @@ describe('Suite de Resistencia, Carga y Estabilidad ComerSys', () => {
         port,
         path: urlPath,
         method,
-        headers: reqHeaders
+        headers: reqHeaders,
+        agent: false
       }, (res) => {
         let raw = '';
         res.on('data', chunk => raw += chunk);
@@ -211,6 +213,7 @@ describe('Suite de Resistencia, Carga y Estabilidad ComerSys', () => {
 
     // Destruimos el servidor 8000 completamente simulando reinicio/caída
     await new Promise(res => server8000.close(res));
+    await new Promise(res => setTimeout(res, 50));
 
     // Comprobamos la persistencia física en el archivo de disco
     const diskDb = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
