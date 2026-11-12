@@ -1,76 +1,94 @@
-# COMERSYS — GUÍA DE DESPLIEGUE EN PRODUCCIÓN Y GITHUB
+# COMERSYS — GUÍA MAESTRA DE PUBLICACIÓN EN GITHUB Y DESPLIEGUE EN LA NUBE
 
-Este documento detalla la arquitectura de despliegue profesional para **ComerSys Multi-Tenant** y el panel de **Administración Central**.
-
----
-
-## 1. Arquitectura de Acceso en la Nube
-
-El sistema está diseñado para operar con un único puerto público asignado por el proveedor cloud (Render, Railway o VPS), sirviendo de forma nativa ambos entornos con HTTPS gratuito automático:
-
-- **Sistema Comercial ComerSys (POS):** `https://<tu-servicio-cloud>/`
-- **Administración Central (SuperAdmin):** `https://<tu-servicio-cloud>/admin/` (o vía subdominio `https://admin.<tu-dominio>/`)
-- **Comprobación de Salud (Healthcheck):** `https://<tu-servicio-cloud>/health`
+Este documento contiene las instrucciones exactas para publicar **ComerSys** en GitHub de forma segura y desplegarlo en la nube con subdominio gratuito y certificado SSL HTTPS automático.
 
 ---
 
-## 2. Publicación en GitHub (Paso a Paso Seguro)
+## FASE 1: Publicación en GitHub (Cuenta: ViralPro)
 
-El repositorio local Git ya ha sido inicializado en tu carpeta con el commit inicial de producción:
-`feat: ComerSys Enterprise Platform v2.0 - Production Ready Multi-Tenant & Central Admin`
+El proyecto local ya se encuentra completamente auditado, limpio de secretos y preparado:
+- Historial Git saneado: únicamente contiene el commit limpio de lanzamiento.
+- Bases de datos reales y copias de seguridad (`data/comersys_platform.json`, `.bak`, `.png`) excluidas mediante `.gitignore`.
+- Plantilla inicial limpia configurada (`data/comersys_platform.template.json`).
+- Remoto oficial preconfigurado hacia: `https://github.com/ViralPro/comersys.git`.
 
-Ya tienes instalado en tu equipo tanto **Git** (`2.56.1`) como la herramienta oficial **GitHub CLI** (`gh 2.103.3`).
-
-### Opción Rápida con GitHub CLI (Recomendada y 100% Segura):
-Abre una terminal PowerShell en esta carpeta y ejecuta:
-
-```powershell
-gh auth login
-```
-1. Selecciona **GitHub.com** -> **HTTPS** -> **Yes** -> **Login with a web browser**.
-2. Se abrirá tu navegador web oficial en GitHub para que autorices con un clic, **sin necesidad de escribir contraseñas ni tokens en el chat**.
-3. Una vez autorizado, sube el repositorio con:
+### Opción A — Asistente Automático (Recomendado con 1 Clic)
+Hemos preparado el script `subir_a_github.bat` en la raíz del proyecto. Solo haz doble clic en él o ejecútalo en PowerShell:
 
 ```powershell
-gh repo create comersys --public --source=. --remote=origin --push
+.\subir_a_github.bat
 ```
 
-### Opción Manual con Repositorio Existente:
-Si ya creaste el repositorio en tu cuenta de GitHub (ej. `https://github.com/TU_USUARIO/comersys`):
+1. Si no estás conectado en GitHub CLI, abrirá tu navegador oficial para que autorices con un clic (`github.com/login/device`).
+2. Una vez autorizado, creará y subirá automáticamente la rama `main` a tu cuenta: `https://github.com/ViralPro/comersys`.
+
+### Opción B — Pasos Manuales en Terminal
+
+Abre tu terminal en la carpeta del proyecto y ejecuta:
 
 ```powershell
-git remote add origin https://github.com/TU_USUARIO/comersys.git
+# 1. Iniciar sesión segura con tu cuenta de GitHub
+gh auth login -h github.com -p https --web
+
+# 2. Configurar credenciales auxiliares de Git
+gh auth setup-git
+
+# 3. Subir el proyecto a GitHub
 git push -u origin main
 ```
 
----
-
-## 3. Despliegue 24/7 en la Nube (Sin depender de tu PC encendida)
-
-Para que el sistema funcione las 24 horas en un servidor en la nube sin costo inicial y listo para conectar tu dominio `.com`:
-
-### En Render.com (Recomendado / 1-Click con `render.yaml`)
-1. Crea una cuenta gratuita en [Render.com](https://render.com).
-2. Haz clic en **New +** > **Blueprint**.
-3. Conecta tu repositorio de GitHub `comersys`.
-4. Render leerá automáticamente el archivo `render.yaml` que dejamos configurado en la raíz y desplegará:
-   - Servidor Node.js de producción (`server.js`).
-   - Criptografía PBKDF2 nativa.
-   - Base de datos multi-tenant persistente.
-   - URL pública permanente con HTTPS: `https://comersys-platform.onrender.com`.
-   - Soporte para vincular tu propio dominio `.com` con SSL gratuito gestionado automáticamente.
-
-### En Cualquier Servidor Linux / VPS con Docker:
-El proyecto incluye `Dockerfile` y `docker-compose.yml`:
-
-```bash
-docker compose up -d
-```
-El sistema quedará corriendo en segundo plano, reiniciándose automáticamente ante caídas del servidor.
+*(Si el repositorio aún no existe en GitHub.com, créalo con: `gh repo create comersys --public --source=. --remote=origin --push`)*.
 
 ---
 
-## 4. Credenciales de la Cuenta Maestra
-- **Correo Inicial:** `admin@comersys.local` (o configurado vía `SUPERADMIN_EMAIL`)
-- **Usuario:** `administrador`
-- **Rol:** `SUPERADMINISTRADOR` (Propietario único del sistema)
+## FASE 2: Despliegue Gratuito en la Nube (Sin Dominio Propio)
+
+Para que ComerSys funcione 24/7 en Internet sin tener tu computadora encendida:
+
+### Alternativa 1: Render.com (Recomendada — 100% Gratuita sin Tarjeta)
+Render proporciona un servicio web gratuito permanente con subdominio HTTPS seguro (ej. `https://comersys-platform.onrender.com`).
+
+1. Entra a [https://render.com](https://render.com) e inicia sesión con tu cuenta de GitHub (`ViralPro`).
+2. En el panel principal, haz clic en **New +** y selecciona **Blueprint**.
+3. Selecciona tu repositorio `comersys`.
+4. Render leerá automáticamente el archivo `render.yaml` preconfigurado en la raíz del proyecto.
+5. Haz clic en **Apply**.
+6. En 2 o 3 minutos tu plataforma estará en línea en la URL pública que Render te asigne.
+
+### Alternativa 2: Railway.app
+Railway también detecta automáticamente proyectos Node.js:
+1. Entra a [https://railway.app](https://railway.app) y conéctate con GitHub.
+2. Haz clic en **New Project** > **Deploy from GitHub repo** > selecciona `comersys`.
+3. En la pestaña de configuración (*Settings*) de tu servicio, haz clic en **Generate Domain** bajo *Networking*.
+4. Te otorgará un enlace gratuito HTTPS del tipo: `https://comersys-production.up.railway.app`.
+
+---
+
+## FASE 3: Verificación de Funcionamiento en Internet
+
+Una vez desplegado en tu proveedor (ej. `https://tu-app.onrender.com`):
+
+1. **Panel Comercial (Punto de Venta / ERP):**
+   - URL: `https://tu-app.onrender.com/`
+   - Usuario inicial de prueba: `boutiquebella`
+   - Contraseña inicial: `clave123`
+2. **Panel de Administración Central (SuperAdmin):**
+   - URL: `https://tu-app.onrender.com/admin/`
+   - Usuario: `administrador`
+   - Correo: `admin@comersys.local`
+3. **Comprobación de Salud del Servidor:**
+   - URL: `https://tu-app.onrender.com/health` (debe responder `{"status":"ok"}`).
+
+---
+
+## FASE 4: Vinculación de Dominio Propio en el Futuro
+
+Cuando decidas adquirir un dominio propio (ejemplo: `miempresa.com`):
+
+1. **Sin Cambios de Código:** ComerSys detecta automáticamente si la petición entra por la raíz comercial o por el subdominio `admin.miempresa.com`.
+2. **En el Panel del Proveedor (Render / Railway):**
+   - Ve a **Settings** > **Custom Domains**.
+   - Agrega `miempresa.com` y `admin.miempresa.com`.
+3. **En tu Proveedor DNS:**
+   - Crea un registro `CNAME` apuntando `www` y `admin` hacia el dominio asignado por el host (`tu-app.onrender.com`).
+   - El proveedor de hosting gestionará automáticamente el certificado SSL HTTPS gratuito de Let's Encrypt para tu dominio sin costo adicional.

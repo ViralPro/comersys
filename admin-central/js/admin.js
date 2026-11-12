@@ -242,7 +242,7 @@
         return;
       }
       if (window.location.search.includes('view=create-modal')) {
-        this.session = { username: 'administrador', email: 'farchettodamian685@gmail.com', token: 'demo-token', mustChangePassword: false };
+        this.session = { username: 'administrador', email: 'admin@comersys.local', token: 'demo-token', mustChangePassword: false };
         this.showDashboard();
         this.showElement('adm-create-modal');
         return;
@@ -282,7 +282,7 @@
 
       if (this.session) {
         if (navUser) navUser.textContent = this.session.displayName || 'Administrador General';
-        if (navEmail) navEmail.textContent = this.session.email || 'farchettodamian685@gmail.com';
+        if (navEmail) navEmail.textContent = this.session.email || 'admin@comersys.local';
         if (navRole) navRole.textContent = 'SUPERADMINISTRADOR \u2022 Propietario';
       }
 

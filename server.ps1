@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # COMERSYS — SERVIDOR MULTI-TENANT & DUAL PORT (8000 CLIENTES / 8001 ADMIN)
 # ============================================================================
 
@@ -204,7 +204,7 @@ while ($listener.IsListening) {
                 $pass = $body.password
 
                 $masterUser = $db.superadmin.username.ToLower()
-                $masterEmail = if ($db.superadmin.email) { $db.superadmin.email.ToLower() } else { "farchettodamian685@gmail.com" }
+                $masterEmail = if ($db.superadmin.email) { $db.superadmin.email.ToLower() } else { "admin@comersys.local" }
 
                 $isMaster = ($user -eq $masterUser -or $user -eq $masterEmail)
                 if ($isMaster -and (Verify-Password $pass $db.superadmin.passwordHash)) {
@@ -658,7 +658,8 @@ while ($listener.IsListening) {
                 if ($tenant.status -eq "suspended") {
                     $msg = "Su cuenta comercial ha sido temporalmente SUSPENDIDA. Comuníquese con la Administración Central de ComerSys."
                     if ($tenant.suspensionReason -eq "FALTA_DE_PAGO") {
-                        $msg = "Su cuenta comercial se encuentra SUSPENDIDA POR FALTA DE PAGO. Por favor comuníquese con la Administración Central (farchettodamian685@gmail.com) para regularizar su suscripción."
+                        $contact = if ($db.superadmin.email) { $db.superadmin.email } else { "la Administración Central" }
+                        $msg = "Su cuenta comercial se encuentra SUSPENDIDA POR FALTA DE PAGO. Por favor comuníquese con la Administración Central ($contact) para regularizar su suscripción."
                     }
                     Send-Json $response 403 @{
                         error = $msg
@@ -669,8 +670,9 @@ while ($listener.IsListening) {
                 }
 
                 if ($tenant.status -eq "closed") {
+                    $contact = if ($db.superadmin.email) { $db.superadmin.email } else { "el Administrador General" }
                     Send-Json $response 403 @{
-                        error = "Esta cuenta comercial ha sido cerrada definitivamente. Comuníquese con el Administrador General (farchettodamian685@gmail.com)."
+                        error = "Esta cuenta comercial ha sido cerrada definitivamente. Comuníquese con el Administrador General ($contact)."
                         closed = $true
                     }
                     continue

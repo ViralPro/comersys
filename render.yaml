@@ -2,21 +2,17 @@ services:
   - type: web
     name: comersys-platform
     env: node
-    plan: starter
-    buildCommand: "echo 'ComerSys Production Build Ready'"
+    plan: free
+    buildCommand: "echo 'ComerSys Production Ready'"
     startCommand: "node server.js"
     healthCheckPath: /health
     autoDeploy: true
-    disk:
-      name: comersys-data
-      mountPath: /app/data
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
       - key: DATA_PATH
-        value: /app/data/comersys_platform.json
+        value: ./data/comersys_platform.json
       - key: ALLOWED_ORIGINS
         value: "*"

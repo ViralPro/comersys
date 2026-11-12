@@ -8,14 +8,21 @@ yarn-error.log*
 # Dependencias
 node_modules/
 
-# Variables de entorno privadas
+# Variables de entorno privadas y secretos
 .env
 .env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+*.crt
 
-# Archivos del sistema operativo
+# Archivos del sistema operativo e IDEs
 .DS_Store
 Thumbs.db
 desktop.ini
+.vscode/
+.idea/
 
 # Binarios locales
 gh.exe
@@ -25,11 +32,16 @@ cloudflared.exe
 # Archivos temporales y respaldos
 *.tmp
 *.bak
+*.swp
 
 # Base de datos activa local y capturas (no subir a repositorios públicos)
 data/comersys_platform.json
+data/comersys_platform.json.*
 data/*.bak
 data/*.png
+data/*.db
+data/*.sqlite
+data/backups/
 
-# Entorno de trabajo interno
+# Entorno de trabajo interno y metadatos locales
 .gemini/

@@ -26,7 +26,7 @@ describe('Suite de Resistencia, Carga y Estabilidad ComerSys', () => {
       originalDbState.sessions[superAdminToken] = {
         role: 'superadmin',
         username: 'administrador',
-        email: 'farchettodamian685@gmail.com',
+        email: 'admin@comersys.local',
         createdAt: new Date().toISOString(),
         expiresAt: new Date(Date.now() + 3600000).toISOString()
       };
