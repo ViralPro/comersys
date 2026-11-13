@@ -21,6 +21,14 @@ const PORT = parseInt(process.env.PORT || '8000', 10);
 const ADMIN_PORT = parseInt(process.env.ADMIN_PORT || '8001', 10);
 const ROOT_DIR = __dirname;
 const ADMIN_DIR = path.join(ROOT_DIR, 'admin-central');
+// Referencias estáticas para trazado automático en empaquetadores serverless (@vercel/nft)
+const BUNDLED_STATIC_DIRS = [
+  path.join(__dirname, 'css'),
+  path.join(__dirname, 'js'),
+  path.join(__dirname, 'assets'),
+  path.join(__dirname, 'admin-central'),
+  path.join(__dirname, 'data')
+];
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const defaultDataPath = isServerless
   ? path.join('/tmp', 'comersys_platform.json')

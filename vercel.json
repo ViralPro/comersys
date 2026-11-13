@@ -2,6 +2,14 @@
   "version": 2,
   "cleanUrls": false,
   "trailingSlash": false,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "css/**,js/**,assets/**,admin-central/**,data/**,index.html,favicon.svg,favicon.ico"
+    },
+    "server.js": {
+      "includeFiles": "css/**,js/**,assets/**,admin-central/**,data/**,index.html,favicon.svg,favicon.ico"
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js?url=/api/$1" },
     { "source": "/health", "destination": "/api/index.js?url=/health" },
