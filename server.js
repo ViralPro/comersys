@@ -1151,7 +1151,7 @@ async function requestHandler(req, res, targetPort) {
     // 2. API: Sincronización Transaccional de Datos del Tenant con Aislamiento Estricto
     if (pathname === '/api/v1/tenant/sync' && method === 'POST') {
       const body = JSON.parse((await readBody(req)) || '{}');
-      const tId = body.tenantId;
+      const tId = body.tenantId || req.headers['x-tenant-id'];
       const db = getDatabase();
 
       // Validación estricta de autorización y aislamiento multi-tenant
