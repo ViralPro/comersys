@@ -443,17 +443,27 @@ async function requestHandler(req, res, targetPort) {
     const isSubdomainAdmin = (req.headers.host || '').toLowerCase().startsWith('admin.');
     const isPortAdmin = targetPort === ADMIN_PORT;
     const isApiAdmin = pathname.startsWith('/api/admin');
-    const isPathAdmin = pathname.startsWith('/admin/') || pathname === '/admin' || pathname === 'admin';
+    const isPathAdmin = pathname.startsWith('/admin/') ||
+                        pathname === '/admin' ||
+                        pathname === 'admin' ||
+                        pathname.startsWith('/admin-central');
 
     const isAdminContext = isPortAdmin || isSubdomainAdmin || isPathAdmin || isApiAdmin;
 
-    // Si entra por /admin o /admin/, servimos el index.html de Admin Central
+    // Si entra por /admin o /admin/ o /admin-central, servimos el index.html de Admin Central
     if (isPathAdmin) {
-      if (pathname === '/admin' || pathname === '/admin/' || pathname === 'admin') {
+      if (
+        pathname === '/admin' ||
+        pathname === '/admin/' ||
+        pathname === 'admin' ||
+        pathname === '/admin-central' ||
+        pathname === '/admin-central/' ||
+        pathname === '/admin-central/index.html'
+      ) {
         sendFile(res, path.join(ADMIN_DIR, 'index.html'));
         return;
       }
-      pathname = pathname.replace(/^\/?admin\/?/, '/');
+      pathname = pathname.replace(/^\/?(admin-central|admin)\/?/, '/');
       if (!pathname || pathname === '/') pathname = '/index.html';
     }
 
