@@ -10,5 +10,10 @@
 const serverlessHandler = require('../server.js');
 
 module.exports = (req, res) => {
+  const parsed = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+  const urlOverride = parsed.searchParams.get('url') || req.headers['x-matched-path'] || req.headers['x-invoke-path'];
+  if (urlOverride) {
+    req.url = urlOverride;
+  }
   return serverlessHandler(req, res);
 };

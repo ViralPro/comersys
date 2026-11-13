@@ -294,7 +294,7 @@ function resetLoginAttempts(ip) {
 // ----------------------------------------------------------------------------
 // 6. LISTA BLANCA DE ARCHIVOS ESTÁTICOS (PREVENCIÓN DE EXPOSICIÓN SENSIBLE)
 // ----------------------------------------------------------------------------
-const ALLOWED_ROOT_FILES = new Set(['index.html', 'favicon.svg', 'favicon.ico', 'robots.txt']);
+const ALLOWED_ROOT_FILES = new Set(['index.html', 'favicon.svg', 'favicon.ico', 'robots.txt', 'admin', 'admin/']);
 const ALLOWED_PUBLIC_PREFIXES = ['css/', 'js/', 'assets/'];
 const FORBIDDEN_EXTENSIONS = new Set([
   '.json', '.ps1', '.bat', '.cmd', '.sh', '.yml', '.yaml', '.md', '.tmp', '.bak', '.example', '.sql'
@@ -412,7 +412,14 @@ async function requestHandler(req, res, targetPort) {
   res._req = req;
   try {
     const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    let pathname = parsedUrl.pathname;
+    let routeOverride = parsedUrl.searchParams.get('url') ||
+                        req.headers['x-matched-path'] ||
+                        req.headers['x-invoke-path'] ||
+                        parsedUrl.pathname;
+    if (routeOverride === '/api/index.js' || routeOverride === '/api') {
+      routeOverride = '/health';
+    }
+    let pathname = routeOverride;
     const method = req.method;
 
     // Manejo CORS preflight
@@ -436,18 +443,17 @@ async function requestHandler(req, res, targetPort) {
     const isSubdomainAdmin = (req.headers.host || '').toLowerCase().startsWith('admin.');
     const isPortAdmin = targetPort === ADMIN_PORT;
     const isApiAdmin = pathname.startsWith('/api/admin');
-    const isPathAdmin = pathname.startsWith('/admin/') || pathname === '/admin';
+    const isPathAdmin = pathname.startsWith('/admin/') || pathname === '/admin' || pathname === 'admin';
 
     const isAdminContext = isPortAdmin || isSubdomainAdmin || isPathAdmin || isApiAdmin;
 
-    // Si entra por /admin o /admin/, normalizamos el pathname para los archivos estáticos
+    // Si entra por /admin o /admin/, servimos el index.html de Admin Central
     if (isPathAdmin) {
-      if (pathname === '/admin') {
-        res.writeHead(301, { Location: '/admin/' });
-        res.end();
+      if (pathname === '/admin' || pathname === '/admin/' || pathname === 'admin') {
+        sendFile(res, path.join(ADMIN_DIR, 'index.html'));
         return;
       }
-      pathname = pathname.slice(6); // Quitar '/admin'
+      pathname = pathname.replace(/^\/?admin\/?/, '/');
       if (!pathname || pathname === '/') pathname = '/index.html';
     }
 
