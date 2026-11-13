@@ -27,7 +27,10 @@ const BUNDLED_STATIC_DIRS = [
   path.join(__dirname, 'js'),
   path.join(__dirname, 'assets'),
   path.join(__dirname, 'admin-central'),
-  path.join(__dirname, 'data')
+  path.join(__dirname, 'data'),
+  path.join(__dirname, 'favicon.svg'),
+  path.join(__dirname, 'favicon.ico'),
+  path.join(__dirname, 'index.html')
 ];
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const defaultDataPath = isServerless
