@@ -221,4 +221,14 @@ describe('Suite de Integración y Seguridad Avanzada ComerSys (8000 y 8001)', ()
     const backupStat = fs.statSync(backupPath);
     assert.ok(backupStat.size > 0, 'La copia .bak no debe estar vacía');
   });
+
+  // ==========================================================================
+  // 6. COMPATIBILIDAD CON VERCEL SERVERLESS FUNCTIONS
+  // ==========================================================================
+  it('server.js y api/index.js deben ser funciones invocables compatibles con Vercel Serverless', () => {
+    const serverlessHandler = require('../server.js');
+    const apiIndex = require('../api/index.js');
+    assert.strictEqual(typeof serverlessHandler, 'function', 'server.js debe exportar una función ejecutable');
+    assert.strictEqual(typeof apiIndex, 'function', 'api/index.js debe exportar una función ejecutable');
+  });
 });

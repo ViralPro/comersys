@@ -25,27 +25,43 @@
       try {
         const response = await fetch('/api/v1/auth/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({ username: cleanUser, password: rawPass })
         });
 
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error(result.error || 'Credenciales inválidas.');
+        const contentType = response.headers.get('content-type') || '';
+        let result = null;
+        if (contentType.includes('application/json')) {
+          try {
+            result = await response.json();
+          } catch (_) {}
         }
 
-        if (result.session) {
+        if (response.status === 401 || response.status === 403) {
+          throw new Error((result && result.error) || 'Credenciales inválidas o acceso comercial restringido.');
+        }
+
+        if (!response.ok) {
+          console.warn(`[ComerSys.AuthService] Servidor respondió con estado HTTP ${response.status}. Evaluando fallback local.`);
+        } else if (result && result.session) {
           const tenantId = result.session.tenantId || 'tenant_principal';
           Storage.switchTenant(tenantId, result.tenantData);
           localStorage.setItem(Config.SESSION_KEY, JSON.stringify(result.session));
           return result.session;
         }
       } catch (err) {
-        // Si el error provino directamente del servidor (ej. cuenta suspendida), relanzarlo
-        if (err.message && !err.message.includes('fetch') && !err.message.includes('NetworkError') && !err.message.includes('Failed to fetch')) {
+        // Relanzar errores legítimos de validación o rechazo explícito del servidor (401, 403)
+        if (
+          err.message &&
+          !err.message.includes('fetch') &&
+          !err.message.includes('NetworkError') &&
+          !err.message.includes('Failed to fetch') &&
+          !err.message.includes('Unexpected token') &&
+          !err.message.includes('JSON')
+        ) {
           throw err;
         }
-        console.warn('[ComerSys.AuthService] Modo offline o servidor no alcanzable. Utilizando almacenamiento local.');
+        console.warn('[ComerSys.AuthService] Modo offline o servidor no alcanzable. Utilizando almacenamiento local seguro.');
       }
 
       // 2. Fallback de persistencia local aislada

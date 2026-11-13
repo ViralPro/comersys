@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/health", "destination": "/api/index.js" },
+    { "source": "/admin", "destination": "/admin-central/index.html" },
+    { "source": "/admin/", "destination": "/admin-central/index.html" },
+    { "source": "/admin/css/(.*)", "destination": "/admin-central/css/$1" },
+    { "source": "/admin/js/(.*)", "destination": "/admin-central/js/$1" },
+    { "source": "/admin/(.*)", "destination": "/admin-central/$1" }
+  ]
+}

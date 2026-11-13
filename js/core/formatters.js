@@ -84,7 +84,8 @@
      */
     addInstallmentPeriod(baseDateISO, stepIndex, frequency) {
       const parts = String(baseDateISO).split('-').map(Number);
-      const dt = new Date(parts[0], (parts[1] || 1) - 1, parts[2] || 1);
+      const originalDay = parts[2] || 1;
+      const dt = new Date(parts[0], (parts[1] || 1) - 1, originalDay);
 
       if (stepIndex === 0) {
         return baseDateISO;
@@ -95,8 +96,11 @@
       } else if (frequency === 'quincenal') {
         dt.setDate(dt.getDate() + stepIndex * 15);
       } else {
-        // Mensual por defecto
+        // Mensual por defecto con ajuste seguro de fin de mes
+        dt.setDate(1);
         dt.setMonth(dt.getMonth() + stepIndex);
+        const daysInMonth = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
+        dt.setDate(Math.min(originalDay, daysInMonth));
       }
 
       const y = dt.getFullYear();

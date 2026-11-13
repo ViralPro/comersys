@@ -21,9 +21,13 @@ const PORT = parseInt(process.env.PORT || '8000', 10);
 const ADMIN_PORT = parseInt(process.env.ADMIN_PORT || '8001', 10);
 const ROOT_DIR = __dirname;
 const ADMIN_DIR = path.join(ROOT_DIR, 'admin-central');
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const defaultDataPath = isServerless
+  ? path.join('/tmp', 'comersys_platform.json')
+  : path.join(ROOT_DIR, 'data', 'comersys_platform.json');
 const DATA_PATH = process.env.DATA_PATH
   ? path.resolve(ROOT_DIR, process.env.DATA_PATH)
-  : path.join(ROOT_DIR, 'data', 'comersys_platform.json');
+  : defaultDataPath;
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -83,11 +87,15 @@ function verifyPassword(password, storedHash) {
 // ----------------------------------------------------------------------------
 function getDatabase() {
   if (!fs.existsSync(DATA_PATH)) {
-    const templatePath = path.join(__dirname, 'data', 'comersys_platform.template.json');
-    if (fs.existsSync(templatePath)) {
+    const candidates = [
+      path.join(__dirname, 'data', 'comersys_platform.json'),
+      path.join(__dirname, 'data', 'comersys_platform.template.json')
+    ];
+    const sourcePath = candidates.find((p) => fs.existsSync(p));
+    if (sourcePath) {
       const dir = path.dirname(DATA_PATH);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      fs.copyFileSync(templatePath, DATA_PATH);
+      fs.copyFileSync(sourcePath, DATA_PATH);
     } else {
       throw new Error(`Base de datos no encontrada en: ${DATA_PATH}`);
     }
@@ -1209,21 +1217,25 @@ if (require.main === module) {
   }
 }
 
-module.exports = {
-  server,
-  requestHandler,
-  getDatabase,
-  saveDatabase,
-  hashPassword,
-  verifyPassword,
-  validateSuperAdmin,
-  validateTenantSession,
-  purgeExpiredSessions,
-  checkRateLimit,
-  recordFailedLogin,
-  resetLoginAttempts,
-  isStaticFileAllowed,
-  PORT,
-  ADMIN_PORT,
-  DATA_PATH
-};
+function serverlessHandler(req, res) {
+  return requestHandler(req, res, PORT);
+}
+
+serverlessHandler.server = server;
+serverlessHandler.requestHandler = requestHandler;
+serverlessHandler.getDatabase = getDatabase;
+serverlessHandler.saveDatabase = saveDatabase;
+serverlessHandler.hashPassword = hashPassword;
+serverlessHandler.verifyPassword = verifyPassword;
+serverlessHandler.validateSuperAdmin = validateSuperAdmin;
+serverlessHandler.validateTenantSession = validateTenantSession;
+serverlessHandler.purgeExpiredSessions = purgeExpiredSessions;
+serverlessHandler.checkRateLimit = checkRateLimit;
+serverlessHandler.recordFailedLogin = recordFailedLogin;
+serverlessHandler.resetLoginAttempts = resetLoginAttempts;
+serverlessHandler.isStaticFileAllowed = isStaticFileAllowed;
+serverlessHandler.PORT = PORT;
+serverlessHandler.ADMIN_PORT = ADMIN_PORT;
+serverlessHandler.DATA_PATH = DATA_PATH;
+
+module.exports = serverlessHandler;

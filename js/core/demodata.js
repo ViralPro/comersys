@@ -32,19 +32,19 @@
       ];
 
       const products = [
-        { id: 1, groupId: 1, code: 'CEL-SAM-S23', name: 'Samsung Galaxy S23 Ultra 256GB', description: 'Cámara 200MP, Phantom Black', costPrice: 950000, salePrice: 1350000, stock: 8, minStock: 2, createdAt: isoNow },
-        { id: 2, groupId: 1, code: 'CEL-IPH-14P', name: 'iPhone 14 Pro Max 128GB', description: 'Pantalla Super Retina XDR, Space Black', costPrice: 1100000, salePrice: 1580000, stock: 5, minStock: 2, createdAt: isoNow },
-        { id: 3, groupId: 2, code: 'AUD-SNY-XM5', name: 'Auriculares Sony WH-1000XM5 ANC', description: 'Cancelación de ruido activa, 30hs batería', costPrice: 280000, salePrice: 420000, stock: 14, minStock: 4, createdAt: isoNow },
-        { id: 4, groupId: 2, code: 'NOT-MAC-M2', name: 'Apple MacBook Air 13" Chip M2', description: '8GB RAM, 256GB SSD, Gris Espacial', costPrice: 1250000, salePrice: 1790000, stock: 3, minStock: 2, createdAt: isoNow },
-        { id: 5, groupId: 3, code: 'ZAP-NIK-AIR', name: 'Zapatillas Nike Air Jordan Retro', description: 'Calzado deportivo urbano premium', costPrice: 85000, salePrice: 145000, stock: 16, minStock: 5, createdAt: isoNow },
-        { id: 6, groupId: 3, code: 'IND-CAM-URB', name: 'Campera Térmica Softshell Impermeable', description: 'Talles M/L/XL, respirable y cortaviento', costPrice: 48000, salePrice: 89000, stock: 22, minStock: 6, createdAt: isoNow }
+        { id: 1, groupId: 1, code: 'CEL-SAM-S23', name: 'Samsung Galaxy S23 Ultra 256GB', description: 'Cámara 200MP, Phantom Black', purchasePrice: 950000, salePrice: 1350000, stock: 8, minStock: 2, createdAt: isoNow },
+        { id: 2, groupId: 1, code: 'CEL-IPH-14P', name: 'iPhone 14 Pro Max 128GB', description: 'Pantalla Super Retina XDR, Space Black', purchasePrice: 1100000, salePrice: 1580000, stock: 5, minStock: 2, createdAt: isoNow },
+        { id: 3, groupId: 2, code: 'AUD-SNY-XM5', name: 'Auriculares Sony WH-1000XM5 ANC', description: 'Cancelación de ruido activa, 30hs batería', purchasePrice: 280000, salePrice: 420000, stock: 14, minStock: 4, createdAt: isoNow },
+        { id: 4, groupId: 2, code: 'NOT-MAC-M2', name: 'Apple MacBook Air 13" Chip M2', description: '8GB RAM, 256GB SSD, Gris Espacial', purchasePrice: 1250000, salePrice: 1790000, stock: 3, minStock: 2, createdAt: isoNow },
+        { id: 5, groupId: 3, code: 'ZAP-NIK-AIR', name: 'Zapatillas Nike Air Jordan Retro', description: 'Calzado deportivo urbano premium', purchasePrice: 85000, salePrice: 145000, stock: 16, minStock: 5, createdAt: isoNow },
+        { id: 6, groupId: 3, code: 'IND-CAM-URB', name: 'Campera Térmica Softshell Impermeable', description: 'Talles M/L/XL, respirable y cortaviento', purchasePrice: 48000, salePrice: 89000, stock: 22, minStock: 6, createdAt: isoNow }
       ];
 
       const clients = [
-        { id: 1, name: 'Carlos Andrés Martínez', phone: '+54 9 11 4872-9102', docNumber: '32.445.190', address: 'Av. Santa Fe 1840, CABA', notes: 'Cliente preferencial. Pagos en cuotas mensuales.', createdAt: isoNow },
-        { id: 2, name: 'Mariana Lucía Beltrán', phone: '+54 9 11 6512-3388', docNumber: '27-35894120-4', address: 'Calle Florida 620, Rosario', notes: 'Cuenta corriente corporativa habilitada.', createdAt: isoNow },
-        { id: 3, name: 'Gonzalo Ezequiel Romero', phone: '+54 9 341 550-9944', docNumber: '29.870.312', address: 'San Martín 450, Córdoba', notes: 'Compras al contado en tecnología.', createdAt: isoNow },
-        { id: 4, name: 'Sofía Antonella Ruiz', phone: '+54 9 261 411-8720', docNumber: '34.120.985', address: 'Belgrano 980, Mendoza', notes: 'Excelente historial de cumplimiento.', createdAt: isoNow }
+        { id: 1, name: 'Carlos Andrés Martínez', phone: '+54 9 11 4872-9102', documentId: '32.445.190', address: 'Av. Santa Fe 1840, CABA', notes: 'Cliente preferencial. Pagos en cuotas mensuales.', createdAt: isoNow },
+        { id: 2, name: 'Mariana Lucía Beltrán', phone: '+54 9 11 6512-3388', documentId: '27-35894120-4', address: 'Calle Florida 620, Rosario', notes: 'Cuenta corriente corporativa habilitada.', createdAt: isoNow },
+        { id: 3, name: 'Gonzalo Ezequiel Romero', phone: '+54 9 341 550-9944', documentId: '29.870.312', address: 'San Martín 450, Córdoba', notes: 'Compras al contado en tecnología.', createdAt: isoNow },
+        { id: 4, name: 'Sofía Antonella Ruiz', phone: '+54 9 261 411-8720', documentId: '34.120.985', address: 'Belgrano 980, Mendoza', notes: 'Excelente historial de cumplimiento.', createdAt: isoNow }
       ];
 
       const sales = [

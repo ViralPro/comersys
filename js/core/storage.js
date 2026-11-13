@@ -171,10 +171,13 @@
           }
         } catch (_) {}
 
-        const headers = { 'Content-Type': 'application/json' };
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
+        // Solo sincronizar si existe token de sesión emitido por el servidor
+        if (!token) return;
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        };
 
         fetch('/api/v1/tenant/sync', {
           method: 'POST',
@@ -222,7 +225,7 @@
         return result;
       } catch (error) {
         this._cache = JSON.parse(snapshot);
-        localStorage.setItem(Config.STORAGE_KEY, snapshot);
+        localStorage.setItem(this.getStorageKey(), snapshot);
         throw error;
       }
     },

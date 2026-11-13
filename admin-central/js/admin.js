@@ -301,13 +301,22 @@
       try {
         const res = await fetch(`${API_BASE}/auth/login`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({ username: user, password: pass })
         });
 
-        const data = await res.json();
+        const contentType = res.headers.get('content-type') || '';
+        let data = null;
+        if (contentType.includes('application/json')) {
+          try { data = await res.json(); } catch (_) {}
+        }
+
         if (!res.ok) {
-          throw new Error(data.error || 'Credenciales inválidas');
+          throw new Error((data && data.error) || `Error ${res.status}: Credenciales inválidas o servidor no disponible.`);
+        }
+
+        if (!data || !data.token) {
+          throw new Error('Respuesta inválida del servidor central.');
         }
 
         this.session = data;
