@@ -19,10 +19,15 @@ describe('Suite de Resistencia, Carga y Estabilidad ComerSys', () => {
     // Guardamos estado original de la base de datos para restaurarlo al finalizar
     originalDbState = JSON.parse(JSON.stringify(getDatabase()));
 
-    // Obtenemos o generamos un token de superadmin válido para pruebas
-    superAdminToken = Object.keys(originalDbState.sessions || {})[0];
-    if (!superAdminToken) {
-      superAdminToken = 'test_resilience_admin_token';
+    // Obtenemos o generamos un token de superadmin garantizado para pruebas
+    const foundToken = Object.keys(originalDbState.sessions || {}).find(
+      (tok) => originalDbState.sessions[tok] && originalDbState.sessions[tok].role === 'superadmin'
+    );
+    if (foundToken) {
+      superAdminToken = foundToken;
+    } else {
+      superAdminToken = 'test_resilience_admin_token_' + Date.now();
+      if (!originalDbState.sessions) originalDbState.sessions = {};
       originalDbState.sessions[superAdminToken] = {
         role: 'superadmin',
         username: 'administrador',
