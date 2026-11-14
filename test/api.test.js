@@ -207,8 +207,10 @@ describe('Suite de Integración y Seguridad Avanzada ComerSys (8000 y 8001)', ()
   });
 
   it('PATCH /api/admin/tenants/status debe permitir actualizar el estado del comercio mediante HTTP PATCH', async () => {
+    const db = getDatabase();
+    const targetTenantId = (db.tenants && db.tenants[0] && db.tenants[0].id) || 'tenant_demo';
     const res = await customRequest('PATCH', '/api/admin/tenants/status', {
-      tenantId: 'tenant_principal',
+      tenantId: targetTenantId,
       status: 'active'
     }, {
       Authorization: `Bearer ${superAdminToken}`
