@@ -5,7 +5,7 @@
   },
   "superadmin": {
     "username": "administrador",
-    "passwordHash": "A8F0D3D4FE3A3AF453C04FB22E4408F0:D676E1C48594E8B798792BA9DB3CEEBEA4502D331A309DA9950E49FF5F57B669",
+    "passwordHash": "AA85B17EA94C5A57C4A2F3FA7F4C8D4A:3F75C0A063D41D9A26CF583E2CDAEF461A4E5A9DF013EFC355387BFD6D6CB54E",
     "mustChangePassword": true,
     "displayName": "Administrador General",
     "lastLoginAt": null,

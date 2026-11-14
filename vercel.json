@@ -14,10 +14,12 @@
     { "source": "/api/(.*)", "destination": "/api/index.js?url=/api/$1" },
     { "source": "/health", "destination": "/api/index.js?url=/health" },
     { "source": "/api/health", "destination": "/api/index.js?url=/api/health" },
+    { "source": "/css/admin.css", "destination": "/admin-central/css/admin.css" },
+    { "source": "/js/admin.js", "destination": "/admin-central/js/admin.js" },
     { "source": "/admin", "destination": "/api/index.js?url=/admin" },
     { "source": "/admin/", "destination": "/api/index.js?url=/admin" },
-    { "source": "/admin/css/(.*)", "destination": "/api/index.js?url=/admin/css/$1" },
-    { "source": "/admin/js/(.*)", "destination": "/api/index.js?url=/admin/js/$1" },
+    { "source": "/admin/css/(.*)", "destination": "/admin-central/css/$1" },
+    { "source": "/admin/js/(.*)", "destination": "/admin-central/js/$1" },
     { "source": "/admin/(.*)", "destination": "/api/index.js?url=/admin/$1" },
     { "source": "/admin-central/(.*)", "destination": "/api/index.js?url=/admin/$1" }
   ]

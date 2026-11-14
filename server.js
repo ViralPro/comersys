@@ -253,16 +253,28 @@ const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_WINDOW_MS = 15 * 60 * 1000; // 15 minutos
 
 function getClientIp(req) {
+  const xRealIp = req.headers['x-real-ip'];
+  if (xRealIp && typeof xRealIp === 'string') {
+    return xRealIp.split(',')[0].trim();
+  }
   const forwarded = req.headers['x-forwarded-for'];
-  if (forwarded) {
+  if (forwarded && typeof forwarded === 'string') {
     return forwarded.split(',')[0].trim();
   }
   return (req.socket && req.socket.remoteAddress) || '127.0.0.1';
 }
 
-function checkRateLimit(ip) {
+function getRateLimitKey(ip, username = '') {
+  const isPrivateOrLocal = !ip || ip === '127.0.0.1' || ip === '::1' || ip.startsWith('10.') || ip.startsWith('192.168.');
+  if (isPrivateOrLocal && username) {
+    return `local:${username.toLowerCase().trim()}`;
+  }
+  return ip || '127.0.0.1';
+}
+
+function checkRateLimit(key) {
   const now = Date.now();
-  const record = loginAttempts.get(ip);
+  const record = loginAttempts.get(key);
   if (!record) return { allowed: true };
 
   if (record.lockedUntil && now < record.lockedUntil) {
@@ -271,7 +283,7 @@ function checkRateLimit(ip) {
   }
 
   if (now - record.firstAttempt > LOCKOUT_WINDOW_MS) {
-    loginAttempts.delete(ip);
+    loginAttempts.delete(key);
     return { allowed: true };
   }
 
@@ -284,9 +296,9 @@ function checkRateLimit(ip) {
   return { allowed: true };
 }
 
-function recordFailedLogin(ip) {
+function recordFailedLogin(key) {
   const now = Date.now();
-  let record = loginAttempts.get(ip);
+  let record = loginAttempts.get(key);
   if (!record || (now - record.firstAttempt > LOCKOUT_WINDOW_MS && !record.lockedUntil)) {
     record = { count: 1, firstAttempt: now, lockedUntil: null };
   } else {
@@ -295,11 +307,11 @@ function recordFailedLogin(ip) {
       record.lockedUntil = now + LOCKOUT_WINDOW_MS;
     }
   }
-  loginAttempts.set(ip, record);
+  loginAttempts.set(key, record);
 }
 
-function resetLoginAttempts(ip) {
-  loginAttempts.delete(ip);
+function resetLoginAttempts(key) {
+  loginAttempts.delete(key);
 }
 
 // ----------------------------------------------------------------------------
@@ -356,13 +368,13 @@ function sendResponse(res, statusCode, contentType, body, headers = {}) {
   const defaultHeaders = {
     'Content-Type': contentType,
     'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGINS || '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Tenant-Id',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Tenant-Id, Accept, X-Requested-With',
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'SAMEORIGIN',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self';"
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' *; frame-ancestors 'self';"
   };
 
   if (isHttps) {
@@ -400,21 +412,68 @@ function sendFile(res, filePath) {
 const MAX_PAYLOAD_SIZE = 2 * 1024 * 1024; // Límite de seguridad: 2 MB (Mitigación DoS)
 
 function readBody(req) {
+  // 1. Compatibilidad con runtimes Serverless (Vercel/AWS Lambda) donde req.body ya viene parseado
+  if (req.body !== undefined && req.body !== null) {
+    if (typeof req.body === 'string') return Promise.resolve(req.body);
+    if (Buffer.isBuffer(req.body)) return Promise.resolve(req.body.toString('utf8'));
+    return Promise.resolve(JSON.stringify(req.body));
+  }
+
+  // 2. Si el stream ya fue consumido o finalizó
+  if (req.readableEnded || req.complete) {
+    return Promise.resolve('');
+  }
+
+  // 3. Lectura de stream con temporizador de seguridad contra 504 Gateway Timeout (máx 4.5 segundos)
   return new Promise((resolve, reject) => {
     let raw = '';
+    const safetyTimer = setTimeout(() => {
+      resolve(raw);
+    }, 4500);
+
     req.on('data', (chunk) => {
       raw += chunk;
       if (raw.length > MAX_PAYLOAD_SIZE) {
+        clearTimeout(safetyTimer);
         req.destroy();
         const err = new Error('Payload Too Large');
         err.statusCode = 413;
         reject(err);
       }
     });
-    req.on('end', () => resolve(raw));
-    req.on('error', (err) => reject(err));
+    req.on('end', () => {
+      clearTimeout(safetyTimer);
+      resolve(raw);
+    });
+    req.on('error', (err) => {
+      clearTimeout(safetyTimer);
+      reject(err);
+    });
   });
 }
+
+// ----------------------------------------------------------------------------
+// 7.B REGISTRO DE ENDPOINTS Y MÉTODOS PERMITIDOS (RFC 9110 / HTTP 405)
+// ----------------------------------------------------------------------------
+const API_ROUTES = {
+  '/health': ['GET', 'HEAD', 'OPTIONS'],
+  '/api/health': ['GET', 'HEAD', 'OPTIONS'],
+  '/api/admin/auth/login': ['POST', 'OPTIONS'],
+  '/api/admin/auth/logout': ['POST', 'OPTIONS'],
+  '/api/admin/auth/change-password': ['POST', 'OPTIONS'],
+  '/api/admin/tenants': ['GET', 'OPTIONS'],
+  '/api/admin/tenants/create': ['POST', 'OPTIONS'],
+  '/api/admin/tenants/status': ['POST', 'PATCH', 'OPTIONS'],
+  '/api/admin/tenants/subscription': ['POST', 'PUT', 'PATCH', 'OPTIONS'],
+  '/api/admin/tenants/inspect': ['GET', 'OPTIONS'],
+  '/api/admin/tenants/reset-password': ['POST', 'OPTIONS'],
+  '/api/admin/audit': ['GET', 'OPTIONS'],
+  '/api/admin/backup': ['GET', 'OPTIONS'],
+  '/api/admin/restore': ['POST', 'OPTIONS'],
+  '/api/v1/auth/login': ['POST', 'OPTIONS'],
+  '/api/v1/auth/logout': ['POST', 'OPTIONS'],
+  '/api/v1/tenant/sync': ['POST', 'PUT', 'OPTIONS']
+};
 
 // ----------------------------------------------------------------------------
 // 8. MANEJADOR PRINCIPAL DE SOLICITUDES
@@ -435,12 +494,30 @@ async function requestHandler(req, res, targetPort) {
 
     // Manejo CORS preflight
     if (method === 'OPTIONS') {
-      sendResponse(res, 204, 'text/plain', null);
+      const allowed = API_ROUTES[pathname] || ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+      sendResponse(res, 204, 'text/plain', null, {
+        'Allow': allowed.join(', ')
+      });
+      return;
+    }
+
+    // Verificación formal de Métodos HTTP en Endpoints de API (RFC 9110 -> 405 Method Not Allowed)
+    if (API_ROUTES[pathname] && !API_ROUTES[pathname].includes(method)) {
+      sendJson(res, 405, {
+        error: `Error 405: Método HTTP ${method} no permitido para el recurso ${pathname}.`,
+        allowedMethods: API_ROUTES[pathname]
+      }, {
+        'Allow': API_ROUTES[pathname].join(', ')
+      });
       return;
     }
 
     // Ruta de comprobación de salud para cloud (Render, Railway, Kubernetes)
     if (pathname === '/health' || pathname === '/api/health') {
+      if (method === 'HEAD') {
+        sendResponse(res, 200, 'application/json; charset=utf-8', null);
+        return;
+      }
       sendJson(res, 200, {
         status: 'ok',
         platform: 'ComerSys',
@@ -485,14 +562,6 @@ async function requestHandler(req, res, targetPort) {
       // 1. Login Oficial de SuperAdmin
       if (pathname === '/api/admin/auth/login' && method === 'POST') {
         const clientIp = getClientIp(req);
-        const rateCheck = checkRateLimit(clientIp);
-        if (!rateCheck.allowed) {
-          sendJson(res, 429, {
-            error: `Demasiados intentos fallidos. Acceso bloqueado temporalmente. Intente nuevamente en ${rateCheck.remainingSec} segundos.`
-          }, { 'Retry-After': String(rateCheck.remainingSec) });
-          return;
-        }
-
         const bodyStr = await readBody(req);
         const body = JSON.parse(bodyStr || '{}');
         const db = getDatabase();
@@ -500,14 +569,19 @@ async function requestHandler(req, res, targetPort) {
 
         const user = (body.username || '').trim().toLowerCase();
         const pass = body.password || '';
+        const rateKey = getRateLimitKey(clientIp, user);
 
         const masterUser = (db.superadmin.username || 'administrador').toLowerCase();
         const masterEmail = (db.superadmin.email || 'admin@comersys.local').toLowerCase();
 
         const isMaster = user === masterUser || user === masterEmail;
         const isMasterPass = verifyPassword(pass, db.superadmin.passwordHash) || pass === 'admin123';
+
         if (isMaster && isMasterPass) {
+          // Credenciales legítimas: desbloqueo inmediato de cualquier limitación previa
+          resetLoginAttempts(rateKey);
           resetLoginAttempts(clientIp);
+
           const token = crypto.randomBytes(24).toString('hex');
           if (!db.sessions) db.sessions = {};
           const now = new Date();
@@ -543,7 +617,15 @@ async function requestHandler(req, res, targetPort) {
             mustChangePassword: Boolean(db.superadmin.mustChangePassword)
           });
         } else {
-          recordFailedLogin(clientIp);
+          // Si las credenciales fallan, aplicar control estricto de intentos fallidos
+          const rateCheck = checkRateLimit(rateKey);
+          if (!rateCheck.allowed) {
+            sendJson(res, 429, {
+              error: `Demasiados intentos fallidos. Acceso bloqueado temporalmente. Intente nuevamente en ${rateCheck.remainingSec} segundos.`
+            }, { 'Retry-After': String(rateCheck.remainingSec) });
+            return;
+          }
+          recordFailedLogin(rateKey);
           sendJson(res, 401, { error: 'Credenciales de Administrador General inválidas.' });
         }
         return;
@@ -811,8 +893,8 @@ async function requestHandler(req, res, targetPort) {
           return;
         }
 
-        // 5. Cambiar Estado de Cuenta
-        if (pathname === '/api/admin/tenants/status' && method === 'POST') {
+        // 5. Cambiar Estado de Cuenta (POST / PATCH)
+        if (pathname === '/api/admin/tenants/status' && (method === 'POST' || method === 'PATCH')) {
           const body = JSON.parse((await readBody(req)) || '{}');
           const target = (db.tenants || []).find((t) => t.id === body.tenantId);
           if (!target) {
@@ -866,8 +948,8 @@ async function requestHandler(req, res, targetPort) {
           return;
         }
 
-        // 6. Control de Suscripción
-        if (pathname === '/api/admin/tenants/subscription' && method === 'POST') {
+        // 6. Control de Suscripción (POST / PUT / PATCH)
+        if (pathname === '/api/admin/tenants/subscription' && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
           const body = JSON.parse((await readBody(req)) || '{}');
           const target = (db.tenants || []).find((t) => t.id === body.tenantId);
           if (!target) {
@@ -992,6 +1074,48 @@ async function requestHandler(req, res, targetPort) {
           });
           return;
         }
+
+        // 11. Restauración de Respaldo Completo Protegido
+        if (pathname === '/api/admin/restore' && method === 'POST') {
+          const bodyStr = await readBody(req);
+          let backupData = null;
+          try {
+            backupData = JSON.parse(bodyStr || '{}');
+          } catch (_) {
+            sendJson(res, 400, { error: 'Formato de respaldo JSON inválido.' });
+            return;
+          }
+
+          if (!backupData || !backupData.superadmin || !Array.isArray(backupData.tenants)) {
+            sendJson(res, 400, { error: 'Estructura de respaldo incompatible o incompleta.' });
+            return;
+          }
+
+          // Mantener la sesión activa del SuperAdmin que ejecuta la restauración
+          const auth = req.headers['authorization'] || '';
+          const currentToken = auth.startsWith('Bearer ') ? auth.slice(7).trim() : null;
+          if (currentToken && db.sessions && db.sessions[currentToken]) {
+            if (!backupData.sessions) backupData.sessions = {};
+            backupData.sessions[currentToken] = db.sessions[currentToken];
+          }
+
+          addAuditLog(
+            backupData,
+            db.superadmin.username,
+            'PLATFORM_RESTORED',
+            'SYSTEM',
+            'Restauración de base de datos completa efectuada con éxito por SuperAdministrador.'
+          );
+          saveDatabase(backupData);
+
+          sendJson(res, 200, {
+            ok: true,
+            message: 'Base de datos restaurada exitosamente.',
+            tenantsCount: (backupData.tenants || []).length,
+            usersCount: (backupData.users || []).length
+          });
+          return;
+        }
       }
 
       // Servir Archivos Estáticos de Admin Central (admin-central/)
@@ -1038,17 +1162,11 @@ async function requestHandler(req, res, targetPort) {
     // 1. API: Login de Comercio Cliente
     if (pathname === '/api/v1/auth/login' && method === 'POST') {
       const clientIp = getClientIp(req);
-      const rateCheck = checkRateLimit(clientIp);
-      if (!rateCheck.allowed) {
-        sendJson(res, 429, {
-          error: `Demasiados intentos fallidos. Acceso bloqueado temporalmente. Intente nuevamente en ${rateCheck.remainingSec} segundos.`
-        }, { 'Retry-After': String(rateCheck.remainingSec) });
-        return;
-      }
-
       const body = JSON.parse((await readBody(req)) || '{}');
       const cleanUser = (body.username || '').trim().toLowerCase();
       const pass = body.password || '';
+      const rateKey = getRateLimitKey(clientIp, cleanUser);
+
       const db = getDatabase();
       purgeExpiredSessions(db);
 
@@ -1061,10 +1179,20 @@ async function requestHandler(req, res, targetPort) {
       }
 
       if (!user || !verifyPassword(pass, user.passwordHash)) {
-        recordFailedLogin(clientIp);
+        const rateCheck = checkRateLimit(rateKey);
+        if (!rateCheck.allowed) {
+          sendJson(res, 429, {
+            error: `Demasiados intentos fallidos. Acceso bloqueado temporalmente. Intente nuevamente en ${rateCheck.remainingSec} segundos.`
+          }, { 'Retry-After': String(rateCheck.remainingSec) });
+          return;
+        }
+        recordFailedLogin(rateKey);
         sendJson(res, 401, { error: 'Usuario o contraseña incorrectos.' });
         return;
       }
+
+      // Credenciales válidas: desbloqueo inmediato de intentos
+      resetLoginAttempts(rateKey);
 
       const tenant = (db.tenants || []).find((t) => t.id === user.tenantId);
       if (!tenant) {
@@ -1148,8 +1276,8 @@ async function requestHandler(req, res, targetPort) {
       return;
     }
 
-    // 2. API: Sincronización Transaccional de Datos del Tenant con Aislamiento Estricto
-    if (pathname === '/api/v1/tenant/sync' && method === 'POST') {
+    // 2. API: Sincronización Transaccional de Datos del Tenant con Aislamiento Estricto (POST / PUT)
+    if (pathname === '/api/v1/tenant/sync' && (method === 'POST' || method === 'PUT')) {
       const body = JSON.parse((await readBody(req)) || '{}');
       const tId = body.tenantId || req.headers['x-tenant-id'];
       const db = getDatabase();
@@ -1192,6 +1320,14 @@ async function requestHandler(req, res, targetPort) {
       filePath = path.join(filePath, 'index.html');
     }
 
+    // Resiliencia para recursos de Admin Central llamados sin prefijo (ej. /css/admin.css o /js/admin.js)
+    if (!fs.existsSync(filePath) && (relPath.startsWith('css/admin') || relPath.startsWith('js/admin'))) {
+      const adminFallback = path.join(ADMIN_DIR, relPath);
+      if (fs.existsSync(adminFallback) && fs.statSync(adminFallback).isFile()) {
+        filePath = adminFallback;
+      }
+    }
+
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       sendFile(res, filePath);
       return;
@@ -1223,10 +1359,10 @@ process.on('unhandledRejection', (reason) => {
 const server = http.createServer((req, res) => requestHandler(req, res, PORT));
 
 if (require.main === module) {
-  server.listen(PORT, '0.0.0.0', () => {
+  server.listen(PORT, () => {
     console.log('==========================================================');
     console.log('  COMERSYS MULTI-TENANT ENTERPRISE SERVER (PRODUCCIÓN)');
-    console.log(`  -> Puerto Principal: http://0.0.0.0:${PORT}/`);
+    console.log(`  -> Puerto Principal: http://localhost:${PORT}/`);
     console.log(`     - Cliente ComerSys: http://localhost:${PORT}/`);
     console.log(`     - Admin Central:    http://localhost:${PORT}/admin/`);
     console.log(`  -> Base de Datos:   ${DATA_PATH}`);
@@ -1236,17 +1372,37 @@ if (require.main === module) {
   // Servidor auxiliar en ADMIN_PORT para compatibilidad local con 8001
   if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_DUAL_PORT === 'true') {
     const adminServer = http.createServer((req, res) => requestHandler(req, res, ADMIN_PORT));
-    adminServer.listen(ADMIN_PORT, '0.0.0.0', () => {
+    adminServer.listen(ADMIN_PORT, () => {
       console.log(`  -> Puerto Admin 8001: http://localhost:${ADMIN_PORT}/`);
     }).on('error', (err) => {
       // Si el puerto 8001 ya está en uso (ej. por server.ps1), no bloquea el servidor principal
       console.log(`  (Puerto ${ADMIN_PORT} ocupado o no disponible en este entorno: ${err.code})`);
     });
+
+    // Servidor auxiliar en puerto 3000 para accesos directos estándar
+    if (PORT !== 3000 && ADMIN_PORT !== 3000) {
+      const port3000Server = http.createServer((req, res) => requestHandler(req, res, 3000));
+      port3000Server.listen(3000, () => {
+        console.log('  -> Puerto 3000:       http://localhost:3000/');
+      }).on('error', (err) => {
+        // Silencioso si el puerto 3000 está en uso
+      });
+    }
   }
 }
 
-function serverlessHandler(req, res) {
-  return requestHandler(req, res, PORT);
+async function serverlessHandler(req, res) {
+  try {
+    return await requestHandler(req, res, PORT);
+  } catch (err) {
+    console.error('[ComerSys.Serverless] Excepción no controlada:', err);
+    if (!res.headersSent) {
+      sendJson(res, 500, {
+        error: '500 Error Interno en Función Serverless ComerSys',
+        message: err.message
+      });
+    }
+  }
 }
 
 serverlessHandler.server = server;

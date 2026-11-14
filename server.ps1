@@ -129,8 +129,8 @@ function Send-Response($response, [int]$statusCode, [string]$contentType, [byte[
     $response.ContentType = $contentType
     $response.ContentLength64 = $bytes.Length
     $response.AddHeader("Access-Control-Allow-Origin", "*")
-    $response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
-    $response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Tenant-Id")
+    $response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE")
+    $response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Tenant-Id, Accept, X-Requested-With")
     $response.OutputStream.Write($bytes, 0, $bytes.Length)
     $response.Close()
 }

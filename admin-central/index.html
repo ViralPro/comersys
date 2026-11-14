@@ -11,9 +11,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
+  <!-- Resiliencia Dinámica de Rutas Base -->
+  <script>
+    (function () {
+      const isGithub = window.location.hostname.endsWith('github.io');
+      const p = window.location.pathname;
+      let baseHref = '/admin/';
+      if (isGithub) {
+        baseHref = p.endsWith('/') ? p : p + '/';
+      } else if (p.startsWith('/admin-central')) {
+        baseHref = '/admin-central/';
+      } else if (p === '/admin' || p === '/admin/') {
+        baseHref = '/admin/';
+      }
+      const b = document.createElement('base');
+      b.href = baseHref;
+      document.head.insertBefore(b, document.head.firstChild);
+    })();
+  </script>
+
   <!-- Favicon Oficial ComerSys -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="alternate icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
 
   <!-- Estilos Corporativos ComerSys -->
   <link rel="stylesheet" href="css/admin.css?v=2.0" />
@@ -71,6 +90,21 @@
         </div>
         <h2 class="adm-auth-card-title">Administración Central</h2>
         <p class="adm-auth-card-subtitle">Iniciá sesión como SuperAdmin general</p>
+
+        <!-- Selector / Estado del Servidor Backend -->
+        <div class="adm-server-bar">
+          <div class="adm-server-status" title="Estado de la conexión al servidor de base de datos">
+            <span id="adm-server-indicator" class="adm-server-dot"></span>
+            <span id="adm-server-label" class="adm-server-label">Servidor: Integrado</span>
+          </div>
+          <button type="button" id="adm-server-config-btn" class="adm-server-config-btn" title="Configurar URL del Servidor">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span>Servidor</span>
+          </button>
+        </div>
 
         <!-- Mensaje de error -->
         <div id="adm-login-error" class="adm-auth-error hidden" role="alert"></div>
@@ -529,11 +563,16 @@
               <p class="adm-system-card-desc">
                 Exporte una copia completa e instantánea de toda la información (cuentas maestras, comercios, catálogos, auditoría y suscripciones).
               </p>
-              <div style="margin-top: 16px;">
+              <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
                 <button type="button" id="adm-sys-export-btn" class="btn-adm btn-adm-primary" style="width: 100%;">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   <span>Descargar Respaldo JSON Completo</span>
                 </button>
+                <label for="adm-sys-import-input" class="btn-adm btn-adm-secondary" style="width: 100%; text-align: center; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span>Restaurar / Importar Base de Datos</span>
+                </label>
+                <input type="file" id="adm-sys-import-input" accept=".json,application/json" class="hidden" />
               </div>
             </div>
           </div>
@@ -807,6 +846,47 @@
       </div>
       <div class="adm-modal-footer">
         <button type="button" class="btn-adm" data-close-modal>Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: CONFIGURACIÓN DE CONEXIÓN CON SERVIDOR CENTRAL
+       ======================================================================== -->
+  <div id="adm-server-modal" class="adm-modal-backdrop hidden">
+    <div class="adm-modal-dialog" style="max-width: 500px;">
+      <div class="adm-modal-header">
+        <div>
+          <h3 class="adm-modal-title">Conexión con el Servidor Central</h3>
+          <p class="adm-modal-subtitle">Conecte la interfaz a su backend activo en Render, Vercel, Railway o local.</p>
+        </div>
+        <button type="button" class="adm-modal-close-btn" data-close-modal aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <div class="adm-modal-body">
+        <p style="font-size: 13px; color: var(--cs-text-secondary); margin-bottom: 14px; line-height: 1.5;">
+          Al acceder desde <strong>GitHub Pages</strong> o un servidor de archivos estáticos, este panel requiere la dirección URL del servidor Node.js donde se ejecutan los servicios de ComerSys.
+        </p>
+
+        <div id="adm-server-test-msg" class="adm-error-alert hidden" style="margin-bottom: 14px;"></div>
+
+        <div class="adm-form-field">
+          <label class="adm-label" for="adm-server-url-input">URL del Servidor Backend ComerSys</label>
+          <input
+            type="url"
+            id="adm-server-url-input"
+            class="adm-form-input"
+            placeholder="https://tu-app.onrender.com o http://localhost:3000"
+            autocomplete="url"
+          />
+          <span style="display: block; font-size: 11.5px; color: var(--cs-text-muted); margin-top: 6px;">
+            Ejemplo: <code>https://comersys.onrender.com</code> o <code>https://tu-proyecto.vercel.app</code>
+          </span>
+        </div>
+      </div>
+      <div class="adm-modal-footer" style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button type="button" id="adm-server-reset-btn" class="btn-adm btn-adm-secondary">Restablecer a Local</button>
+        <button type="button" id="adm-server-test-btn" class="btn-adm btn-adm-secondary">Probar Conexión</button>
+        <button type="button" id="adm-server-save-btn" class="btn-adm btn-adm-primary">Guardar y Conectar</button>
       </div>
     </div>
   </div>

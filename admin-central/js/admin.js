@@ -8,8 +8,45 @@
 (function () {
   'use strict';
 
-  const API_BASE = '/api/admin';
+  const STORAGE_BACKEND_KEY = 'comersys_backend_url';
   const SESSION_KEY = 'comersys_superadmin_session_v1';
+
+  function resolveBackendBase() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryBackend = urlParams.get('backend') || urlParams.get('api');
+      if (queryBackend) {
+        const clean = queryBackend.trim().replace(/\/+$/, '');
+        localStorage.setItem(STORAGE_BACKEND_KEY, clean);
+        return clean;
+      }
+      const stored = localStorage.getItem(STORAGE_BACKEND_KEY);
+      if (stored) {
+        return stored.trim().replace(/\/+$/, '');
+      }
+    } catch (_) {}
+
+    if (window.COMERSYS_BACKEND_URL && typeof window.COMERSYS_BACKEND_URL === 'string') {
+      return window.COMERSYS_BACKEND_URL.trim().replace(/\/+$/, '');
+    }
+
+    return '';
+  }
+
+  function getApiBaseUrl() {
+    const backend = resolveBackendBase();
+    if (backend) {
+      return `${backend}/api/admin`;
+    }
+    return '/api/admin';
+  }
+
+  // Objeto con coerción string dinámica: garantiza compatibilidad total con `${API_BASE}/...`
+  const API_BASE = {
+    toString() {
+      return getApiBaseUrl();
+    }
+  };
 
   const AdminApp = {
     session: null,
@@ -23,6 +60,7 @@
 
     init() {
       this.bindEvents();
+      this.initServerStatus();
       this.checkSession();
     },
 
@@ -31,6 +69,27 @@
       const loginForm = document.getElementById('adm-login-form');
       if (loginForm) {
         loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+      }
+
+      // Configuración de Servidor Central Backend
+      const serverConfigBtn = document.getElementById('adm-server-config-btn');
+      if (serverConfigBtn) {
+        serverConfigBtn.addEventListener('click', () => this.openServerModal());
+      }
+
+      const serverSaveBtn = document.getElementById('adm-server-save-btn');
+      if (serverSaveBtn) {
+        serverSaveBtn.addEventListener('click', () => this.saveServerConfig());
+      }
+
+      const serverResetBtn = document.getElementById('adm-server-reset-btn');
+      if (serverResetBtn) {
+        serverResetBtn.addEventListener('click', () => this.resetServerConfig());
+      }
+
+      const serverTestBtn = document.getElementById('adm-server-test-btn');
+      if (serverTestBtn) {
+        serverTestBtn.addEventListener('click', () => this.testServerConnection());
       }
 
       // Alternar visualización de contraseña en login
@@ -186,6 +245,17 @@
         });
       });
 
+      // Exportar e Importar Respaldo Global
+      const exportBtn = document.getElementById('adm-sys-export-btn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', () => this.handleExportBackup());
+      }
+
+      const importInput = document.getElementById('adm-sys-import-input');
+      if (importInput) {
+        importInput.addEventListener('change', (e) => this.handleImportBackup(e));
+      }
+
       // Cerrar modales con [data-close-modal]
       document.querySelectorAll('[data-close-modal]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -290,6 +360,119 @@
       this.loadTenants();
     },
 
+    initServerStatus() {
+      const indicator = document.getElementById('adm-server-indicator');
+      const label = document.getElementById('adm-server-label');
+      if (!indicator || !label) return;
+
+      const backend = resolveBackendBase();
+      const isGithub = window.location.hostname.endsWith('github.io');
+
+      if (backend) {
+        let displayHost = backend;
+        try {
+          const u = new URL(backend);
+          displayHost = u.hostname + (u.port ? `:${u.port}` : '');
+        } catch (_) {}
+        label.textContent = `Servidor: ${displayHost}`;
+        indicator.className = 'adm-server-dot connected';
+      } else if (isGithub) {
+        label.textContent = 'Servidor: GitHub Pages (Sin Backend)';
+        indicator.className = 'adm-server-dot error';
+      } else {
+        label.textContent = 'Servidor: Integrado (Local)';
+        indicator.className = 'adm-server-dot connected';
+      }
+    },
+
+    openServerModal() {
+      const input = document.getElementById('adm-server-url-input');
+      const msg = document.getElementById('adm-server-test-msg');
+      if (input) input.value = resolveBackendBase();
+      if (msg) {
+        msg.classList.add('hidden');
+        msg.textContent = '';
+      }
+      this.showElement('adm-server-modal');
+    },
+
+    closeServerModal() {
+      this.hideElement('adm-server-modal');
+    },
+
+    saveServerConfig() {
+      const input = document.getElementById('adm-server-url-input');
+      const msg = document.getElementById('adm-server-test-msg');
+      let val = input ? input.value.trim() : '';
+
+      if (val) {
+        if (!/^https?:\/\//i.test(val)) {
+          if (msg) {
+            msg.textContent = 'La URL debe comenzar con http:// o https://';
+            msg.className = 'adm-error-alert';
+            msg.classList.remove('hidden');
+          }
+          return;
+        }
+        val = val.replace(/\/+$/, '');
+        try {
+          localStorage.setItem(STORAGE_BACKEND_KEY, val);
+        } catch (_) {}
+      } else {
+        try {
+          localStorage.removeItem(STORAGE_BACKEND_KEY);
+        } catch (_) {}
+      }
+
+      this.initServerStatus();
+      this.closeServerModal();
+      this.hideElement('adm-login-error');
+    },
+
+    resetServerConfig() {
+      try {
+        localStorage.removeItem(STORAGE_BACKEND_KEY);
+      } catch (_) {}
+      const input = document.getElementById('adm-server-url-input');
+      if (input) input.value = '';
+      this.initServerStatus();
+      this.closeServerModal();
+      this.hideElement('adm-login-error');
+    },
+
+    async testServerConnection() {
+      const input = document.getElementById('adm-server-url-input');
+      const msg = document.getElementById('adm-server-test-msg');
+      if (!msg) return;
+
+      let val = input ? input.value.trim().replace(/\/+$/, '') : '';
+      if (!val) {
+        val = window.location.origin;
+      }
+
+      msg.classList.remove('hidden');
+      msg.className = 'adm-error-alert';
+      msg.textContent = `Comprobando conectividad con ${val}...`;
+
+      try {
+        const testUrl = `${val}/health`;
+        const res = await fetch(testUrl, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          msg.className = 'adm-success-alert';
+          msg.textContent = `Conexión exitosa. Servidor ComerSys en línea (${res.status} OK).`;
+        } else {
+          msg.className = 'adm-error-alert';
+          msg.textContent = `Respuesta del servidor: HTTP ${res.status} (${res.statusText || 'Error'}).`;
+        }
+      } catch (err) {
+        msg.className = 'adm-error-alert';
+        msg.textContent = `Fallo de conexión: No se pudo conectar a ${val}. Verifique CORS y disponibilidad.`;
+      }
+    },
+
     async handleLogin(e) {
       e.preventDefault();
       const user = document.getElementById('adm-input-user').value.trim();
@@ -298,8 +481,23 @@
 
       this.hideElement('adm-login-error');
 
+      const isGithub = window.location.hostname.endsWith('github.io');
+      const backend = resolveBackendBase();
+
+      if (isGithub && !backend) {
+        errBox.innerHTML =
+          '<strong>Error 405 (Entorno Estático Detectado):</strong> Está accediendo desde GitHub Pages, ' +
+          'que no admite peticiones POST ni aloja el backend Node.js.<br><br>' +
+          'Haga clic en el botón <strong>"Servidor"</strong> arriba para ingresar la URL de su servidor ComerSys desplegado ' +
+          '(Render, Vercel, Railway o local).';
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      const loginUrl = `${API_BASE}/auth/login`;
+
       try {
-        const res = await fetch(`${API_BASE}/auth/login`, {
+        const res = await fetch(loginUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({ username: user, password: pass })
@@ -312,6 +510,21 @@
         }
 
         if (!res.ok) {
+          if (res.status === 405) {
+            throw new Error(
+              (data && data.error) ||
+              `Error 405: El host (${window.location.hostname}) rechazó el método POST. ` +
+              `GitHub Pages no puede ejecutar backend. Conecte su servidor backend en la opción "Servidor".`
+            );
+          }
+          if (res.status === 401) {
+            throw new Error((data && data.error) || 'Credenciales de Administrador General inválidas.');
+          }
+          if (res.status === 404) {
+            throw new Error(
+              `Error 404: Endpoint no encontrado en el servidor (${loginUrl}). Verifique la URL de su backend.`
+            );
+          }
           throw new Error((data && data.error) || `Error ${res.status}: Credenciales inválidas o servidor no disponible.`);
         }
 
@@ -332,7 +545,11 @@
           this.showDashboard();
         }
       } catch (err) {
-        errBox.textContent = err.message;
+        let msg = err.message || 'Error de conexión con el servidor.';
+        if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Network request failed')) {
+          msg = `Error de Red: No se pudo conectar con el servidor (${loginUrl}). Verifique que el backend esté activo y soporte CORS.`;
+        }
+        errBox.textContent = msg;
         errBox.classList.remove('hidden');
       }
     },
@@ -967,6 +1184,42 @@
         URL.revokeObjectURL(url);
       } catch (err) {
         alert('Error al exportar respaldo: ' + err.message);
+      }
+    },
+
+    async handleImportBackup(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      if (!confirm(`¿Confirma la RESTAURACIÓN COMPLETA de la base de datos desde el archivo "${file.name}"?\nEsta acción actualizará los comercios, usuarios y catálogos en el servidor.`)) {
+        e.target.value = '';
+        return;
+      }
+
+      try {
+        const text = await file.text();
+        const json = JSON.parse(text);
+
+        const res = await fetch(`${API_BASE}/restore`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.session.token}`
+          },
+          body: JSON.stringify(json)
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al restaurar respaldo');
+
+        alert(`Base de datos restaurada exitosamente.\nComercios: ${data.tenantsCount} | Usuarios: ${data.usersCount}`);
+        this.loadTenants();
+        this.loadAuditRecords();
+        this.updateSystemView();
+      } catch (err) {
+        alert('Error al restaurar base de datos: ' + err.message);
+      } finally {
+        e.target.value = '';
       }
     },
 
