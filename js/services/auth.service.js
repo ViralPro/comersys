@@ -70,12 +70,12 @@
         db.users = [];
       }
 
-      const isAdminUser = cleanUser === 'administrador' || cleanUser === 'admin';
+      const isAdminUser = cleanUser === 'administrador' || cleanUser === 'admin' || cleanUser === 'admin@comersys.local';
       const isAdminPass = rawPass === 'admin123' || rawPass === 'admin';
 
       let user = db.users.find((u) => {
         const uNorm = Validators.normalizeText(u.username);
-        const userMatches = uNorm === cleanUser || (isAdminUser && (uNorm === 'administrador' || uNorm === 'admin'));
+        const userMatches = uNorm === cleanUser || (isAdminUser && (uNorm === 'administrador' || uNorm === 'admin' || uNorm === 'admin@comersys.local'));
         const passMatches = u.passwordHash === rawPass || (isAdminPass && (u.passwordHash === 'admin123' || u.passwordHash === 'admin'));
         return userMatches && passMatches;
       });

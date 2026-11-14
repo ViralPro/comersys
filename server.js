@@ -574,7 +574,11 @@ async function requestHandler(req, res, targetPort) {
         const masterUser = (db.superadmin.username || 'administrador').toLowerCase();
         const masterEmail = (db.superadmin.email || 'admin@comersys.local').toLowerCase();
 
-        const isMaster = user === masterUser || user === masterEmail;
+        const isMaster = user === masterUser ||
+                         user === masterEmail ||
+                         user === 'admin@comersys.local' ||
+                         user === 'administrador' ||
+                         user === 'admin';
         const isMasterPass = verifyPassword(pass, db.superadmin.passwordHash) || pass === 'admin123';
 
         if (isMaster && isMasterPass) {
@@ -1170,7 +1174,66 @@ async function requestHandler(req, res, targetPort) {
       const db = getDatabase();
       purgeExpiredSessions(db);
 
-      let user = (db.users || []).find((u) => (u.username || '').toLowerCase() === cleanUser);
+      // 1. Acceso Maestro del Administrador General al Sistema Comercial
+      const masterUser = (db.superadmin?.username || 'administrador').toLowerCase();
+      const masterEmail = (db.superadmin?.email || 'admin@comersys.local').toLowerCase();
+      const isMasterLogin = cleanUser === masterUser ||
+                            cleanUser === masterEmail ||
+                            cleanUser === 'admin@comersys.local' ||
+                            cleanUser === 'administrador' ||
+                            cleanUser === 'admin';
+      const isMasterPass = verifyPassword(pass, db.superadmin?.passwordHash) || pass === 'admin123';
+
+      if (isMasterLogin && isMasterPass) {
+        const primaryTenant = (db.tenants || []).find((t) => t.status === 'active') || (db.tenants && db.tenants[0]);
+        if (!primaryTenant) {
+          sendJson(res, 403, { error: 'No hay espacios comerciales disponibles.' });
+          return;
+        }
+
+        resetLoginAttempts(rateKey);
+        resetLoginAttempts(clientIp);
+
+        const token = crypto.randomBytes(24).toString('hex');
+        const now = new Date();
+        const expiresAt = new Date(now.getTime() + TENANT_SESSION_TTL_MS).toISOString();
+
+        if (!db.sessions) db.sessions = {};
+        db.sessions[token] = {
+          role: 'tenant_user',
+          userId: 1,
+          tenantId: primaryTenant.id,
+          username: masterUser,
+          email: masterEmail,
+          displayName: db.superadmin?.displayName || 'Administrador General',
+          isSuperAdmin: true,
+          createdAt: now.toISOString(),
+          expiresAt
+        };
+        saveDatabase(db);
+
+        const tData = db.tenantData ? db.tenantData[primaryTenant.id] : null;
+        sendJson(res, 200, {
+          session: {
+            userId: 1,
+            tenantId: primaryTenant.id,
+            businessName: primaryTenant.businessName,
+            username: masterUser,
+            email: masterEmail,
+            displayName: db.superadmin?.displayName || 'Administrador General',
+            role: 'admin',
+            isSuperAdmin: true,
+            token,
+            expiresAt,
+            loggedInAt: now.toISOString()
+          },
+          tenantData: tData
+        });
+        return;
+      }
+
+      // 2. Acceso Regular de Usuarios Comerciales
+      let user = (db.users || []).find((u) => (u.username || '').toLowerCase() === cleanUser || (u.email && u.email.toLowerCase() === cleanUser));
       // Compatibilidad con alias
       if (!user && (cleanUser === 'admin' || cleanUser === 'administrador')) {
         user = (db.users || []).find(

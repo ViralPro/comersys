@@ -73,6 +73,16 @@
       "displayName": "Boutique Bella",
       "role": "admin",
       "createdAt": "2026-11-12T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "tenantId": "tenant_demo",
+      "username": "administrador",
+      "email": "admin@comersys.local",
+      "passwordHash": "AA85B17EA94C5A57C4A2F3FA7F4C8D4A:3F75C0A063D41D9A26CF583E2CDAEF461A4E5A9DF013EFC355387BFD6D6CB54E",
+      "displayName": "Administrador General",
+      "role": "admin",
+      "createdAt": "2026-11-12T00:00:00.000Z"
     }
   ],
   "auditLogs": [

@@ -249,6 +249,16 @@ describe('Suite de Integración y Seguridad Avanzada ComerSys (8000 y 8001)', ()
   // ==========================================================================
   // 4. AUTENTICACIÓN Y AISLAMIENTO MULTI-TENANT
   // ==========================================================================
+  it('POST /api/v1/auth/login con admin@comersys.local debe permitir acceso comercial al SuperAdmin', async () => {
+    const res = await post('/api/v1/auth/login', {
+      username: 'admin@comersys.local',
+      password: 'admin123'
+    });
+    assert.strictEqual(res.statusCode, 200, 'SuperAdmin debe poder acceder al sistema comercial');
+    assert.ok(res.json.session.token);
+    assert.strictEqual(res.json.session.role, 'admin');
+  });
+
   it('POST /api/v1/auth/login con boutiquebella debe generar token de sesión con TTL', async () => {
     const res = await post('/api/v1/auth/login', {
       username: 'boutiquebella',
